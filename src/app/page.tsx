@@ -1,43 +1,23 @@
 import { dummySwimmingClasses } from "@/data/dummy";
+import { SearchIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <div className="flex flex-col">
       <div className="p-4">
-        <h1 className="font-bold text-xl">DiveIn</h1>
+        <h1 className="font-bold text-xl">Dive-In</h1>
       </div>
 
       <section className="flex flex-col px-4">
-        <input
-          type="text"
-          name="course-search"
-          id="course-search"
-          placeholder="강습 검색"
-          className="border border-gray-300 rounded-md p-2"
-        />
-      </section>
-
-      <section className="flex flex-col gap-2 py-4 px-4">
-        <h2 className="font-bold text-lg">인기 클래스</h2>
-        <ul className="flex gap-4 overflow-x-auto snap-x no-scrollbar">
-          {dummySwimmingClasses.map((swimmingClass) => (
-            <li
-              key={swimmingClass.id}
-              className="snap-start flex-none flex flex-col gap-2"
-            >
-              <Image
-                src={swimmingClass.photos[0]}
-                alt=""
-                width={200}
-                height={200}
-                priority
-                className="rounded-lg"
-              />
-              <h3 className="font-bold">{swimmingClass.className}</h3>
-            </li>
-          ))}
-        </ul>
+        <Link
+          href="/search"
+          className="relative flex p-2 border border-gray-300 rounded-md overflow-hidden"
+        >
+          <span className="text-sm text-slate-500">강습 검색</span>
+          <SearchIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 w-5 h-5" />
+        </Link>
       </section>
 
       <section className="flex flex-col gap-4 py-4 px-4">
@@ -69,24 +49,12 @@ export default function Home() {
                   강사 {swimmingClass.instructorCount}명 수강생{" "}
                   {swimmingClass.studentCount}인 수업
                 </p>
-                <p className="text-xs">1회 {swimmingClass.pricePerSession}원</p>
+                <p className="text-sm font-semibold text-slate-600">
+                  {swimmingClass.pricePerSession}원
+                </p>
               </div>
             </li>
           ))}
-          {/* <li>
-            <div className="w-20 h-20 bg-slate-300" />
-            <div>
-              <ul>
-                <li>중급</li>
-                <li>접영</li>
-                <li>다이빙</li>
-              </ul>
-              <h3>올림픽 수영장</h3>
-              <p>서울 송파구</p>
-              <p>강사 1명 수강생 5인 수업</p>
-              <p>1회 60,000원</p>
-            </div>
-          </li> */}
         </ul>
       </section>
     </div>
