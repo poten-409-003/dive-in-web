@@ -1,0 +1,47 @@
+export const dummySwimmingClasses = [
+  {
+    id: 1,
+    className: "중급 접영 강습",
+    poolName: "올림픽 수영장",
+    location: "서울 송파구",
+    tags: ["중급", "접영", "다이빙"],
+    instructorCount: 1,
+    studentCount: 5,
+    pricePerSession: 60000,
+    photos: [
+      "https://picsum.photos/seed/swim1/200",
+      "https://picsum.photos/seed/swim2/200",
+      "https://picsum.photos/seed/swim3/200",
+    ],
+  },
+  {
+    id: 2,
+    className: "초급 평영 강습",
+    poolName: "한강 수영장",
+    location: "서울 강남구",
+    tags: ["초급", "평영", "자유형"],
+    instructorCount: 2,
+    studentCount: 8,
+    pricePerSession: 50000,
+    photos: [
+      "https://picsum.photos/seed/swim4/200",
+      "https://picsum.photos/seed/swim5/200",
+      "https://picsum.photos/seed/swim6/200",
+    ],
+  },
+  {
+    id: 3,
+    className: "고급 배영 강습",
+    poolName: "월드컵 수영장",
+    location: "서울 마포구",
+    tags: ["고급", "배영", "다이빙"],
+    instructorCount: 1,
+    studentCount: 4,
+    pricePerSession: 70000,
+    photos: [
+      "https://picsum.photos/seed/swim7/200",
+      "https://picsum.photos/seed/swim8/200",
+      "https://picsum.photos/seed/swim9/200",
+    ],
+  },
+];
