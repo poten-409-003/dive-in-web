@@ -3,17 +3,23 @@ import { Home, LogIn, MapPin } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+const routes = {
+  home: "/",
+  pools: "/pools",
+  login: "/auth/login",
+};
+
 const BottomNav = () => {
   const pathname = usePathname();
 
-  const isLessons = pathname === "/";
-  const isPools = pathname === "/pools";
-  const isLogin = pathname === "/login";
+  const isLessons = pathname === routes.home;
+  const isPools = pathname === routes.pools;
+  const isLogin = pathname === routes.login;
 
   return (
     <nav className="flex-none flex justify-around items-center h-12 bg-white border-t border-slate-200">
       <Link
-        href="/"
+        href={routes.home}
         className="h-full flex flex-col gap-0.5 items-center justify-center"
       >
         <Home
@@ -24,7 +30,7 @@ const BottomNav = () => {
         <span className="text-xs">강습</span>
       </Link>
       <Link
-        href="/pools"
+        href={routes.pools}
         className="h-full flex flex-col gap-0.5 items-center justify-center"
       >
         <MapPin
@@ -33,7 +39,7 @@ const BottomNav = () => {
         <span className="text-xs">수영장</span>
       </Link>
       <Link
-        href="/login"
+        href={routes.login}
         className="h-full flex flex-col gap-0.5 items-center justify-center"
       >
         <LogIn
