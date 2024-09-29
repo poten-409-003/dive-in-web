@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="ko-KR">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-dvh`}
         // babo
       >
         <main className="flex-1 overflow-y-auto no-scrollbar">{children}</main>
