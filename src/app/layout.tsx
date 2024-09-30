@@ -20,7 +20,8 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Dive In",
-  description: "수영에 빠져 빠져 빠져!",
+  description:
+    "수영 강습 찾기 어렵다고요? Dive In에서 쉽고 빠르게 원하는 강습을 찾아보세요! 초보부터 고수까지, 다양한 강습이 준비되어 있습니다. Dive In, 지금 바로 시작해보세요!",
 };
 
 export default function RootLayout({
