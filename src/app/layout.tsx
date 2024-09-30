@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import BottomNav from "./_components/BottomNav";
 import "./globals.css";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const KAKAO_APP_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY!;
 
@@ -40,6 +41,7 @@ export default function RootLayout({
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_APP_KEY}&autoload=false`}
           strategy="beforeInteractive"
         />
+        <SpeedInsights />
       </body>
     </html>
   );
