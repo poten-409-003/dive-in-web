@@ -1,11 +1,16 @@
 import InstagramIcon from "@/components/icons/InstagramIcon";
 import KakaoTalkIcon from "@/components/icons/KakaoTalkIcon";
+import Marker from "@/components/maps/Marker";
+import Overlay from "@/components/maps/Overlay";
 import { dummySwimmingClass } from "@/data/dummy";
 import { ChevronLeftIcon } from "lucide-react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 
-const LessonPage = async () => {
+const Map = dynamic(() => import("@/components/maps/KakaoMap"), { ssr: false });
+
+const LessonPage = () => {
   const lesson = dummySwimmingClass;
   return (
     <div className="flex flex-col">
@@ -18,14 +23,19 @@ const LessonPage = async () => {
       {/* snap-mandatory를 활성화하여, 약간의 스크롤로 snap을 강제하여 쉽게 넘어갈 수 있도록 함 */}
 
       <div className="relative w-full flex gap-6 snap-x snap-mandatory overflow-x-auto">
-        {lesson.photos.map((photo) => (
-          <div key={photo} className="snap-center snap-always shrink-0 w-full">
+        {lesson.photos.map((photo, index) => (
+          <div
+            key={photo}
+            className="snap-center snap-always relative shrink-0 w-full h-40"
+          >
             <Image
               src={photo}
               alt=""
-              width={400}
-              height={400}
-              className="w-full h-40 object-cover rounded-lg shadow-xl bg-white"
+              fill
+              sizes="100vw"
+              priority={index < 2}
+              quality={40}
+              className="w-full object-cover rounded-lg shadow-xl bg-white"
             />
           </div>
         ))}
@@ -62,12 +72,26 @@ const LessonPage = async () => {
         </div>
       </section>
 
-      <section className="p-4 flex flex-col gap-2">
+      <section className="p-4 flex flex-col gap-4">
         <div className="flex items-center">
           <h2 className="text-lg font-bold">클래스 위치</h2>
-          <button className="ml-auto text-slate-600">바로가기</button>
         </div>
-        <div className="w-full h-60 rounded-lg shadow-xl bg-white border"></div>
+        <Map
+          center={{
+            lat: lesson.latitude,
+            lng: lesson.longitude,
+          }}
+        >
+          <Marker lat={lesson.latitude} lng={lesson.longitude} />
+          <Overlay
+            lat={lesson.latitude}
+            lng={lesson.longitude}
+            name={lesson.poolName}
+            address={lesson.location}
+            kakaoUrl="/"
+            naverUrl="/"
+          />
+        </Map>
         <div className="flex flex-col gap-1">
           <p className="text-slate-700 font-bold">{lesson.poolName}</p>
           <p className="text-sm text-slate-500">{lesson.location}</p>

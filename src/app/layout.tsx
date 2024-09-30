@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
 import BottomNav from "./_components/BottomNav";
+import "./globals.css";
+import Script from "next/script";
+
+const KAKAO_APP_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY!;
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,6 +35,11 @@ export default function RootLayout({
       >
         <main className="flex-1 overflow-y-auto no-scrollbar">{children}</main>
         <BottomNav />
+        <Script
+          type="text/javascript"
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_APP_KEY}&autoload=false`}
+          strategy="beforeInteractive"
+        />
       </body>
     </html>
   );
