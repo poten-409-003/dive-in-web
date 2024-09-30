@@ -23,14 +23,15 @@ export default function LessonsPage() {
       <section className="flex flex-col gap-4 py-4 px-4">
         <h2 className="font-bold text-lg">클래스 모집 정보</h2>
         <ul className="flex flex-col gap-6">
-          {dummySwimmingClasses.map((swimmingClass) => (
+          {dummySwimmingClasses.map((swimmingClass, index) => (
             <li key={swimmingClass.id}>
               <Link href={`/lessons/${swimmingClass.id}`} className="flex">
                 <Image
                   src={swimmingClass.photos[0]}
-                  alt=""
+                  alt="강습 사진"
                   width={100}
                   height={100}
+                  priority={index < 5}
                   className="flex-none w-32 aspect-square rounded-lg"
                 />
                 <div className="flex-none flex flex-col gap-1 pl-3">
