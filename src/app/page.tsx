@@ -1,12 +1,17 @@
-import { redirect } from "next/navigation";
+"use client";
 
-export const generateMetadata = () => {
-  return {
-    title: "Dive In",
-    description: "수영에 빠져 빠져 빠져!",
-  };
-};
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
-  redirect("/lessons");
+  const router = useRouter();
+  useEffect(() => {
+    router.replace("/lessons");
+  }, [router]);
+
+  return (
+    <div className="flex flex-col items-center justify-center h-screen">
+      <h1 className="text-4xl font-bold">Dive-In</h1>
+    </div>
+  );
 }
