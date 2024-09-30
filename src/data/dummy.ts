@@ -165,3 +165,23 @@ export const dummySwimmingClasses = [
     ],
   },
 ];
+
+export const dummySwimmingClass = {
+  id: 1,
+  className: "중급 접영 강습",
+  description:
+    "중급 접영 강습입니다. 접영을 배우고 싶은 분들을 위한 강습입니다.",
+  poolName: "올림픽 수영장",
+  location: "서울 송파구",
+  latitude: 37.5209,
+  longitude: 127.119,
+  tags: ["중급", "접영", "다이빙"],
+  instructorCount: 1,
+  studentCount: 5,
+  pricePerSession: 60000,
+  photos: [
+    "https://picsum.photos/seed/swim1/1200",
+    "https://picsum.photos/seed/swim2/1200",
+    "https://picsum.photos/seed/swim3/1200",
+  ],
+};
