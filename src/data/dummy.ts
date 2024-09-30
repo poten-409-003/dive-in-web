@@ -178,7 +178,7 @@ export const dummySwimmingClass = {
   tags: ["중급", "접영", "다이빙"],
   instructorCount: 1,
   studentCount: 5,
-  pricePerSession: 60000,
+  pricePerSession: 70000,
   photos: [
     "https://picsum.photos/seed/swim1/1200",
     "https://picsum.photos/seed/swim2/1200",
