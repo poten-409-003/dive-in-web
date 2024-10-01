@@ -1,20 +1,31 @@
 import InstagramIcon from "@/components/icons/InstagramIcon";
 import KakaoTalkIcon from "@/components/icons/KakaoTalkIcon";
-import Marker from "@/components/maps/Marker";
-import Overlay from "@/components/maps/Overlay";
-import { dummySwimmingClass } from "@/data/dummy";
+import { dummySwimmingClasses } from "@/data/dummy";
 import { ChevronLeftIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 const Map = dynamic(() => import("@/components/maps/KakaoMap"), { ssr: false });
+const Marker = dynamic(() => import("@/components/maps/Marker"), {
+  ssr: false,
+});
+const Overlay = dynamic(() => import("@/components/maps/Overlay"), {
+  ssr: false,
+});
 
-const LessonPage = () => {
-  const lesson = dummySwimmingClass;
+const LessonPage = ({ params }: { params: { id: string } }) => {
+  const LessonId = Number(params.id);
+  const lesson = dummySwimmingClasses.find((lesson) => lesson.id === LessonId);
+
+  if (!lesson) {
+    notFound();
+  }
+
   return (
     <div className="flex flex-col">
-      <div className="p-4">
+      <div className="flex p-4">
         <Link href="/lessons">
           <ChevronLeftIcon className="w-6 h-6" />
         </Link>

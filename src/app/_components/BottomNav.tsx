@@ -12,9 +12,9 @@ const routes = {
 const BottomNav = () => {
   const pathname = usePathname();
 
-  const isLessons = pathname === routes.home;
-  const isPools = pathname === routes.pools;
-  const isLogin = pathname === routes.login;
+  const isLessons = pathname.startsWith(routes.home);
+  const isPools = pathname.startsWith(routes.pools);
+  const isLogin = pathname.startsWith(routes.login);
 
   return (
     <nav className="flex-none flex justify-around items-center h-12 bg-white border-t border-slate-200">

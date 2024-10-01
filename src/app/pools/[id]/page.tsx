@@ -50,7 +50,7 @@ const PoolPage = ({ params }: Props) => {
   return (
     <div className="flex flex-col">
       <div className="p-4">
-        <Link href="/lessons">
+        <Link href="/pools">
           <ChevronLeftIcon className="w-6 h-6" />
         </Link>
       </div>
