@@ -1,3 +1,4 @@
+import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 import InstagramIcon from "@/components/icons/InstagramIcon";
 import KakaoTalkIcon from "@/components/icons/KakaoTalkIcon";
 import { dummySwimmingClasses } from "@/data/dummy";
@@ -31,26 +32,7 @@ const LessonPage = ({ params }: { params: { id: string } }) => {
         </Link>
       </div>
 
-      {/* snap-mandatory를 활성화하여, 약간의 스크롤로 snap을 강제하여 쉽게 넘어갈 수 있도록 함 */}
-
-      <div className="relative w-full flex gap-6 snap-x snap-mandatory overflow-x-auto">
-        {lesson.photos.map((photo, index) => (
-          <div
-            key={photo}
-            className="snap-center snap-always relative shrink-0 w-full h-40"
-          >
-            <Image
-              src={photo}
-              alt=""
-              fill
-              sizes="100vw"
-              priority={index < 2}
-              quality={40}
-              className="w-full object-cover rounded-lg shadow-xl bg-white"
-            />
-          </div>
-        ))}
-      </div>
+      <DetailPagePhotoSlider imageUrls={lesson.photos} alt="수업 사진" />
 
       <section className="flex flex-col p-4">
         <div className="flex gap-2 items-center flex-wrap">

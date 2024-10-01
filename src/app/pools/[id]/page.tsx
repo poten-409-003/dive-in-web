@@ -1,3 +1,4 @@
+import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 import { dummySwimmingClasses, dummySwimmingPools } from "@/data/dummy";
 import { ChevronLeftIcon } from "lucide-react";
 import { Metadata } from "next";
@@ -55,23 +56,7 @@ const PoolPage = ({ params }: Props) => {
         </Link>
       </div>
 
-      <section className="relative w-full flex gap-6 snap-x snap-mandatory overflow-x-auto">
-        {pool.photos.map((photo, index) => (
-          <div
-            key={photo}
-            className="snap-center snap-always relative shrink-0 w-full h-40"
-          >
-            <Image
-              src={photo}
-              alt="수영장 사진"
-              fill
-              sizes="100vw"
-              priority={index < 2}
-              className="w-full object-cover rounded-lg shadow-xl bg-white"
-            />
-          </div>
-        ))}
-      </section>
+      <DetailPagePhotoSlider imageUrls={pool.photos} alt="수영장 사진" />
 
       <section className="flex flex-col p-4">
         <div className="flex gap-2 items-center flex-wrap">

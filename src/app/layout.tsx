@@ -1,20 +1,16 @@
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import BottomNav from "./_components/BottomNav";
 import "./globals.css";
-import Script from "next/script";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const KAKAO_APP_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY!;
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
+const pretendard = localFont({
+  src: "../static/fonts/PretendardVariable.woff2",
+  display: "swap",
+  variable: "--font-pretendard",
   weight: "100 900",
 });
 
@@ -32,8 +28,7 @@ export default function RootLayout({
   return (
     <html lang="ko-KR">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-dvh`}
-        // babo
+        className={`${pretendard.variable} antialiased flex flex-col h-dvh`}
       >
         <main className="flex-1 overflow-y-auto no-scrollbar">{children}</main>
         <BottomNav />
