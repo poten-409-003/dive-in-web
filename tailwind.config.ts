@@ -19,6 +19,9 @@ const config: Config = {
   ],
   theme: {
     colors: {
+      transparent: "transparent",
+      current: "currentColor",
+      white: "#ffffff",
       gray: {
         900: "#1c2028",
         800: "#3d4149",

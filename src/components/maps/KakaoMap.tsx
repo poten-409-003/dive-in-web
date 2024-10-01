@@ -70,7 +70,11 @@ const KakaoMap = ({
 
   return (
     <>
-      <div ref={mapContainerRef} id="map" className="w-full aspect-square" />
+      <div
+        ref={mapContainerRef}
+        id="map"
+        className="w-full aspect-square rounded-lg overflow-hidden"
+      />
       {kakaoMap && (
         <KakaoMapContext.Provider value={kakaoMap}>
           {children}
