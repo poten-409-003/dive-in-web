@@ -1,3 +1,4 @@
+import LessonChip from "@/components/ui/Chip";
 import { dummySwimmingClasses } from "@/data/dummy";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,15 +14,15 @@ export default function LessonsPage() {
         </div>
 
         <ul className="flex flex-col gap-6 px-4 pb-10">
-          {dummySwimmingClasses.map((swimmingClass, index) => (
-            <li key={swimmingClass.id}>
+          {lessons.map((lesson, index) => (
+            <li key={lesson.id}>
               <Link
-                href={`/lessons/${swimmingClass.id}`}
+                href={`/lessons/${lesson.id}`}
                 className="flex flex-col gap-2"
               >
                 <div className="flex items-center gap-2">
                   <Image
-                    src={swimmingClass.photos[0]}
+                    src={lesson.photos[0]}
                     alt="로고 이미지"
                     width={24}
                     height={24}
@@ -32,30 +33,26 @@ export default function LessonsPage() {
                 </div>
 
                 <div className="flex-none flex flex-col items-start gap-2 bg-gray-100 rounded-lg p-4">
-                  <ul className="flex items-center gap-1">
-                    {swimmingClass.tags.map((tag) => (
-                      <li
-                        key={tag}
-                        className="text-xs font-bold text-gray-500 px-1.5 py-0.5 rounded bg-gray-200"
-                      >
-                        {tag}
-                      </li>
+                  <div className="flex items-center gap-1">
+                    <LessonChip label={lesson.level} />
+                    {lesson.tags.map((tag) => (
+                      <LessonChip key={tag} label={tag} />
                     ))}
-                  </ul>
+                  </div>
 
                   <div className="flex flex-col gap-0.5">
                     <h3 className="text-gray-900 font-bold">
-                      {swimmingClass.poolName}
+                      {lesson.poolName}
                     </h3>
-                    <p className="text-gray-500 text-sm line-clamp-2">
-                      {swimmingClass.description}
-                      {swimmingClass.description}
+                    <p className="text-gray-700 text-sm line-clamp-2">
+                      {lesson.description}
+                      {lesson.description}
                     </p>
                   </div>
 
                   <div className="flex items-center gap-1">
-                    <p className="text-sm text-gray-900">
-                      {swimmingClass.pricePerSession.toLocaleString()}원
+                    <p className="text-sm font-medium text-gray-900">
+                      {lesson.pricePerSession.toLocaleString()}원
                     </p>
                     <p className="text-sm text-gray-500">1회</p>
                   </div>

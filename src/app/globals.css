@@ -25,6 +25,15 @@
   --gray-300: #e2e5ec;
   --gray-200: #eef0f6;
   --gray-100: #f9fafe;
+
+  --chip-1: var(--gray-200);
+  --chip-1-foreground: var(--gray-500);
+  --chip-2: #e7edfc;
+  --chip-2-foreground: #6c88cf;
+  --chip-3: #d2f7ce;
+  --chip-3-foreground: #22aa00;
+  --chip-4: #ffdafd;
+  --chip-4-foreground: #d718cf;
 }
 
 @media (prefers-color-scheme: dark) {

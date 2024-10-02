@@ -50,17 +50,24 @@ const config: Config = {
         tertiary: {
           DEFAULT: "var(--tertiary)",
         },
-        // gray: {
-        //   900: "var(--gray-900)",
-        //   800: "var(--gray-800)",
-        //   700: "var(--gray-700)",
-        //   600: "var(--gray-600)",
-        //   500: "var(--gray-500)",
-        //   400: "var(--gray-400)",
-        //   300: "var(--gray-300)",
-        //   200: "var(--gray-200)",
-        //   100: "var(--gray-100)",
-        // },
+        chip: {
+          1: {
+            DEFAULT: "var(--chip-1)",
+            foreground: "var(--chip-1-foreground)",
+          },
+          2: {
+            DEFAULT: "var(--chip-2)",
+            foreground: "var(--chip-2-foreground)",
+          },
+          3: {
+            DEFAULT: "var(--chip-3)",
+            foreground: "var(--chip-3-foreground)",
+          },
+          4: {
+            DEFAULT: "var(--chip-4)",
+            foreground: "var(--chip-4-foreground)",
+          },
+        },
       },
       fontSize: {
         xxs: ["0.625rem", { lineHeight: "0.875rem" }],
