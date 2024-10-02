@@ -277,3 +277,69 @@ export const dummySwimmingPools = [
     ],
   },
 ];
+
+export const lessonsResponse = [
+  {
+    id: 1,
+    instructor_logo: "https://picsum.photos/seed/instructor_logo/1200",
+    instructor_name: "김수영",
+    lesson_name: "접영 기초",
+    level: "초급",
+    tags: "접영,배영,다이빙",
+    description: "접영 기초 수업입니다.",
+    price: 60000,
+    times: 1,
+  },
+  {
+    id: 2,
+    instructor_logo: "https://picsum.photos/seed/instructor_logo/1200",
+    instructor_name: "이수영",
+    lesson_name: "배영 중급",
+    level: "중급",
+    tags: "배영,다이빙",
+    description: "배영 중급 수업입니다.",
+    price: 80000,
+    times: 5,
+  },
+  {
+    id: 3,
+    instructor_logo: "https://picsum.photos/seed/instructor_logo/1200",
+    instructor_name: "박수영",
+    lesson_name: "다이빙 고급",
+    level: "고급",
+    tags: "다이빙",
+    description: "다이빙 고급 수업입니다.",
+    price: 100000,
+    times: 10,
+  },
+];
+
+export const lessonDetailResponse = {
+  id: 1,
+  instructor_logo: "https://picsum.photos/seed/instructor/1200.jpg",
+  instructor_name: "김수영",
+  lesson_name: "접영 기초",
+  description: "접영 기초 수업입니다.",
+  level: "초급",
+  tags: "접영,배영,다이빙",
+  price: 60000,
+  times: 1,
+  time: "매주 월요일 19:00 ~ 20:00",
+  max_students: 10,
+  images: [
+    "https://picsum.photos/seed/lesson/1200.jpg",
+    "https://picsum.photos/seed/lesson2/1200.jpg",
+  ],
+  apply_link: [
+    { type: "naver", url: "https://cafe.naver.com/dive.in" },
+    { type: "kakao", url: "https://open.kakao.com/o/gd8f7d" },
+    { type: "instagram", url: "https://www.instagram.com/dive.in" },
+  ],
+  pool: {
+    id: 1,
+    name: "올림픽 수영장",
+    location: "서울 송파구 올림픽로 424",
+    latitude: 37.5209,
+    longitude: 127.119,
+  },
+};
