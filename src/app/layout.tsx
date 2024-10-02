@@ -4,7 +4,6 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import BottomNav from "./_components/BottomNav";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
 
 const KAKAO_APP_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY!;
 

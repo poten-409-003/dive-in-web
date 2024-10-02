@@ -11,6 +11,7 @@ const PersonIcon = (props: Props) => {
       fill="none"
       stroke="currentColor"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <circle cx="12" cy="8" r="3.25" strokeWidth="1.5" />
       <path

@@ -5,7 +5,6 @@ import { dummySwimmingClasses, dummySwimmingPools } from "@/data/dummy";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 

@@ -11,6 +11,7 @@ const PoolIcon = (props: Props) => {
       fill="none"
       stroke="currentColor"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         d="M3 19C4 19.8333 7 20.5 9 19C9.83333 19.6667 13 20.6 15 19C15.8333 19.8333 19.5 20.5 21 19"

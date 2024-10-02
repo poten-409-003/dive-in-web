@@ -3,13 +3,9 @@
 const BaseOverlayContent = ({
   name,
   address,
-  kakaoUrl,
-  naverUrl,
 }: {
   name: string;
   address: string;
-  kakaoUrl: string;
-  naverUrl: string;
 }) => {
   return (
     <div className="absolute -top-12 left-0 flex flex-col gap-1 w-60 bg-white shadow-md py-2 px-3 -translate-x-1/2 -translate-y-full rounded">

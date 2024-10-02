@@ -30,12 +30,7 @@ const Overlay = ({
     const overlayPosition = new kakao.maps.LatLng(lat, lng);
 
     const contentString = convertReactComponentToHTMLElement(
-      <BaseOverlayContent
-        name={name}
-        address={address}
-        kakaoUrl={kakaoUrl}
-        naverUrl={naverUrl}
-      />
+      <BaseOverlayContent name={name} address={address} />
     );
 
     const overlay = new kakao.maps.CustomOverlay({
