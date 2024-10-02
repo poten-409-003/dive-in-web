@@ -1,5 +1,8 @@
 "use client";
-import { Home, LogIn, MapPin } from "lucide-react";
+import ChatIcon from "@/components/icons/ChatIcon";
+import PersonIcon from "@/components/icons/PersonIcon";
+import PoolIcon from "@/components/icons/PoolIcon";
+import SwimHatIcon from "@/components/icons/SwimHatIcon";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -24,7 +27,7 @@ const BottomNav = () => {
           isLessons ? "text-gray-900" : "text-gray-500"
         }`}
       >
-        <Home className={`h-6 w-6`} />
+        <SwimHatIcon className={`h-6 w-6`} />
         <span className={`text-sm`}>수영클래스</span>
       </Link>
       <Link
@@ -33,8 +36,17 @@ const BottomNav = () => {
           isPools ? "text-gray-900" : "text-gray-500"
         }`}
       >
-        <MapPin className={`h-6 w-6`} />
+        <PoolIcon className={`h-6 w-6`} />
         <span className="text-sm">수영장</span>
+      </Link>
+      <Link
+        href={routes.pools}
+        className={`flex-1 h-full flex flex-col gap-1 items-center justify-center ${
+          isPools ? "text-gray-900" : "text-gray-500 stroke-current"
+        }`}
+      >
+        <ChatIcon className={`h-6 w-6`} />
+        <span className="text-sm">소통해요</span>
       </Link>
       <Link
         href={routes.login}
@@ -42,8 +54,8 @@ const BottomNav = () => {
           isLogin ? "text-gray-900" : "text-gray-500"
         }`}
       >
-        <LogIn className={`h-6 w-6`} />
-        <span className="text-sm">로그인</span>
+        <PersonIcon className={`h-6 w-6`} />
+        <span className="text-sm">마이</span>
       </Link>
     </nav>
   );

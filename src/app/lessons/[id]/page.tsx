@@ -73,7 +73,12 @@ const LessonPage = ({ params }: { params: { id: string } }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <InstagramIcon className="w-6 h-6" />
+            <Image
+              src="/icon/instagram.png"
+              alt="인스타그램"
+              width={24}
+              height={24}
+            />
             <p className="text-slate-700 text-sm font-medium">인스타그램</p>
           </Link>
           <Link
@@ -82,7 +87,12 @@ const LessonPage = ({ params }: { params: { id: string } }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <KakaoTalkIcon className="w-6 h-6" />
+            <Image
+              src="/icon/kakao.png"
+              alt="카카오톡"
+              width={24}
+              height={24}
+            />
             <p className="text-slate-700 text-sm font-medium">오픈 카카오톡</p>
           </Link>
           <Link
@@ -91,7 +101,12 @@ const LessonPage = ({ params }: { params: { id: string } }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <KakaoTalkIcon className="w-6 h-6" />
+            <Image
+              src="/icon/naver-cafe-c.png"
+              alt="네이버 카페"
+              width={24}
+              height={24}
+            />
             <p className="text-slate-700 text-sm font-medium">네이버 카페</p>
           </Link>
         </div>
