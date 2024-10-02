@@ -30,7 +30,7 @@ const KakaoMap = ({
     }
 
     const createMap = () => {
-      const lat = center.lat + 0.0005;
+      const lat = center.lat;
       const lng = center.lng;
 
       if (!mapElement) {
@@ -58,12 +58,10 @@ const KakaoMap = ({
 
     window.kakao.maps.load(() => {
       isKakaoScriptLoadedRef.current = true;
-      console.log("Kakao Map SDK loaded.");
       createMap();
     });
 
     if (isKakaoScriptLoaded) {
-      console.log("Kakao Map SDK is already loaded.");
       createMap();
     }
   }, [center]);
@@ -73,7 +71,7 @@ const KakaoMap = ({
       <div
         ref={mapContainerRef}
         id="map"
-        className="w-full aspect-square rounded-lg overflow-hidden"
+        className="w-full aspect-video rounded-lg overflow-hidden"
       />
       {kakaoMap && (
         <KakaoMapContext.Provider value={kakaoMap}>

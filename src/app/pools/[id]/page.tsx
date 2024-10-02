@@ -1,4 +1,5 @@
 import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
+import ShareButton from "@/app/_components/ShareButton";
 import { dummySwimmingClasses, dummySwimmingPools } from "@/data/dummy";
 import { ChevronLeftIcon } from "lucide-react";
 import { Metadata } from "next";
@@ -11,9 +12,6 @@ const KakaoMap = dynamic(() => import("@/components/maps/KakaoMap"), {
   ssr: false,
 });
 const Marker = dynamic(() => import("@/components/maps/Marker"), {
-  ssr: false,
-});
-const Overlay = dynamic(() => import("@/components/maps/Overlay"), {
   ssr: false,
 });
 
@@ -50,10 +48,11 @@ const PoolPage = ({ params }: Props) => {
 
   return (
     <div className="flex flex-col">
-      <div className="p-4">
+      <div className="flex items-center justify-between px-1">
         <Link href="/pools">
           <ChevronLeftIcon className="w-6 h-6" />
         </Link>
+        <ShareButton />
       </div>
 
       <DetailPagePhotoSlider imageUrls={pool.photos} alt="수영장 사진" />
@@ -119,14 +118,6 @@ const PoolPage = ({ params }: Props) => {
           }}
         >
           <Marker lat={pool.latitude} lng={pool.longitude} />
-          <Overlay
-            lat={pool.latitude}
-            lng={pool.longitude}
-            name={pool.name}
-            address={pool.location}
-            kakaoUrl="/"
-            naverUrl="/"
-          />
         </KakaoMap>
         <div className="flex flex-col gap-1">
           <p className="text-slate-700 font-bold">{pool.name}</p>
