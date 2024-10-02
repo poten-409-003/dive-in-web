@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 const routes = {
   home: "/lessons",
   pools: "/pools",
+  community: "/community",
   login: "/auth/login",
 };
 
@@ -17,6 +18,7 @@ const BottomNav = () => {
 
   const isLessons = pathname.startsWith(routes.home);
   const isPools = pathname.startsWith(routes.pools);
+  const isCommunity = pathname.startsWith(routes.community);
   const isLogin = pathname.startsWith(routes.login);
 
   return (
@@ -40,9 +42,9 @@ const BottomNav = () => {
         <span className="text-sm">수영장</span>
       </Link>
       <Link
-        href={routes.pools}
+        href={routes.community}
         className={`flex-1 h-full flex flex-col gap-1 items-center justify-center ${
-          isPools ? "text-gray-900" : "text-gray-500 stroke-current"
+          isCommunity ? "text-gray-900" : "text-gray-500 stroke-current"
         }`}
       >
         <ChatIcon className={`h-6 w-6`} />

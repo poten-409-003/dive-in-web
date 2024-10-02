@@ -1,7 +1,8 @@
 import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 import ShareButton from "@/app/_components/ShareButton";
+import LessonChip from "@/components/ui/Chip";
 import { dummySwimmingClasses, dummySwimmingPools } from "@/data/dummy";
-import { ChevronLeftIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -57,71 +58,80 @@ const PoolPage = ({ params }: Props) => {
 
       <DetailPagePhotoSlider imageUrls={pool.photos} alt="수영장 사진" />
 
-      <section className="flex flex-col p-4">
+      <section className="flex flex-col gap-3 px-4 pb-6 mt-4 mb-6 border-b border-gray-200">
         <div className="flex gap-2 items-center flex-wrap">
-          {pool.tags.map((tag) => (
-            <div
-              key={tag}
-              className="flex px-1 py-0.5 border border-slate-400 rounded"
-            >
-              <span className="text-slate-700 text-xs">{tag}</span>
+          <LessonChip label={pool.location} />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl font-bold">{pool.name}</h1>
+
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-1">
+              <h3 className="text-sm font-bold text-gray-700">위치</h3>
+              <p className="text-sm text-gray-700">안양 신성고등학교 수영장</p>
             </div>
-          ))}
+            <div className="flex items-center gap-1">
+              <h3 className="text-sm font-bold text-gray-700">전화</h3>
+              <p className="text-sm text-gray-700">02-350-0000</p>
+            </div>
+          </div>
+
+          <p className="text-sm text-slate-600">{pool.description}</p>
         </div>
-
-        <h1 className="text-2xl font-bold mt-2">{pool.name}</h1>
-
-        <p className="text-sm text-slate-600 mt-2">{pool.description}</p>
       </section>
 
-      <section className="flex flex-col gap-4 p-4">
-        <h2 className="text-lg font-bold">연관 클래스</h2>
+      <section className="flex flex-col gap-6 px-4 pb-10">
+        <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
+          <h2 className="font-bold text-gray-700">연관 클래스</h2>
 
-        <ul className="flex flex-col gap-4">
-          {dummySwimmingClasses.map((swimmingClass) => (
-            <li key={swimmingClass.id}>
-              <Link href={`/lessons/${swimmingClass.id}`} className="flex">
-                <Image
-                  src={swimmingClass.photos[0]}
-                  alt="강습 사진"
-                  width={100}
-                  height={100}
-                  className="flex-none w-16 aspect-square rounded-lg"
-                />
-                <div className="flex-none flex flex-col gap-1 pl-3">
-                  <ul className="flex items-center gap-1">
-                    {swimmingClass.tags.map((tag) => (
-                      <li
-                        key={tag}
-                        className="text-xs px-1 py-0.5 border rounded-lg"
-                      >
-                        {tag}
-                      </li>
-                    ))}
-                  </ul>
-                  <h3 className="font-medium">{swimmingClass.className}</h3>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+          <ul className="flex flex-col gap-4">
+            {dummySwimmingClasses.map((swimmingClass) => (
+              <li key={swimmingClass.id}>
+                <Link
+                  href={`/lessons/${swimmingClass.id}`}
+                  className="flex items-center"
+                >
+                  <div className="flex-1 flex flex-col gap-1">
+                    <div className="flex items-center gap-1">
+                      <LessonChip label={swimmingClass.level} />
+                      {swimmingClass.tags.map((tag) => (
+                        <LessonChip key={tag} label={tag} />
+                      ))}
+                    </div>
+                    <p className="text-sm text-gray-700">
+                      {swimmingClass.className}
+                    </p>
+                  </div>
 
-      <section className="p-4 flex flex-col gap-4">
-        <div className="flex items-center">
-          <h2 className="text-lg font-bold">위치</h2>
+                  <div className="flex p-2">
+                    <ChevronRightIcon className="w-4 h-4" />
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
-        <KakaoMap
-          center={{
-            lat: pool.latitude,
-            lng: pool.longitude,
-          }}
-        >
-          <Marker lat={pool.latitude} lng={pool.longitude} />
-        </KakaoMap>
-        <div className="flex flex-col gap-1">
-          <p className="text-slate-700 font-bold">{pool.name}</p>
-          <p className="text-sm text-slate-500">{pool.location}</p>
+
+        <div className="flex flex-col gap-4 p-4 bg-gray-100 rounded-lg">
+          <div className="flex items-center justify-between">
+            <h2 className="font-bold text-gray-700">수영장 위치</h2>
+            <Link href="/pools/1" className="flex p-1">
+              <ChevronRightIcon className="w-4 h-4 text-gray-900" />
+            </Link>
+          </div>
+
+          <KakaoMap
+            center={{
+              lat: pool.latitude,
+              lng: pool.longitude,
+            }}
+          >
+            <Marker lat={pool.latitude} lng={pool.longitude} />
+          </KakaoMap>
+          <div className="flex flex-col gap-1">
+            <p className="text-sm text-slate-500">{pool.location}</p>
+          </div>
         </div>
       </section>
     </div>

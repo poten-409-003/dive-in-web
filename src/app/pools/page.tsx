@@ -1,3 +1,4 @@
+import LessonChip from "@/components/ui/Chip";
 import { dummySwimmingPools } from "@/data/dummy";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,28 +13,26 @@ const PoolsPage = async () => {
           <p className="font-bold text-lg text-gray-500">{pools.length}</p>
         </div>
 
-        <ul className="flex flex-col gap-4 px-4 pb-4">
+        <ul className="grid grid-cols-2 gap-4 px-4 pb-4">
           {pools.map((pool, index) => (
             <li key={pool.id}>
               <Link
                 href={`/pools/${pool.id}`}
-                className="flex items-start gap-4"
+                className="flex flex-col items-start gap-3"
               >
                 <Image
                   src={pool.photos[0]}
                   alt="수영장 사진"
-                  width={100}
-                  height={100}
-                  priority={index < 5}
-                  className="flex-none w-[100px] aspect-square rounded-lg"
+                  width={200}
+                  height={200}
+                  priority={index < 8}
+                  className="flex-none w-full h-[100px] object-cover rounded-lg"
                 />
                 <div className="flex-none flex flex-col items-start gap-2">
-                  <p className="text-xs font-bold text-gray-500 px-1.5 py-0.5 rounded bg-gray-200">
-                    {pool.location}
-                  </p>
+                  <LessonChip label={pool.location} />
                   <div className="flex flex-col gap-0.5">
                     <h3 className="text-gray-900 font-bold">{pool.name}</h3>
-                    <p className="text-gray-500 text-sm">{pool.location}</p>
+                    <p className="text-gray-600 text-sm">{pool.location}</p>
                   </div>
                 </div>
               </Link>
