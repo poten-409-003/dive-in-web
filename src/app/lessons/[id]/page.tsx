@@ -1,4 +1,5 @@
 import { getLesson } from "@/api/lessons";
+import InstructorProfile from "@/app/_components/InstructorProfile";
 import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 import ShareButton from "@/app/_components/ShareButton";
 import PersonIcon from "@/components/icons/PersonIcon";
@@ -42,19 +43,10 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
 
       <section className="flex flex-col gap-3 px-4 mb-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Image
-              src={lesson.instructorLogo}
-              alt="로고 이미지"
-              width={24}
-              height={24}
-              priority
-              className="flex-none w-6 h-6 rounded-full"
-            />
-            <p className="text-body_sr text-gray-600">
-              {lesson.instructorName}
-            </p>
-          </div>
+          <InstructorProfile
+            avatar={lesson.instructorLogo}
+            name={lesson.instructorName}
+          />
 
           <div className="flex items-center gap-1">
             <LessonChip label={lesson.level} />

@@ -1,7 +1,7 @@
 import { getLessons } from "@/api/lessons";
 import LessonChip from "@/components/ui/Chip";
-import Image from "next/image";
 import Link from "next/link";
+import InstructorProfile from "../_components/InstructorProfile";
 
 export default async function LessonsPage() {
   const lessons = await getLessons();
@@ -15,25 +15,16 @@ export default async function LessonsPage() {
         </div>
 
         <ul className="flex flex-col gap-6 px-4 pb-10">
-          {lessons.map((lesson, index) => (
+          {lessons.map((lesson) => (
             <li key={lesson.id}>
               <Link
                 href={`/lessons/${lesson.id}`}
                 className="flex flex-col gap-2"
               >
-                <div className="flex items-center gap-2">
-                  <Image
-                    src={lesson.instructorLogo}
-                    alt="로고 이미지"
-                    width={24}
-                    height={24}
-                    priority={index < 5}
-                    className="flex-none w-6 h-6 rounded-full"
-                  />
-                  <p className="text-body_sr text-gray-600">
-                    {lesson.instructorName}
-                  </p>
-                </div>
+                <InstructorProfile
+                  avatar={lesson.instructorLogo}
+                  name={lesson.instructorName}
+                />
 
                 <div className="flex-none flex flex-col items-start gap-2 bg-gray-100 rounded-lg p-4">
                   <div className="flex items-center gap-1">
