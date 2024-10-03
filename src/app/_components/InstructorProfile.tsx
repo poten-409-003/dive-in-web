@@ -9,7 +9,7 @@ type Props = {
 
 const InstructorProfile = ({ avatar, name }: Props) => {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex-none flex items-center gap-2">
       <Image
         src={avatar}
         alt={`${name} 프로필`}
