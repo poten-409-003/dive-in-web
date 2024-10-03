@@ -1,8 +1,9 @@
 import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 import ShareButton from "@/app/_components/ShareButton";
+import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
+import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
 import LessonChip from "@/components/ui/Chip";
 import { dummySwimmingClasses, dummySwimmingPools } from "@/data/dummy";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -50,7 +51,7 @@ const PoolPage = ({ params }: Props) => {
     <div className="flex flex-col">
       <div className="flex items-center justify-between px-1">
         <Link href="/pools">
-          <ChevronLeftIcon className="w-6 h-6" />
+          <ArrowLeftIcon className="w-6 h-6 text-gray-900" />
         </Link>
         <ShareButton />
       </div>
@@ -104,7 +105,7 @@ const PoolPage = ({ params }: Props) => {
                   </div>
 
                   <div className="flex p-2">
-                    <ChevronRightIcon className="w-4 h-4" />
+                    <ArrowRightIcon className="w-4 h-4 text-gray-900" />
                   </div>
                 </Link>
               </li>
@@ -116,7 +117,7 @@ const PoolPage = ({ params }: Props) => {
           <div className="flex items-center justify-between">
             <h2 className="font-bold text-gray-700">수영장 위치</h2>
             <Link href="/pools/1" className="flex p-1">
-              <ChevronRightIcon className="w-4 h-4 text-gray-900" />
+              <ArrowRightIcon className="w-4 h-4 text-gray-900" />
             </Link>
           </div>
 

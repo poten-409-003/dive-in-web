@@ -2,14 +2,11 @@ import { getLesson } from "@/api/lessons";
 import InstructorProfile from "@/app/_components/InstructorProfile";
 import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 import ShareButton from "@/app/_components/ShareButton";
+import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 import PersonIcon from "@/components/icons/PersonIcon";
+import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
 import LessonChip from "@/components/ui/Chip";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  MapPinIcon,
-  TimerIcon,
-} from "lucide-react";
+import { MapPinIcon, TimerIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,10 +26,10 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col pb-10">
       <div className="flex items-center justify-between px-1">
         <Link href="/lessons" className="flex p-3">
-          <ChevronLeftIcon className="w-6 h-6 text-gray-900" />
+          <ArrowLeftIcon className="w-6 h-6 text-gray-900" />
         </Link>
         <ShareButton />
       </div>
@@ -142,7 +139,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
         </div>
       </section>
 
-      <section className="flex flex-col gap-4 p-4">
+      <section className="flex flex-col gap-4 pt-6 px-4">
         <div className="flex flex-col gap-2 p-4 bg-gray-100 rounded-lg">
           <h2 className="text-body_bb text-gray-700">클래스 상세 설명</h2>
 
@@ -179,24 +176,26 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
           </p>
         </div>
 
-        <div className="flex flex-col p-4 bg-gray-100 rounded-lg">
-          <div className="flex items-center justify-between">
+        <div className="flex flex-col bg-gray-100 rounded-lg">
+          <div className="flex items-center justify-between pl-4">
             <h2 className="text-body_bb text-gray-700">클래스 위치</h2>
             <Link href={`/pools/${lesson.pool.id}`} className="flex p-4">
-              <ChevronRightIcon className="w-4 h-4 text-gray-900" />
+              <ArrowRightIcon className="w-4 h-4 text-gray-900" />
             </Link>
           </div>
 
-          <Map
-            center={{
-              lat: lesson.pool.latitude,
-              lng: lesson.pool.longitude,
-            }}
-          >
-            <Marker lat={lesson.pool.latitude} lng={lesson.pool.longitude} />
-          </Map>
+          <div className="px-4">
+            <Map
+              center={{
+                lat: lesson.pool.latitude,
+                lng: lesson.pool.longitude,
+              }}
+            >
+              <Marker lat={lesson.pool.latitude} lng={lesson.pool.longitude} />
+            </Map>
+          </div>
 
-          <div className="flex flex-col gap-1 pt-2">
+          <div className="flex flex-col gap-1 pt-2 px-4 pb-4">
             <p className="text-body_sr text-gray-700">{lesson.pool.location}</p>
           </div>
         </div>

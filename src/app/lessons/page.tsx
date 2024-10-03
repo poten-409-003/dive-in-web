@@ -8,8 +8,8 @@ export default async function LessonsPage() {
 
   return (
     <div className="flex flex-col">
-      <section className="flex flex-col gap-4">
-        <div className="flex items-center gap-2 pt-10 px-4 pb-4">
+      <section className="flex flex-col">
+        <div className="flex items-center gap-2 pt-10 px-4 pb-5">
           <h2 className="text-heading_2">수영 클래스</h2>
           <p className="text-body_lb text-gray-500">{lessons.length}</p>
         </div>
