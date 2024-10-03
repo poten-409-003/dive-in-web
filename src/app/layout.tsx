@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import BottomNav from "./_components/BottomNav";
 import "./globals.css";
+import { createClient } from "@/utils/supabase/server";
 
 const KAKAO_APP_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY!;
 
@@ -21,19 +22,24 @@ export const metadata: Metadata = {
     "수영 강습 찾기 어렵다고요? Dive In에서 쉽고 빠르게 원하는 강습을 찾아보세요! 초보부터 고수까지, 다양한 강습이 준비되어 있습니다. Dive In, 지금 바로 시작해보세요!",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const isLoggedIn = !!user;
+
   return (
     <html lang="ko-KR">
       <body
         className={`${pretendard.variable} antialiased flex flex-col h-dvh`}
       >
         <main className="flex-1 overflow-y-auto no-scrollbar">{children}</main>
-        <BottomNav />
-        {/* <Toaster /> */}
+        <BottomNav isLoggedIn={isLoggedIn} />
 
         <Script
           type="text/javascript"
