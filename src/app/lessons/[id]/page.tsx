@@ -1,8 +1,14 @@
 import { getLesson } from "@/api/lessons";
 import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 import ShareButton from "@/app/_components/ShareButton";
+import PersonIcon from "@/components/icons/PersonIcon";
 import LessonChip from "@/components/ui/Chip";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MapPinIcon,
+  TimerIcon,
+} from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
@@ -45,7 +51,9 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
               priority
               className="flex-none w-6 h-6 rounded-full"
             />
-            <p className="text-sm text-gray-600">{lesson.instructorName}</p>
+            <p className="text-body_sr text-gray-600">
+              {lesson.instructorName}
+            </p>
           </div>
 
           <div className="flex items-center gap-1">
@@ -57,25 +65,25 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
         </div>
 
         <div className="flex flex-col gap-1">
-          <h1 className="text-2xl font-bold text-gray-900">
-            {lesson.lessonName}
-          </h1>
+          <h1 className="text-heading_2 text-gray-900">{lesson.lessonName}</h1>
 
           <p className="text-sm text-gray-700 line-clamp-2">
             {lesson.description}
           </p>
         </div>
 
-        <div className="flex items-center justify-start gap-1">
-          <p className="font-medium text-gray-900">
-            {lesson.price.toLocaleString()}원
-          </p>
-          <p className="text-gray-500">{lesson.times}회</p>
-        </div>
+        {lesson.price && (
+          <div className="flex items-center justify-start gap-1">
+            <p className="text-body_bm text-gray-900">
+              {lesson.price.toLocaleString()}원
+            </p>
+            <p className="text-body_br text-gray-500">{lesson.times}회</p>
+          </div>
+        )}
       </section>
 
       <section className="flex flex-col gap-2 px-4 pb-6 border-b border-gray-200">
-        <h2 className="font-bold text-gray-700">신청하기</h2>
+        <h2 className="text-body_bb text-gray-700">신청하기</h2>
 
         <div className="flex gap-2 overflow-x-auto no-scrollbar">
           {lesson.applyLink.map((link) => {
@@ -84,7 +92,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
                 <Link
                   key={link.url}
                   href={link.url}
-                  className="flex-none flex items-center gap-2 bg-gray-100 rounded-lg py-3 px-4"
+                  className="flex-none flex items-center gap-2 bg-gray-200 rounded-lg py-3 px-4"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -94,9 +102,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
                     width={24}
                     height={24}
                   />
-                  <p className="text-slate-700 text-sm font-medium">
-                    오픈 카카오톡
-                  </p>
+                  <p className="text-slate-800 text-body_sm">오픈 카카오톡</p>
                 </Link>
               );
             }
@@ -106,7 +112,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
                 <Link
                   key={link.url}
                   href={link.url}
-                  className="flex-none flex items-center gap-2 bg-gray-100 rounded-lg py-3 px-4"
+                  className="flex-none flex items-center gap-2 bg-gray-200 rounded-lg py-3 px-4"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -116,9 +122,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
                     width={24}
                     height={24}
                   />
-                  <p className="text-slate-700 text-sm font-medium">
-                    인스타그램
-                  </p>
+                  <p className="text-slate-800 text-body_sm">인스타그램</p>
                 </Link>
               );
             }
@@ -128,7 +132,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
                 <Link
                   key={link.url}
                   href={link.url}
-                  className="flex-none flex items-center gap-2 bg-gray-100 rounded-lg py-3 px-4"
+                  className="flex-none flex items-center gap-2 bg-gray-200 rounded-lg py-3 px-4"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -138,9 +142,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
                     width={24}
                     height={24}
                   />
-                  <p className="text-slate-700 text-sm font-medium">
-                    네이버 카페
-                  </p>
+                  <p className="text-slate-800 text-body_sm">네이버 카페</p>
                 </Link>
               );
             }
@@ -150,30 +152,45 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
 
       <section className="flex flex-col gap-4 p-4">
         <div className="flex flex-col gap-2 p-4 bg-gray-100 rounded-lg">
-          <h2 className="font-bold text-gray-700">클래스 상세 설명</h2>
+          <h2 className="text-body_bb text-gray-700">클래스 상세 설명</h2>
 
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-1">
-              <h3 className="text-sm font-bold text-gray-700">위치</h3>
-              <p className="text-sm text-gray-700">{lesson.pool.location}</p>
+              <div className="flex items-center gap-0.5">
+                <MapPinIcon className="w-4 h-4 text-gray-700" />
+                <h3 className="text-body_sb text-gray-700">위치</h3>
+              </div>
+              <p className="text-body_sr text-gray-700">
+                {lesson.pool.location}
+              </p>
             </div>
             <div className="flex items-center gap-1">
-              <h3 className="text-sm font-bold text-gray-700">시간</h3>
-              <p className="text-sm text-gray-700">{lesson.time}</p>
+              <div className="flex items-center gap-0.5">
+                <TimerIcon className="w-4 h-4 text-gray-700" />
+                <h3 className="text-body_sb text-gray-700">시간</h3>
+              </div>
+              <p className="text-body_sr text-gray-700">{lesson.time}</p>
             </div>
             <div className="flex items-center gap-1">
-              <h3 className="text-sm font-bold text-gray-700">모집</h3>
-              <p className="text-sm text-gray-700">{lesson.maxStudents}명</p>
+              <div className="flex items-center gap-0.5">
+                <PersonIcon className="w-4 h-4 text-gray-700" />
+                <h3 className="text-body_sb text-gray-700">모집</h3>
+              </div>
+              <p className="text-body_sr text-gray-700">
+                {lesson.maxStudents}명
+              </p>
             </div>
           </div>
 
-          <p className="flex text-sm text-gray-700">{lesson.description}</p>
+          <p className="flex text-body_sr text-gray-700">
+            {lesson.description}
+          </p>
         </div>
 
-        <div className="flex flex-col gap-2 p-4 bg-gray-100 rounded-lg">
+        <div className="flex flex-col p-4 bg-gray-100 rounded-lg">
           <div className="flex items-center justify-between">
-            <h2 className="font-bold text-gray-700">클래스 위치</h2>
-            <Link href={`/pools/${lesson.pool.id}`} className="flex p-1">
+            <h2 className="text-body_bb text-gray-700">클래스 위치</h2>
+            <Link href={`/pools/${lesson.pool.id}`} className="flex p-4">
               <ChevronRightIcon className="w-4 h-4 text-gray-900" />
             </Link>
           </div>
@@ -187,8 +204,8 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
             <Marker lat={lesson.pool.latitude} lng={lesson.pool.longitude} />
           </Map>
 
-          <div className="flex flex-col gap-1">
-            <p className="text-sm text-gray-700">{lesson.pool.location}</p>
+          <div className="flex flex-col gap-1 pt-2">
+            <p className="text-body_sr text-gray-700">{lesson.pool.location}</p>
           </div>
         </div>
       </section>

@@ -18,7 +18,7 @@ const DetailPagePhotoSlider = ({ imageUrls, alt }: Props) => {
         <div
           key={url}
           ref={sliderRef}
-          className="snap-center snap-always relative shrink-0 w-full h-60 overflow-hidden"
+          className="snap-center snap-always relative shrink-0 w-full h-40 overflow-hidden"
         >
           <Image
             src={url}

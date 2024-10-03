@@ -16,7 +16,7 @@ const LessonChip = ({ label }: Props) => {
   const colorClass = ColorClassMap[label] || ColorClassMap["기본"];
 
   return (
-    <div className={`text-xs font-bold px-1.5 py-0.5 rounded ${colorClass}`}>
+    <div className={`text-label_sb px-1.5 py-0.5 rounded ${colorClass}`}>
       <p>{label}</p>
     </div>
   );

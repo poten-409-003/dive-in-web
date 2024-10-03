@@ -11,7 +11,12 @@ const ShareButton = () => {
         navigator.clipboard
           .writeText(window.location.href)
           .then(() => {
-            toast.success("URL이 복사되었습니다.");
+            toast.success("URL이 복사되었습니다.", {
+              style: {
+                fontSize: "14px",
+                fontWeight: "500",
+              },
+            });
           })
           .catch(() => {
             toast.error("URL 복사에 실패했습니다.");

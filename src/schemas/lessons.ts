@@ -20,7 +20,7 @@ export const lessonDetailSchema = z.object({
   level: z.string(),
   tags: z.string(),
   description: z.string(),
-  price: z.number(),
+  price: z.number().optional(),
   times: z.number(),
   time: z.string(),
   maxStudents: z.number(),

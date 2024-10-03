@@ -1,16 +1,6 @@
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
 
-// --gray-900: #1c2028;
-//   --gray-800: #3d4149;
-//   --gray-700: #5c5f69;
-//   --gray-600: #70737d;
-//   --gray-500: #989ca6;
-//   --gray-400: #cbced7;
-//   --gray-300: #e2e5ec;
-//   --gray-200: #eef0f6;
-//   --gray-100: #f9fafe;
-
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -71,6 +61,17 @@ const config: Config = {
       },
       fontSize: {
         xxs: ["0.625rem", { lineHeight: "0.875rem" }],
+        label_sb: ["0.75rem", { fontWeight: "700" }],
+        body_sr: ["0.875rem", { lineHeight: "1.25rem" }],
+        body_sm: ["0.875rem", { lineHeight: "1.25rem", fontWeight: "500" }],
+        body_sb: ["0.875rem", { lineHeight: "1.25rem", fontWeight: "700" }],
+        body_br: ["1rem", { lineHeight: "1.375rem" }],
+        body_bm: ["1rem", { lineHeight: "1.375rem", fontWeight: "500" }],
+        body_bb: ["1rem", { lineHeight: "1.375rem", fontWeight: "700" }],
+        body_lr: ["1.125rem", { lineHeight: "1.5rem" }],
+        body_lb: ["1.125rem", { lineHeight: "1.5rem", fontWeight: "700" }],
+        heading_1: ["1.5rem", { lineHeight: "2rem", fontWeight: "700" }],
+        heading_2: ["1.375rem", { lineHeight: "1.875rem", fontWeight: "700" }],
       },
       fontFamily: {
         pretendard: ["var(--font-pretendard)"],
