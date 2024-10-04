@@ -5,6 +5,7 @@ import Link from "next/link";
 
 const PoolsPage = async () => {
   const pools = await getPools();
+
   return (
     <div className="flex flex-col">
       <section className="flex flex-col">

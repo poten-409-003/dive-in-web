@@ -5,9 +5,9 @@ export const poolSchema = z.object({
   poolName: z.string(),
   poolAddress: z.string(),
   region: z.string(),
-  imageUrl: z.string(),
-  latitude: z.number(),
-  longitude: z.number(),
+  imageUrl: z.string().nullable().default(""),
+  latitude: z.number().or(z.string()).pipe(z.coerce.number()),
+  longitude: z.number().or(z.string()).pipe(z.coerce.number()),
 });
 
 export const poolDetailSchema = z.object({

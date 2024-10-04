@@ -10,6 +10,9 @@ const nextConfig = {
         protocol: "http",
         hostname: "k.kakaocdn.net",
       },
+      {
+        hostname: "kr.object.ncloudstorage.com",
+      },
     ],
   },
 };

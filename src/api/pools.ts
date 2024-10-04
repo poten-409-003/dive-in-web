@@ -3,9 +3,15 @@ import { poolDetailSchema, poolSchema } from "@/schemas/pools";
 import { camel, mapKeys } from "radash";
 
 export const getPools = async () => {
-  const response = poolsResponse;
+  const response = await fetch("https://api.dive-in.co.kr/pools");
 
-  return poolSchema.array().parse(response);
+  if (!response.ok) {
+    return [];
+  }
+
+  const body = await response.json();
+
+  return poolSchema.array().parse(body.data);
 };
 
 export const getPool = async (id: number) => {
