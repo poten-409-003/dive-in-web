@@ -1,10 +1,20 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const Page = async () => {
   return (
-    <div>
-      <h1>로그인 페이지로 리다이렉트 합니다</h1>
-      <Link href="/auth/login?next=/community">로그인 페이지로 이동</Link>
+    <div className="h-full flex flex-col items-center justify-center">
+      <Image
+        alt="로고"
+        src="/image/logo_g.png"
+        width={120}
+        height={120}
+        priority
+        className="w-[120px] h-[120px]"
+      />
+      <span className="text-body_bm text-gray-600">
+        이 페이지는 준비중입니다.
+      </span>
     </div>
   );
 };
