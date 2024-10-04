@@ -23,8 +23,9 @@ const LoginPage = ({ searchParams }: Props) => {
             }
 
             Kakao.Auth.authorize({
-              redirectUri: `${window.location.origin}/auth/callback`,
+              redirectUri: `${window.location.origin}/api/auth/callback`,
               state: `next=${next}`,
+              scope: "openid",
             });
           }}
         >
