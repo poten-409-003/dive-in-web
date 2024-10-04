@@ -1,8 +1,6 @@
 "use client";
 
 import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
-import { createClient } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
 
 type Props = {
   searchParams: Record<string, string>;
@@ -10,7 +8,6 @@ type Props = {
 
 const LoginPage = ({ searchParams }: Props) => {
   const next = searchParams.next ?? "/";
-  const router = useRouter();
 
   return (
     <div className="flex flex-col">
@@ -18,17 +15,17 @@ const LoginPage = ({ searchParams }: Props) => {
         <button
           className="h-14 flex items-center rounded-lg border pl-6 pr-4 bg-slate-50 hover:bg-slate-100"
           onClick={async () => {
-            const supabase = createClient();
-            const { data } = await supabase.auth.signInWithOAuth({
-              provider: "kakao",
-              options: {
-                redirectTo: `${window.location.origin}/auth/callback?next=${next}`,
-              },
-            });
+            const isInitialized = Kakao.isInitialized();
 
-            if (data.url) {
-              router.replace(data.url);
+            if (!isInitialized) {
+              console.error("Kakao SDK is not initialized.");
+              return;
             }
+
+            Kakao.Auth.authorize({
+              redirectUri: `${window.location.origin}/auth/callback`,
+              state: `next=${next}`,
+            });
           }}
         >
           <span className="flex-1 text-left font-bold">

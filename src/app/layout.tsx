@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Script from "next/script";
 import BottomNav from "./_components/BottomNav";
+import KakaoSdkScript from "./_scripts/KakaoSdkScript";
 import "./globals.css";
-import { createClient } from "@/utils/supabase/server";
 
 const KAKAO_APP_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY!;
 
@@ -27,25 +27,20 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const isLoggedIn = !!user;
-
   return (
     <html lang="ko-KR">
       <body
         className={`${pretendard.variable} antialiased flex flex-col h-dvh`}
       >
         <main className="flex-1 overflow-y-auto no-scrollbar">{children}</main>
-        <BottomNav isLoggedIn={isLoggedIn} />
+        <BottomNav />
 
         <Script
           type="text/javascript"
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_APP_KEY}&autoload=false`}
           strategy="beforeInteractive"
         />
+        <KakaoSdkScript />
         <SpeedInsights />
       </body>
     </html>

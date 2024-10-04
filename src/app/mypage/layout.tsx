@@ -1,5 +1,3 @@
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
 type Props = {
@@ -7,18 +5,7 @@ type Props = {
   children: ReactNode;
 };
 
-const Layout = async ({ params, children }: Props) => {
-  console.log(params);
-
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/auth/login?next=/mypage");
-  }
-
+const Layout = async ({ children }: Props) => {
   return <>{children}</>;
 };
 
