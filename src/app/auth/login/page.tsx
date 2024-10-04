@@ -1,6 +1,5 @@
 "use client";
 
-import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
 import Image from "next/image";
 import Link from "next/link";
 
