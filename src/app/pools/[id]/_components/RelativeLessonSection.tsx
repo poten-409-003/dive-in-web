@@ -45,23 +45,22 @@ const RelativeLessonSection = ({ lessons }: Props) => {
                 href={`/lessons/${poolLesson.id}`}
                 className="flex items-center gap-4 p-4"
               >
-                <div className="flex-1 flex flex-col gap-1">
-                  <div className="flex items-center gap-2">
-                    <InstructorProfile
-                      avatar={poolLesson.academyImageUrl}
-                      name={poolLesson.academyName}
-                    />
-                    <span className="text-body_sr">∙</span>
+                <div className="flex-1 flex flex-col gap-3">
+                  <InstructorProfile
+                    avatar={poolLesson.academyImageUrl}
+                    name={poolLesson.academyName}
+                  />
+                  <div className="flex flex-col gap-1">
                     <div className="flex flex-wrap items-center gap-1">
                       <LessonChip label={poolLesson.level} />
                       {poolLesson.keyword.split(",").map((tag) => (
                         <LessonChip key={tag} label={tag} />
                       ))}
                     </div>
+                    <p className="text-body_sm text-gray-700">
+                      {poolLesson.lessonName}
+                    </p>
                   </div>
-                  <p className="text-body_sm text-gray-700">
-                    {poolLesson.lessonName}
-                  </p>
                 </div>
 
                 <div className="flex p-2">

@@ -9,6 +9,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import RelativeLessonSection from "./_components/RelativeLessonSection";
+import Image from "next/image";
 
 const KakaoMap = dynamic(() => import("@/components/maps/KakaoMap"), {
   ssr: false,
@@ -100,8 +101,20 @@ const PoolPage = async ({ params }: Props) => {
           <RelativeLessonSection lessons={pool.lesson} />
 
           <div className="flex flex-col bg-gray-100 rounded-lg">
-            <div className="flex items-center justify-between pl-4 h-12">
+            <div className="flex items-center justify-between px-4 h-12">
               <h2 className="text-body_bb text-gray-700">수영장 위치</h2>
+              <Link
+                href={`https://map.kakao.com/link/to/${pool.poolName},${pool.latitude},${pool.longitude}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  alt="카카오맵으로 이동"
+                  src="/icon/kakao_map.png"
+                  width={24}
+                  height={24}
+                />
+              </Link>
             </div>
 
             <div className="px-4">

@@ -30,10 +30,14 @@ export default async function RootLayout({
   return (
     <html lang="ko-KR">
       <body
-        className={`${pretendard.variable} antialiased flex flex-col h-dvh`}
+        className={`${pretendard.variable} antialiased flex flex-col items-center h-dvh`}
       >
-        <main className="flex-1 overflow-y-auto no-scrollbar">{children}</main>
-        <BottomNav />
+        <div className="max-w-3xl w-full flex-1 flex flex-col overflow-hidden">
+          <main className="flex-1 overflow-y-auto no-scrollbar">
+            {children}
+          </main>
+          <BottomNav />
+        </div>
 
         <Script
           type="text/javascript"
