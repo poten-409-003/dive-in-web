@@ -11,6 +11,7 @@ const routes = {
   pools: "/pools",
   community: "/community",
   mypage: "/mypage",
+  login: "/auth/login",
 };
 
 const BottomNav = () => {
@@ -20,6 +21,11 @@ const BottomNav = () => {
   const isPools = pathname.startsWith(routes.pools);
   const isCommunity = pathname.startsWith(routes.community);
   const isMypage = pathname.startsWith(routes.mypage);
+  const isLogin = pathname.startsWith(routes.login);
+
+  if (isLogin) {
+    return null;
+  }
 
   return (
     <nav className="flex-none h-14 flex items-center px-4 bg-gray-100 border-t border-slate-200">
