@@ -1,4 +1,10 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
+
+const LoginKakaoSchema = z.object({
+  accessToken: z.string(),
+  refreshToken: z.string(),
+});
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -23,18 +29,19 @@ export async function GET(request: Request) {
         `${origin}/auth/login?error=failed_to_login`
       );
     }
+    const body = await res.json();
 
-    const { access_token, refresh_token } = await res.json();
+    const { accessToken, refreshToken } = LoginKakaoSchema.parse(body.data);
 
     return NextResponse.redirect(`${origin}`, {
       headers: [
         [
           "Set-Cookie",
-          `access_token=${access_token}; Path=/; HttpOnly; SameSite=Strict`,
+          `access_token=${accessToken}; Path=/; HttpOnly; SameSite=Strict`,
         ],
         [
           "Set-Cookie",
-          `refresh_token=${refresh_token}; Path=/; HttpOnly; SameSite=Strict`,
+          `refresh_token=${refreshToken}; Path=/; HttpOnly; SameSite=Strict`,
         ],
       ],
     });
