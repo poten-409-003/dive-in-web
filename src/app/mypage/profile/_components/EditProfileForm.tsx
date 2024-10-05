@@ -1,0 +1,103 @@
+"use client";
+
+import { ChangeEvent, useMemo, useState } from "react";
+import UserProfileImage from "./UserProfileImage";
+import Image from "next/image";
+import { updateUser } from "@/actions/user";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
+const EditProfileForm = ({
+  user,
+}: {
+  user: {
+    nickname: string;
+    profileImageUrl: string;
+    email: string;
+  };
+}) => {
+  const router = useRouter();
+
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [nickname, setNickname] = useState(user.nickname);
+
+  const imageUrl = useMemo(() => {
+    if (profileImage) {
+      return URL.createObjectURL(profileImage);
+    }
+
+    return user.profileImageUrl || "/empty/image.png";
+  }, [profileImage, user.profileImageUrl]);
+
+  const handleChangeNickname = (e: ChangeEvent<HTMLInputElement>) => {
+    setNickname(e.target.value);
+  };
+
+  const readyToSubmit = useMemo(() => {
+    const isNicknameChanged = nickname !== user.nickname;
+    const isProfileImageChanged = !!profileImage;
+
+    return isNicknameChanged || isProfileImageChanged;
+  }, [nickname, user.nickname, profileImage]);
+
+  return (
+    <form
+      className="flex flex-col gap-8 p-4"
+      onSubmit={(e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("nickname", nickname);
+        if (profileImage) {
+          formData.append("profileImage", profileImage);
+        }
+        updateUser(formData);
+
+        toast.success("프로필 수정이 완료되었습니다");
+        router.push("/mypage");
+      }}
+    >
+      <div className="flex items-center gap-6">
+        <UserProfileImage
+          imageUrl={imageUrl}
+          onChangeProfileImage={(image) => setProfileImage(image)}
+        />
+
+        <div className="flex-1 flex flex-col gap-2">
+          <div className="relative flex border border-gray-300 rounded-lg overflow-hidden">
+            <input
+              type="text"
+              className="flex-1 py-3 px-4 text-body_bb rounded-lg"
+              placeholder="닉네임을 입력하세요"
+              maxLength={8}
+              value={nickname}
+              onChange={handleChangeNickname}
+            />
+            <span className="absolute top-1/2 -translate-y-1/2 right-4 flex items-center text-body_sr text-gray-600 select-none">
+              8자
+            </span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Image
+              alt="카카오 로고"
+              src="/icon/kakao_2.png"
+              width={20}
+              height={20}
+              className="flex-none w-5 h-5"
+            />
+            <span className="text-body_br text-gray-700">{user.email}</span>
+          </div>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        className="h-12 bg-primary text-gray-100 rounded-lg disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+        disabled={!readyToSubmit}
+      >
+        <span className="text-body_sm">저장하기</span>
+      </button>
+    </form>
+  );
+};
+
+export default EditProfileForm;

@@ -3,38 +3,36 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (request: NextRequest) => {
   const { origin } = request.nextUrl;
 
-  const accessToken = request.cookies.get("access_token");
-  const refreshToken = request.cookies.get("refresh_token");
+  const accessToken = request.cookies.get("accessToken")?.value;
+  const refreshToken = request.cookies.get("refreshToken")?.value;
 
-  if (!accessToken || !refreshToken) {
-    return NextResponse.redirect(`${origin}`);
+  if (accessToken && refreshToken) {
+    try {
+      const url = new URL("https://api.dive-in.co.kr/logout");
+      await fetch(url.toString(), {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+          "X-Refresh-Token": refreshToken,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  try {
-    const url = new URL("https://api.dive-in.co.kr/logout");
-    await fetch(url.toString(), {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        access_token: accessToken?.value,
-        refresh_token: refreshToken?.value,
-      }),
-    });
-  } catch (error) {
-    console.error(error);
-  }
+  console.log("origin", origin);
 
-  return NextResponse.json(null, {
+  return NextResponse.redirect(`${origin}`, {
     headers: [
       [
         "Set-Cookie",
-        `access_token=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`,
+        `accessToken=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`,
       ],
       [
         "Set-Cookie",
-        `refresh_token=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`,
+        `refreshToken=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`,
       ],
     ],
   });

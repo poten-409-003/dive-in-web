@@ -1,4 +1,4 @@
-import { getLessons } from "@/api/lessons";
+import { getLessons } from "@/api/server/lessons";
 import LessonChip from "@/components/ui/Chip";
 import Link from "next/link";
 import InstructorProfile from "../_components/InstructorProfile";
@@ -22,14 +22,14 @@ export default async function LessonsPage() {
                 className="flex flex-col gap-2"
               >
                 <InstructorProfile
-                  avatar={lesson.instructorLogo}
-                  name={lesson.instructorName}
+                  avatar={lesson.academyImageUrl}
+                  name={lesson.academyName}
                 />
 
                 <div className="flex-none flex flex-col items-start gap-2 bg-gray-100 rounded-lg p-4">
                   <div className="flex items-center gap-1">
                     <LessonChip label={lesson.level} />
-                    {lesson.tags.split(",").map((tag) => (
+                    {lesson.keyword.split(",").map((tag) => (
                       <LessonChip key={tag} label={tag} />
                     ))}
                   </div>
@@ -39,7 +39,7 @@ export default async function LessonsPage() {
                       {lesson.lessonName}
                     </h3>
                     <p className="text-gray-700 text-body_sr line-clamp-2">
-                      {lesson.description}
+                      {lesson.price}
                     </p>
                   </div>
 
@@ -47,9 +47,6 @@ export default async function LessonsPage() {
                     <div className="flex items-center gap-1">
                       <p className="text-body_sm text-gray-900">
                         {lesson.price.toLocaleString()}원
-                      </p>
-                      <p className="text-body_sr text-gray-500">
-                        {lesson.times}회
                       </p>
                     </div>
                   )}

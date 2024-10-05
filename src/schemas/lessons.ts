@@ -2,14 +2,12 @@ import { z } from "zod";
 
 export const lessonSchema = z.object({
   id: z.number(),
-  instructorName: z.string(),
-  instructorLogo: z.string(),
+  academyName: z.string(),
+  academyImageUrl: z.string(),
   lessonName: z.string(),
   level: z.string(),
-  tags: z.string(),
-  description: z.string(),
-  price: z.number(),
-  times: z.number(),
+  keyword: z.string(),
+  price: z.string(),
 });
 
 export const lessonDetailSchema = z.object({

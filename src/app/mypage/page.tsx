@@ -1,31 +1,15 @@
-"use client";
-
+import { getUser } from "@/actions/user";
 import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
 import ChatIcon from "@/components/icons/ChatIcon";
 import { SquareArrowOutUpRightIcon } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import UserProfile from "./_components/UserProfile";
 
-const MyPage = () => {
-  const router = useRouter();
-  const [user, setUser] = useState<Record<string, unknown> | null>(null);
+const MyPage = async () => {
+  const user = await getUser();
+  console.log(user);
 
   const isLoggedId = !!user;
-
-  useEffect(() => {
-    // const url = "/api/me";
-    const url = "https://api.dive-in.co.kr/me";
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        setUser(data);
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Failed to fetch user", error);
-      });
-  }, []);
 
   return (
     <div className="flex flex-col">
@@ -46,12 +30,7 @@ const MyPage = () => {
             <ArrowRightIcon className="w-6 h-6 ml-auto" />
           </Link>
         )}
-        {isLoggedId && (
-          <div>
-            <p>내 정보를 가져왔습니다!</p>
-            <code>{JSON.stringify(user)}</code>
-          </div>
-        )}
+        {isLoggedId && <UserProfile user={user} />}
       </div>
 
       <div className="flex flex-col gap-4 pb-10">
@@ -142,7 +121,7 @@ const MyPage = () => {
             <SquareArrowOutUpRightIcon className="w-5 h-5 ml-auto" />
           </Link>
         </div>
-        <button
+        {/* <button
           className="text-body_sb"
           onClick={() => {
             fetch("/api/auth/logout", {
@@ -155,7 +134,7 @@ const MyPage = () => {
           }}
         >
           로그아웃
-        </button>
+        </button> */}
       </div>
     </div>
   );

@@ -13,6 +13,9 @@ const nextConfig = {
       {
         hostname: "kr.object.ncloudstorage.com",
       },
+      {
+        hostname: "dive-in-bucket.kr.object.ncloudstorage.com",
+      },
     ],
   },
 };

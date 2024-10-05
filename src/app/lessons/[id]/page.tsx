@@ -1,4 +1,4 @@
-import { getLesson } from "@/api/lessons";
+import { getLesson } from "@/api/server/lessons";
 import InstructorProfile from "@/app/_components/InstructorProfile";
 import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 import ShareButton from "@/app/_components/ShareButton";

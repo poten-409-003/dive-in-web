@@ -37,11 +37,11 @@ export async function GET(request: Request) {
       headers: [
         [
           "Set-Cookie",
-          `access_token=${accessToken}; Path=/; HttpOnly; SameSite=Strict`,
+          `accessToken=${accessToken}; Path=/; HttpOnly; SameSite=Strict`,
         ],
         [
           "Set-Cookie",
-          `refresh_token=${refreshToken}; Path=/; HttpOnly; SameSite=Strict`,
+          `refreshToken=${refreshToken}; Path=/; HttpOnly; SameSite=Strict`,
         ],
       ],
     });
