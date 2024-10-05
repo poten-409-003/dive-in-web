@@ -10,7 +10,7 @@ export const POST = async (request: NextRequest) => {
   if (accessToken && refreshToken) {
     try {
       const url = new URL("https://api.dive-in.co.kr/logout");
-      const res = await fetch(url.toString(), {
+      await fetch(url.toString(), {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -18,8 +18,6 @@ export const POST = async (request: NextRequest) => {
           "X-Refresh-Token": refreshToken,
         },
       });
-      const body = await res.json();
-      console.log(body);
 
       revalidateTag("user");
     } catch (error) {

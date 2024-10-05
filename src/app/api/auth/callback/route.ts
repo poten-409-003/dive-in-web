@@ -24,7 +24,7 @@ export async function GET(request: Request) {
     const res = await fetch(url);
 
     if (!res.ok) {
-      console.log(await res.json());
+      console.error(await res.json());
       return NextResponse.redirect(
         `${origin}/auth/login?error=failed_to_login`
       );

@@ -3,7 +3,11 @@ import { z } from "zod";
 export const lessonSchema = z.object({
   id: z.number(),
   academyName: z.string(),
-  academyImageUrl: z.string(),
+  academyImageUrl: z
+    .string()
+    .nullable()
+    .default("/empty/image.png")
+    .transform((value) => value || "/empty/image.png"),
   lessonName: z.string(),
   level: z.string(),
   keyword: z.string(),
@@ -23,18 +27,24 @@ export const lessonDetailSchema = z.object({
   academy: z.object({
     id: z.number(),
     academyName: z.string().default(""),
-    academyInfo: z.string().default(""),
-    profileImageUrl: z.string().default(""),
+    academyInfo: z.string().nullable().default(""),
+    profileImageUrl: z
+      .string()
+      .nullable()
+      .default("/empty/image.png")
+      .transform((value) => value || "/empty/image.png"),
   }),
-  pool: z.object({
-    id: z.number(),
-    poolName: z.string().default(""),
-    poolAddress: z.string().default(""),
-    region: z.string().default(""),
-    imageUrl: z.string().default(""),
-    latitude: z.number().or(z.string()).pipe(z.coerce.number()),
-    longitude: z.number().or(z.string()).pipe(z.coerce.number()),
-  }),
+  pool: z
+    .object({
+      id: z.number(),
+      poolName: z.string().default(""),
+      poolAddress: z.string().default(""),
+      region: z.string().default(""),
+      imageUrl: z.string().default(""),
+      latitude: z.number().or(z.string()).pipe(z.coerce.number()),
+      longitude: z.number().or(z.string()).pipe(z.coerce.number()),
+    })
+    .nullable(),
   instructors: z
     .object({
       id: z.number(),
@@ -45,6 +55,20 @@ export const lessonDetailSchema = z.object({
     .array(),
   images: z.object({ imageUrl: z.string() }).array(),
   applyChannels: z
-    .object({ applyUrlType: z.string(), applyUrl: z.string() })
+    .object({
+      applyUrlType: z.string(),
+      applyUrl: z
+        .string()
+        .nullable()
+        .transform((value) => value || ""),
+    })
     .array(),
+});
+
+export const lessonDetailContentSchema = z.object({
+  classTopic: z.string().default(""),
+  eligibilityRequirements: z.array(z.string()).default([]),
+  classIntroduction: z.string().default(""),
+  applicationMethod: z.array(z.string()).default([]),
+  refundPolicy: z.array(z.string()).default([]),
 });

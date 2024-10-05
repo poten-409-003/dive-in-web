@@ -72,9 +72,6 @@ const KakaoMap = ({
         ref={mapContainerRef}
         id="map"
         className="w-full h-40 rounded-lg overflow-hidden"
-        onClick={() => {
-          console.log("click");
-        }}
       />
       {kakaoMap && (
         <KakaoMapContext.Provider value={kakaoMap}>

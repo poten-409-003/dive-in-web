@@ -3,10 +3,9 @@ import InstructorProfile from "@/app/_components/InstructorProfile";
 import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 import ShareButton from "@/app/_components/ShareButton";
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
-import PersonIcon from "@/components/icons/PersonIcon";
 import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
 import LessonChip from "@/components/ui/Chip";
-import { MapPinIcon, TimerIcon } from "lucide-react";
+import { lessonDetailContentSchema } from "@/schemas/lessons";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,6 +23,14 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
   if (!lesson) {
     notFound();
   }
+
+  const applyChannels = lesson.applyChannels.filter(
+    ({ applyUrl }) => !!applyUrl
+  );
+
+  const lessonDetail = lessonDetailContentSchema.parse(
+    JSON.parse(lesson.lessonDetail)
+  );
 
   const imageUrls = lesson.images.map((image) => image.imageUrl);
 
@@ -57,18 +64,11 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
 
         <div className="flex flex-col gap-1">
           <h1 className="text-heading_2 text-gray-900">{lesson.lessonName}</h1>
-
-          <p className="text-sm text-gray-700 line-clamp-2">
-            {lesson.lessonDetail}
-          </p>
         </div>
 
         {lesson.price && (
           <div className="flex items-center justify-start gap-1">
-            <p className="text-body_bm text-gray-900">
-              {lesson.price.toLocaleString()}원
-            </p>
-            {/* <p className="text-body_br text-gray-500">{lesson.times}회</p> */}
+            <p className="text-body_bm text-gray-900">{lesson.price}</p>
           </div>
         )}
       </section>
@@ -77,13 +77,15 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
         <h2 className="text-body_bb text-gray-700">신청하기</h2>
 
         <div className="flex gap-2 overflow-x-auto no-scrollbar">
-          {lesson.applyChannels.map(({ applyUrl, applyUrlType }) => {
-            if (applyUrlType === "kakao") {
+          {applyChannels.map(({ applyUrl, applyUrlType }) => {
+            if (applyUrlType === "KAKAOTALK") {
               return (
                 <Link
                   key={applyUrl}
                   href={applyUrl}
-                  className="flex-none flex items-center gap-2 bg-gray-200 rounded-lg py-3 px-4"
+                  className={`${
+                    applyChannels.length > 2 ? "flex-none" : "flex-1"
+                  } flex items-center justify-center gap-2 bg-gray-200 rounded-lg py-3 px-4`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -98,12 +100,14 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
               );
             }
 
-            if (applyUrlType === "instagram") {
+            if (applyUrlType === "INSTAGRAM") {
               return (
                 <Link
                   key={applyUrl}
                   href={applyUrl}
-                  className="flex-none flex items-center gap-2 bg-gray-200 rounded-lg py-3 px-4"
+                  className={`${
+                    applyChannels.length > 2 ? "flex-none" : "flex-1"
+                  } flex items-center justify-center gap-2 bg-gray-200 rounded-lg py-3 px-4`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -118,12 +122,14 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
               );
             }
 
-            if (applyUrlType === "naver") {
+            if (applyUrlType === "NAVERCAFE") {
               return (
                 <Link
                   key={applyUrl}
                   href={applyUrl}
-                  className="flex-none flex items-center gap-2 bg-gray-200 rounded-lg py-3 px-4"
+                  className={`${
+                    applyChannels.length > 2 ? "flex-none" : "flex-1"
+                  } flex items-center justify-center gap-2 bg-gray-200 rounded-lg py-3 px-4`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -138,69 +144,120 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
               );
             }
 
+            if (applyUrlType === "SITE") {
+              return (
+                <Link
+                  key={applyUrl}
+                  href={applyUrl}
+                  className={`${
+                    applyChannels.length > 2 ? "flex-none" : "flex-1"
+                  } flex items-center justify-center gap-2 bg-gray-200 rounded-lg py-3 px-4`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <p className="text-slate-800 text-body_sm">사이트</p>
+                </Link>
+              );
+            }
+
             return null;
           })}
         </div>
       </section>
 
       <section className="flex flex-col gap-4 pt-6 px-4">
-        <div className="flex flex-col gap-2 p-4 bg-gray-100 rounded-lg">
-          <h2 className="text-body_bb text-gray-700">클래스 상세 설명</h2>
-
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-1">
-              <div className="flex items-center gap-0.5">
-                <MapPinIcon className="w-4 h-4 text-gray-700" />
-                <h3 className="text-body_sb text-gray-700">위치</h3>
-              </div>
-              <p className="text-body_sr text-gray-700">
-                {lesson.pool.poolAddress}
+        <div className="flex flex-col gap-2 bg-gray-100 rounded-lg">
+          <div className="flex items-center pt-4 px-4">
+            <h2 className="text-body_bb text-gray-700">클래스 상세 설명</h2>
+          </div>
+          <div className="flex flex-col py-2">
+            <div className="flex gap-3 px-4 py-2">
+              <p className="flex-none text-body_sb w-[52px] text-gray-700">
+                주제
               </p>
+              <span className="text-body_sr text-gray-700">
+                {lessonDetail.classTopic}
+              </span>
             </div>
-            <div className="flex items-center gap-1">
-              <div className="flex items-center gap-0.5">
-                <TimerIcon className="w-4 h-4 text-gray-700" />
-                <h3 className="text-body_sb text-gray-700">시간</h3>
+
+            <div className="flex gap-3 px-4 py-2">
+              <p className="flex-none text-body_sb w-[52px] text-gray-700">
+                신청자격
+              </p>
+              <div className="flex flex-col gap-1 text-body_sr text-gray-700">
+                {lessonDetail.eligibilityRequirements.map(
+                  (requirement, index) => (
+                    <span key={requirement}>
+                      {`(${index + 1}) `}
+                      {requirement}
+                    </span>
+                  )
+                )}
               </div>
-              {/* <p className="text-body_sr text-gray-700">{lesson.time}</p> */}
             </div>
-            <div className="flex items-center gap-1">
-              <div className="flex items-center gap-0.5">
-                <PersonIcon className="w-4 h-4 text-gray-700" />
-                <h3 className="text-body_sb text-gray-700">모집</h3>
+
+            <div className="flex gap-3 px-4 py-2">
+              <p className="flex-none text-body_sb w-[52px] text-gray-700">
+                소개
+              </p>
+              <span className="text-body_sr text-gray-700 whitespace-pre-line">
+                {lessonDetail.classIntroduction}
+              </span>
+            </div>
+
+            <div className="flex gap-3 px-4 py-2">
+              <p className="flex-none text-body_sb w-[52px] text-gray-700">
+                신청방법
+              </p>
+              <span className="text-body_sr text-gray-700">
+                {lessonDetail.applicationMethod.join(", ")}
+              </span>
+            </div>
+
+            <div className="flex gap-3 px-4 py-2">
+              <p className="flex-none text-body_sb w-[52px] text-gray-700">
+                환불안내
+              </p>
+              <div className="flex flex-col gap-1 text-body_sr text-gray-700">
+                {lessonDetail.refundPolicy.map((item, index) => (
+                  <span key={item}>
+                    {`(${index + 1}) `}
+                    {item}
+                  </span>
+                ))}
               </div>
-              <p className="text-body_sr text-gray-700">{lesson.capacity}명</p>
             </div>
           </div>
-
-          <p className="flex text-body_sr text-gray-700">
-            {lesson.lessonDetail}
-          </p>
         </div>
 
-        <div className="flex flex-col bg-gray-100 rounded-lg">
-          <div className="flex items-center justify-between pl-4">
-            <h2 className="text-body_bb text-gray-700">클래스 위치</h2>
-            <Link href={`/pools/${lesson.pool.id}`} className="flex p-4">
-              <ArrowRightIcon className="w-4 h-4 text-gray-900" />
-            </Link>
-          </div>
+        {lesson.pool && (
+          <div className="flex flex-col bg-gray-100 rounded-lg">
+            <div className="flex items-center justify-between pl-4">
+              <h2 className="text-body_bb text-gray-700">클래스 위치</h2>
+              <Link href={`/pools/${lesson.pool.id}`} className="flex p-4">
+                <ArrowRightIcon className="w-4 h-4 text-gray-900" />
+              </Link>
+            </div>
 
-          <div className="px-4">
-            <Map
-              center={{
-                lat: lesson.pool.latitude,
-                lng: lesson.pool.longitude,
-              }}
-            >
-              <Marker lat={lesson.pool.latitude} lng={lesson.pool.longitude} />
-            </Map>
-          </div>
+            <div className="px-4">
+              <Map
+                center={{
+                  lat: lesson.pool.latitude,
+                  lng: lesson.pool.longitude,
+                }}
+              >
+                <Marker
+                  lat={lesson.pool.latitude}
+                  lng={lesson.pool.longitude}
+                />
+              </Map>
+            </div>
 
-          <div className="flex flex-col gap-1 pt-2 px-4 pb-4">
-            <p className="text-body_sr text-gray-700">{lesson.pool.region}</p>
+            <div className="flex flex-col gap-1 pt-2 px-4 pb-4">
+              <p className="text-body_sr text-gray-700">{lesson.pool.region}</p>
+            </div>
           </div>
-        </div>
+        )}
       </section>
     </div>
   );

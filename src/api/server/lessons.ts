@@ -6,6 +6,7 @@ export const getLessons = async () => {
   try {
     const response = await fetch("https://api.dive-in.co.kr/lessons");
     const body = await response.json();
+
     return lessonSchema.array().parse(body.data);
   } catch (error) {
     console.error(error);

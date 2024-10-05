@@ -36,6 +36,7 @@ const UserProfileImage = ({
         width={96}
         height={96}
         className="w-24 h-24 rounded-full object-cover"
+        priority
       />
       <button
         className="flex p-1 absolute bottom-0 right-0 bg-gray-400 rounded-full"
