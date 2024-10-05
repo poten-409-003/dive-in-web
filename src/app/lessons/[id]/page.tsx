@@ -25,6 +25,8 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
     notFound();
   }
 
+  const imageUrls = lesson.images.map((image) => image.imageUrl);
+
   return (
     <div className="flex flex-col pb-10">
       <div className="flex items-center justify-between px-1">
@@ -35,19 +37,19 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
       </div>
 
       <div className="relative mb-4">
-        <DetailPagePhotoSlider imageUrls={lesson.images} alt="수업 사진" />
+        <DetailPagePhotoSlider imageUrls={imageUrls} alt="수업 사진" />
       </div>
 
       <section className="flex flex-col gap-3 px-4 mb-6">
         <div className="flex items-center justify-between">
           <InstructorProfile
-            avatar={lesson.instructorLogo}
-            name={lesson.instructorName}
+            avatar={lesson.academy.profileImageUrl}
+            name={lesson.academy.academyName}
           />
 
           <div className="flex items-center gap-1">
             <LessonChip label={lesson.level} />
-            {lesson.tags.split(",").map((tag) => (
+            {lesson.keyword.split(",").map((tag) => (
               <LessonChip key={tag} label={tag} />
             ))}
           </div>
@@ -57,7 +59,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
           <h1 className="text-heading_2 text-gray-900">{lesson.lessonName}</h1>
 
           <p className="text-sm text-gray-700 line-clamp-2">
-            {lesson.description}
+            {lesson.lessonDetail}
           </p>
         </div>
 
@@ -66,7 +68,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
             <p className="text-body_bm text-gray-900">
               {lesson.price.toLocaleString()}원
             </p>
-            <p className="text-body_br text-gray-500">{lesson.times}회</p>
+            {/* <p className="text-body_br text-gray-500">{lesson.times}회</p> */}
           </div>
         )}
       </section>
@@ -75,12 +77,12 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
         <h2 className="text-body_bb text-gray-700">신청하기</h2>
 
         <div className="flex gap-2 overflow-x-auto no-scrollbar">
-          {lesson.applyLink.map((link) => {
-            if (link.type === "kakao") {
+          {lesson.applyChannels.map(({ applyUrl, applyUrlType }) => {
+            if (applyUrlType === "kakao") {
               return (
                 <Link
-                  key={link.url}
-                  href={link.url}
+                  key={applyUrl}
+                  href={applyUrl}
                   className="flex-none flex items-center gap-2 bg-gray-200 rounded-lg py-3 px-4"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -96,11 +98,11 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
               );
             }
 
-            if (link.type === "instagram") {
+            if (applyUrlType === "instagram") {
               return (
                 <Link
-                  key={link.url}
-                  href={link.url}
+                  key={applyUrl}
+                  href={applyUrl}
                   className="flex-none flex items-center gap-2 bg-gray-200 rounded-lg py-3 px-4"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -116,11 +118,11 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
               );
             }
 
-            if (link.type === "naver") {
+            if (applyUrlType === "naver") {
               return (
                 <Link
-                  key={link.url}
-                  href={link.url}
+                  key={applyUrl}
+                  href={applyUrl}
                   className="flex-none flex items-center gap-2 bg-gray-200 rounded-lg py-3 px-4"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -135,6 +137,8 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
                 </Link>
               );
             }
+
+            return null;
           })}
         </div>
       </section>
@@ -150,7 +154,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
                 <h3 className="text-body_sb text-gray-700">위치</h3>
               </div>
               <p className="text-body_sr text-gray-700">
-                {lesson.pool.location}
+                {lesson.pool.poolAddress}
               </p>
             </div>
             <div className="flex items-center gap-1">
@@ -158,21 +162,19 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
                 <TimerIcon className="w-4 h-4 text-gray-700" />
                 <h3 className="text-body_sb text-gray-700">시간</h3>
               </div>
-              <p className="text-body_sr text-gray-700">{lesson.time}</p>
+              {/* <p className="text-body_sr text-gray-700">{lesson.time}</p> */}
             </div>
             <div className="flex items-center gap-1">
               <div className="flex items-center gap-0.5">
                 <PersonIcon className="w-4 h-4 text-gray-700" />
                 <h3 className="text-body_sb text-gray-700">모집</h3>
               </div>
-              <p className="text-body_sr text-gray-700">
-                {lesson.maxStudents}명
-              </p>
+              <p className="text-body_sr text-gray-700">{lesson.capacity}명</p>
             </div>
           </div>
 
           <p className="flex text-body_sr text-gray-700">
-            {lesson.description}
+            {lesson.lessonDetail}
           </p>
         </div>
 
@@ -196,7 +198,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
           </div>
 
           <div className="flex flex-col gap-1 pt-2 px-4 pb-4">
-            <p className="text-body_sr text-gray-700">{lesson.pool.location}</p>
+            <p className="text-body_sr text-gray-700">{lesson.pool.region}</p>
           </div>
         </div>
       </section>
