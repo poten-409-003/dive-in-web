@@ -3,15 +3,12 @@
 import InstructorProfile from "@/app/_components/InstructorProfile";
 import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
 import LessonChip from "@/components/ui/Chip";
-import { poolDetailSchema } from "@/schemas/pools";
+import { PoolDetail } from "@/types";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { z } from "zod";
-
-type PoolDetail = z.infer<typeof poolDetailSchema>;
 
 type Props = {
-  lessons: PoolDetail["lesson"];
+  lessons: PoolDetail["lessons"];
 };
 
 const RelativeLessonSection = ({ lessons }: Props) => {
@@ -27,17 +24,19 @@ const RelativeLessonSection = ({ lessons }: Props) => {
     return lessons;
   }, [lessons, showMore]);
 
-  const showLessons = lessons.length > 0;
+  const isEmpty = lessons.length === 0;
   const lessonCount = lessons.length;
 
   return (
     <div className="flex flex-col bg-gray-100 rounded-lg">
-      <div className="flex items-center gap-2 px-4 pt-4">
+      <div
+        className={`flex items-center gap-2 ${isEmpty ? "p-4" : "px-4 pt-4"}`}
+      >
         <h2 className="text-body_bb text-gray-700">연관 클래스</h2>
         <p className="text-body_bb text-gray-500">{lessonCount}</p>
       </div>
 
-      {showLessons && (
+      {!isEmpty && (
         <ul className="flex flex-col divide-y divide-gray-200">
           {displayLessons.map((poolLesson) => (
             <li key={poolLesson.id}>

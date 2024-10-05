@@ -1,23 +1,38 @@
-import { poolDetailResponse } from "@/data/dummy";
 import { poolDetailSchema, poolSchema } from "@/schemas/pools";
-import { camel, mapKeys } from "radash";
+
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.dive-in.co.kr";
 
 export const getPools = async () => {
-  const response = await fetch("https://api.dive-in.co.kr/pools");
+  try {
+    const response = await fetch(`${BASE_URL}/pools`);
 
-  if (!response.ok) {
+    if (!response.ok) {
+      return [];
+    }
+
+    const body = await response.json();
+
+    return poolSchema.array().parse(body.data);
+  } catch (error) {
+    console.error(error);
     return [];
   }
-
-  const body = await response.json();
-
-  return poolSchema.array().parse(body.data);
 };
 
 export const getPool = async (id: number) => {
-  console.log("getPool", id);
-  const response = poolDetailResponse;
+  try {
+    const apiResponse = await fetch(`${BASE_URL}/pools/${id}`);
 
-  const transformedResponse = mapKeys(response, camel);
-  return poolDetailSchema.parse(transformedResponse);
+    if (!apiResponse.ok) {
+      return null;
+    }
+
+    const body = await apiResponse.json();
+
+    return poolDetailSchema.parse(body.data);
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };

@@ -48,7 +48,7 @@ const PoolPage = async ({ params }: Props) => {
   const pool = await getPool(poolId);
 
   if (!pool) {
-    return null;
+    notFound();
   }
 
   return (
@@ -61,7 +61,7 @@ const PoolPage = async ({ params }: Props) => {
       </div>
 
       <DetailPagePhotoSlider
-        imageUrls={pool.poolImage.map(({ imageUrl }) => imageUrl)}
+        imageUrls={pool.poolImages.map(({ imageUrl }) => imageUrl)}
         alt="수영장 사진"
       />
 
@@ -80,16 +80,14 @@ const PoolPage = async ({ params }: Props) => {
                   <MapPinIcon className="w-4 h-4 text-gray-600" />
                   <h3 className="text-body_sb text-gray-600">위치</h3>
                 </div>
-                <p className="text-body_sr text-gray-600">
-                  안양 신성고등학교 수영장
-                </p>
+                <p className="text-body_sr text-gray-600">{pool.poolAddress}</p>
               </div>
               <div className="flex items-center gap-1">
                 <div className="flex items-center gap-0.5">
                   <PhoneIcon className="w-4 h-4 text-gray-600" />
                   <h3 className="text-body_sb text-gray-600">전화</h3>
                 </div>
-                <p className="text-body_sr text-gray-600">02-350-0000</p>
+                <p className="text-body_sr text-gray-600">{pool.contact}</p>
               </div>
             </div>
           </div>
@@ -98,7 +96,7 @@ const PoolPage = async ({ params }: Props) => {
         <div className="h-px bg-gray-200" />
 
         <div className="flex flex-col gap-6 px-4">
-          <RelativeLessonSection lessons={pool.lesson} />
+          <RelativeLessonSection lessons={pool.lessons} />
 
           <div className="flex flex-col bg-gray-100 rounded-lg">
             <div className="flex items-center justify-between px-4 h-12">
