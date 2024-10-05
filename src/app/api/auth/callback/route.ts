@@ -37,13 +37,66 @@ export async function GET(request: Request) {
       ],
     });
   } catch (error) {
-    console.error(error);
+    let errorDetails: {
+      message: string;
+      code: string | null;
+      port: number | null;
+      address: string | null;
+      syscall: string | null;
+      errno: number | null;
+    } = {
+      message:
+        error instanceof Error ? error.message : "Unknown error occurred",
+      code: null,
+      port: null,
+      address: null,
+      syscall: null,
+      errno: null,
+    };
+
+    // 타입 가드를 이용하여 에러 객체의 구조를 확인
+    if (isFetchError(error)) {
+      errorDetails = {
+        message: String(error),
+        code: error.cause.code || null,
+        port: error.cause.port || null,
+        address: error.cause.address || null,
+        syscall: error.cause.syscall || null,
+        errno: error.cause.errno || null,
+      };
+    }
+
     return NextResponse.json(
       {
         message: "인증 과정에서 에러가 발생했어요",
-        details: error instanceof Error ? error.message : String(error),
+        error: errorDetails,
       },
       { status: 500 }
     );
   }
+}
+
+type FetchError = {
+  cause: {
+    errno: number;
+    code: string;
+    syscall: string;
+    address: string;
+    port: number;
+  };
+};
+
+function isFetchError(error: unknown): error is FetchError {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "cause" in error &&
+    typeof error.cause === "object" &&
+    error.cause !== null &&
+    "errno" in error.cause &&
+    "code" in error.cause &&
+    "syscall" in error.cause &&
+    "address" in error.cause &&
+    "port" in error.cause
+  );
 }
