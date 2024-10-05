@@ -4,6 +4,7 @@ import EditProfileForm from "./_components/EditProfileForm";
 import { getUser } from "@/actions/user";
 import { redirect } from "next/navigation";
 import LogoutButton from "./_components/LogoutButton";
+import DeleteUserButton from "./_components/DeleteUserButton";
 
 const ProfilePage = async () => {
   const user = await getUser();
@@ -24,9 +25,7 @@ const ProfilePage = async () => {
       <EditProfileForm user={user} />
 
       <div className="mt-auto mb-10 flex items-center justify-center gap-0.5">
-        <button className="flex items-center justify-center p-3 h-10 text-body_sm text-gray-500">
-          회원 탈퇴
-        </button>
+        <DeleteUserButton />
         <span className="text-body_sm text-gray-500">|</span>
         <LogoutButton />
       </div>

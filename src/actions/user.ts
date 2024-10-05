@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
 export const getUser = async () => {
@@ -18,6 +18,9 @@ export const getUser = async () => {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         "X-Refresh-Token": refreshToken,
+      },
+      next: {
+        tags: ["user"],
       },
     });
 
@@ -61,10 +64,7 @@ export const updateUser = async (formData: FormData) => {
       return null;
     }
 
-    const body = await userResponse.json();
-
-    revalidatePath("/");
-    return body.data;
+    revalidateTag("user");
   } catch (error) {
     console.error(error);
     return null;

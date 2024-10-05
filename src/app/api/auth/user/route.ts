@@ -1,7 +1,6 @@
-import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
-export const POST = async (request: NextRequest) => {
+export const DELETE = async (request: NextRequest) => {
   const { origin } = request.nextUrl;
 
   const accessToken = request.cookies.get("accessToken")?.value;
@@ -9,7 +8,7 @@ export const POST = async (request: NextRequest) => {
 
   if (accessToken && refreshToken) {
     try {
-      const url = new URL("https://api.dive-in.co.kr/logout");
+      const url = new URL("https://api.dive-in.co.kr/user/profile");
       const res = await fetch(url.toString(), {
         method: "DELETE",
         headers: {
@@ -18,16 +17,14 @@ export const POST = async (request: NextRequest) => {
           "X-Refresh-Token": refreshToken,
         },
       });
-      const body = await res.json();
-      console.log(body);
 
-      revalidateTag("user");
+      if (!res.ok) {
+        throw new Error(await res.json());
+      }
     } catch (error) {
       console.error(error);
     }
   }
-
-  revalidatePath("/");
 
   return NextResponse.redirect(`${origin}`, {
     headers: [

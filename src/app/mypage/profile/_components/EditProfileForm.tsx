@@ -6,6 +6,7 @@ import Image from "next/image";
 import { updateUser } from "@/actions/user";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { revalidateTagAction } from "@/actions/revalidate";
 
 const EditProfileForm = ({
   user,
@@ -43,14 +44,16 @@ const EditProfileForm = ({
   return (
     <form
       className="flex flex-col gap-8 p-4"
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
         const formData = new FormData();
         formData.append("nickname", nickname);
         if (profileImage) {
           formData.append("profileImage", profileImage);
         }
-        updateUser(formData);
+        await updateUser(formData);
+
+        revalidateTagAction("user");
 
         toast.success("프로필 수정이 완료되었습니다");
         router.push("/mypage");

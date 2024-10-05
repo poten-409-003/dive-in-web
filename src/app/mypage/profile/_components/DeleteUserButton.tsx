@@ -3,25 +3,23 @@
 import { revalidateTagAction } from "@/actions/revalidate";
 import { useRouter } from "next/navigation";
 
-const LogoutButton = () => {
+const DeleteUserButton = () => {
   const router = useRouter();
 
   return (
     <button
       className="flex items-center justify-center p-3 h-10 text-body_sm text-gray-500"
       onClick={async () => {
-        await fetch("/api/auth/logout", {
-          method: "POST",
+        await fetch("/api/auth/user", {
+          method: "DELETE",
         });
-
         revalidateTagAction("user");
-
-        router.push("/");
+        router.replace("/");
       }}
     >
-      로그아웃
+      회원 탈퇴
     </button>
   );
 };
 
-export default LogoutButton;
+export default DeleteUserButton;

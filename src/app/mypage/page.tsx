@@ -7,7 +7,6 @@ import UserProfile from "./_components/UserProfile";
 
 const MyPage = async () => {
   const user = await getUser();
-  console.log(user);
 
   const isLoggedId = !!user;
 
