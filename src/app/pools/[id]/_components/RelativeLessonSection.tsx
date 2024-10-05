@@ -3,7 +3,7 @@
 import InstructorProfile from "@/app/_components/InstructorProfile";
 import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
 import LessonChip from "@/components/ui/Chip";
-import { PoolDetail } from "@/types";
+import { PoolDetail } from "@/types/pool";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
