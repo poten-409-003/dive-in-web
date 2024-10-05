@@ -5,18 +5,20 @@ export async function GET(request: Request) {
   const code = searchParams.get("code");
 
   if (!code) {
+    console.error("Invalid code");
     return NextResponse.redirect(`${origin}/auth/login?error=invalid_code`);
   }
 
   try {
     // const url = new URL(`${origin}/api/auth/login`);
-    const url = new URL(`http://localhost:8080/login/kakao`);
+    const url = new URL(`https://api.dive-in.co.kr/login/kakao`);
     url.searchParams.append("code", code);
     url.searchParams.append("redirect_uri", `${origin}/api/auth/callback`);
 
     const res = await fetch(url);
 
     if (!res.ok) {
+      console.log(await res.json());
       return NextResponse.redirect(
         `${origin}/auth/login?error=failed_to_login`
       );

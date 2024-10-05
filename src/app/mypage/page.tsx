@@ -15,7 +15,7 @@ const MyPage = () => {
 
   useEffect(() => {
     // const url = "/api/me";
-    const url = "http://localhost:8080/me";
+    const url = "https://api.dive-in.co.kr/me";
     fetch(url)
       .then((res) => res.json())
       .then((data) => {

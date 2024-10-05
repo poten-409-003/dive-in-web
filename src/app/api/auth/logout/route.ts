@@ -11,7 +11,7 @@ export const POST = async (request: NextRequest) => {
   }
 
   try {
-    const url = new URL("http://localhost:8080/logout");
+    const url = new URL("https://api.dive-in.co.kr/logout");
     await fetch(url.toString(), {
       method: "POST",
       headers: {
