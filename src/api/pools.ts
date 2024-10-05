@@ -1,4 +1,4 @@
-import { poolDetailResponse, poolsResponse } from "@/data/dummy";
+import { poolDetailResponse } from "@/data/dummy";
 import { poolDetailSchema, poolSchema } from "@/schemas/pools";
 import { camel, mapKeys } from "radash";
 
