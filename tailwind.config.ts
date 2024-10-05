@@ -2,30 +2,32 @@ import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
 
 const config: Config = {
+  darkMode: ["class"],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    colors: {
-      transparent: "transparent",
-      current: "currentColor",
-      white: "#ffffff",
-      gray: {
-        900: "#1c2028",
-        800: "#3d4149",
-        700: "#5c5f69",
-        600: "#70737d",
-        500: "#989ca6",
-        400: "#cbced7",
-        300: "#e2e5ec",
-        200: "#eef0f6",
-        100: "#f9fafe",
-      },
-    },
+    // colors: {
+    //   transparent: "transparent",
+    //   current: "currentColor",
+    //   white: "#ffffff",
+
+    // },
     extend: {
       colors: {
+        gray: {
+          "100": "#f9fafe",
+          "200": "#eef0f6",
+          "300": "#e2e5ec",
+          "400": "#cbced7",
+          "500": "#989ca6",
+          "600": "#70737d",
+          "700": "#5c5f69",
+          "800": "#3d4149",
+          "900": "#1c2028",
+        },
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: {
@@ -41,19 +43,19 @@ const config: Config = {
           DEFAULT: "var(--tertiary)",
         },
         chip: {
-          1: {
+          "1": {
             DEFAULT: "var(--chip-1)",
             foreground: "var(--chip-1-foreground)",
           },
-          2: {
+          "2": {
             DEFAULT: "var(--chip-2)",
             foreground: "var(--chip-2-foreground)",
           },
-          3: {
+          "3": {
             DEFAULT: "var(--chip-3)",
             foreground: "var(--chip-3-foreground)",
           },
-          4: {
+          "4": {
             DEFAULT: "var(--chip-4)",
             foreground: "var(--chip-4-foreground)",
           },
@@ -76,6 +78,11 @@ const config: Config = {
       fontFamily: {
         pretendard: ["var(--font-pretendard)"],
       },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
     },
   },
   plugins: [
@@ -92,6 +99,7 @@ const config: Config = {
 
       addUtilities(newUtilities);
     }),
+    require("tailwindcss-animate"),
   ],
 };
 export default config;
