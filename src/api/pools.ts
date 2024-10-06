@@ -30,6 +30,8 @@ export const getPool = async (id: number) => {
 
     const body = await apiResponse.json();
 
+    console.log("log: getPool -> body", body);
+
     return poolDetailSchema.parse(body.data);
   } catch (error) {
     console.error(error);
