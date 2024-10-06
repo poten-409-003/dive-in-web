@@ -4,6 +4,20 @@ import Link from "next/link";
 import InstructorProfile from "../_components/InstructorProfile";
 import Image from "next/image";
 
+const convertToKRW = (price: string) => {
+  if (!price) {
+    return "";
+  }
+
+  const isNumber = /^[0-9]*$/.test(price);
+
+  if (!isNumber) {
+    return price;
+  }
+
+  return `${parseInt(price).toLocaleString()}원`;
+};
+
 export default async function LessonsPage() {
   const lessons = await getLessons();
 
@@ -39,8 +53,11 @@ export default async function LessonsPage() {
                 />
 
                 <div className="flex-none flex flex-col items-start gap-2 bg-gray-100 rounded-lg p-4">
-                  <div className="flex items-center gap-1">
-                    <LessonChip label={lesson.level} />
+                  <div className="flex flex-wrap items-center gap-1">
+                    {lesson.level &&
+                      lesson.level
+                        .split(",")
+                        .map((tag) => <LessonChip key={tag} label={tag} />)}
                     {lesson.keyword.split(",").map((tag) => (
                       <LessonChip key={tag} label={tag} />
                     ))}
@@ -55,7 +72,7 @@ export default async function LessonsPage() {
                   {lesson.price && (
                     <div className="flex items-center gap-1">
                       <p className="text-body_sm text-gray-900">
-                        {lesson.price}
+                        {convertToKRW(lesson.price)}
                       </p>
                     </div>
                   )}

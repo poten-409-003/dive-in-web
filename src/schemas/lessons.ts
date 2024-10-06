@@ -6,8 +6,8 @@ export const lessonSchema = z.object({
   academyImageUrl: z
     .string()
     .nullable()
-    .default("/empty/image.png")
-    .transform((value) => value || "/empty/image.png"),
+    .default("/empty/academy_profile.png")
+    .transform((value) => value || "/empty/academy_profile.png"),
   lessonName: z.string(),
   level: z.string(),
   keyword: z.string(),
@@ -32,7 +32,7 @@ export const lessonDetailSchema = z.object({
       .string()
       .nullable()
       .default("/empty/image.png")
-      .transform((value) => value || "/empty/image.png"),
+      .transform((value) => value || "/empty/academy_profile.png"),
   }),
   pool: z
     .object({
