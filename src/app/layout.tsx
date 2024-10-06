@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import BottomNav from "./_components/BottomNav";
 import KakaoSdkScript from "./_scripts/KakaoSdkScript";
+import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 
 const KAKAO_APP_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY!;
@@ -29,6 +30,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="ko-KR">
+      <GoogleTagManager gtmId="GTM-PZHQ8HBR" />
       <body
         className={`${pretendard.variable} antialiased flex flex-col items-center h-dvh`}
       >
