@@ -1,7 +1,6 @@
 import { poolDetailSchema, poolSchema } from "@/schemas/pools";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.dive-in.co.kr";
+const BASE_URL = "https://api.dive-in.co.kr";
 
 export const getPools = async () => {
   try {
