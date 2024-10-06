@@ -1,9 +1,14 @@
 import { poolDetailSchema } from "@/schemas/pools";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async () => {
+export const GET = async (
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) => {
+  const id = params.id;
+
   try {
-    const apiResponse = await fetch(`https://api.dive-in.co.kr/pools/1`);
+    const apiResponse = await fetch(`https://api.dive-in.co.kr/pools/${id}`);
 
     if (!apiResponse.ok) {
       return NextResponse.error();
@@ -15,7 +20,7 @@ export const GET = async () => {
 
     const pool = poolDetailSchema.parse(body.data);
 
-    return NextResponse.json({ data: pool });
+    return NextResponse.json(pool);
   } catch (error) {
     console.error(error);
     return NextResponse.error();
