@@ -1,7 +1,7 @@
 import { getUser } from "@/actions/user";
 import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
+import SquareOutSideIcon from "@/components/icons/SquareOutSideIcon";
 import TalkIcon from "@/components/icons/TalkIcon";
-import { SquareArrowOutUpRightIcon } from "lucide-react";
 import Link from "next/link";
 import ClassManageSection from "./_components/ClassManageSection";
 import SuggestionButton from "./_components/SuggestionButton";
@@ -55,7 +55,7 @@ const MyPage = async () => {
             target="_blank"
           >
             <span>FAQ</span>
-            <SquareArrowOutUpRightIcon className="w-5 h-5 ml-auto" />
+            <SquareOutSideIcon className="w-5 h-5 ml-auto" />
           </Link>
           <SuggestionButton />
         </div>
@@ -72,7 +72,7 @@ const MyPage = async () => {
             target="_blank"
           >
             <span>서비스 이용 약관</span>
-            <SquareArrowOutUpRightIcon className="w-5 h-5 ml-auto" />
+            <SquareOutSideIcon className="w-5 h-5 ml-auto" />
           </Link>
           <Link
             href="http://pumped-nectarine-f16.notion.site"
@@ -80,7 +80,7 @@ const MyPage = async () => {
             target="_blank"
           >
             <span>위치 정보 서비스 약관</span>
-            <SquareArrowOutUpRightIcon className="w-5 h-5 ml-auto" />
+            <SquareOutSideIcon className="w-5 h-5 ml-auto" />
           </Link>
           <Link
             href="https://pumped-nectarine-f16.notion.site/114b214c431780a99c94dfc758221271?pvs=4"
@@ -88,7 +88,7 @@ const MyPage = async () => {
             target="_blank"
           >
             <span>개인정보처리방침</span>
-            <SquareArrowOutUpRightIcon className="w-5 h-5 ml-auto" />
+            <SquareOutSideIcon className="w-5 h-5 ml-auto" />
           </Link>
           <Link
             href="https://pumped-nectarine-f16.notion.site/114b214c4317805eb96bc3ce88b85cc9?pvs=4"
@@ -96,15 +96,7 @@ const MyPage = async () => {
             target="_blank"
           >
             <span>마케팅정보 수신 동의</span>
-            <SquareArrowOutUpRightIcon className="w-5 h-5 ml-auto" />
-          </Link>
-          <Link
-            href="https://pumped-nectarine-f16.notion.site/114b214c431780f0a630dbbdc3302964?pvs=4"
-            className="flex p-4 text-body_br text-gray-600 hover:bg-gray-100"
-            target="_blank"
-          >
-            <span>오픈소스 라이센스</span>
-            <SquareArrowOutUpRightIcon className="w-5 h-5 ml-auto" />
+            <SquareOutSideIcon className="w-5 h-5 ml-auto" />
           </Link>
         </div>
       </div>
