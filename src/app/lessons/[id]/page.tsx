@@ -1,9 +1,9 @@
 import { getLesson } from "@/api/server/lessons";
-import InstructorProfile from "@/app/_components/InstructorProfile";
 import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 import ShareButton from "@/app/_components/ShareButton";
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
+import InternetIcon from "@/components/icons/InternetIcon";
 import LessonChip from "@/components/ui/Chip";
 import { lessonDetailContentSchema } from "@/schemas/lessons";
 import dynamic from "next/dynamic";
@@ -44,22 +44,30 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
       </div>
 
       <div className="relative mb-4">
+        <div className="absolute top-3 left-3 z-10 flex gap-2 py-1 pl-1 pr-2 bg-gray-900/70 rounded-full">
+          <Image
+            src={lesson.academy.profileImageUrl}
+            alt="아바타"
+            width={32}
+            height={32}
+            className="w-6 h-6 rounded-full"
+          />
+          <span className="text-body_sr text-gray-100">
+            {lesson.academy.academyName}
+          </span>
+        </div>
         <DetailPagePhotoSlider imageUrls={imageUrls} alt="수업 사진" />
       </div>
 
       <section className="flex flex-col gap-3 px-4 mb-6">
-        <div className="flex items-center justify-between">
-          <InstructorProfile
-            avatar={lesson.academy.profileImageUrl}
-            name={lesson.academy.academyName}
-          />
-
-          <div className="flex items-center gap-1">
-            <LessonChip label={lesson.level} />
-            {lesson.keyword.split(",").map((tag) => (
-              <LessonChip key={tag} label={tag} />
-            ))}
-          </div>
+        <div className="flex flex-wrap items-center gap-1">
+          {lesson.level &&
+            lesson.level
+              .split(",")
+              .map((tag) => <LessonChip key={tag} label={tag} />)}
+          {lesson.keyword.split(",").map((tag) => (
+            <LessonChip key={tag} label={tag} />
+          ))}
         </div>
 
         <div className="flex flex-col gap-1">
@@ -155,6 +163,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
+                  <InternetIcon className="w-6 h-6" />
                   <p className="text-slate-800 text-body_sm">사이트</p>
                 </Link>
               );
