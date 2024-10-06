@@ -263,7 +263,9 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
             </div>
 
             <div className="flex flex-col gap-1 pt-2 px-4 pb-4">
-              <p className="text-body_sr text-gray-700">{lesson.pool.region}</p>
+              <p className="text-body_sr text-gray-700">
+                {lesson.pool.poolAddress}
+              </p>
             </div>
           </div>
         )}

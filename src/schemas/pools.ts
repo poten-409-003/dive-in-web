@@ -35,7 +35,11 @@ export const poolDetailSchema = z.object({
     z.object({
       id: z.number(),
       academyName: z.string().default(""),
-      academyImageUrl: z.string().default(""),
+      academyImageUrl: z
+        .string()
+        .nullable()
+        .default("")
+        .transform((value) => value || "/empty/academy_profile.png"),
       keyword: z.string().default(""),
       lessonName: z.string().default(""),
       level: z.string().default(""),

@@ -2,14 +2,15 @@ import { getPool } from "@/api/pools";
 import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 import ShareButton from "@/app/_components/ShareButton";
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
+import SolidLocationIcon from "@/components/icons/SolidLocationIcon";
+import SolidPhoneIcon from "@/components/icons/SolidPhoneIcon";
 import LessonChip from "@/components/ui/Chip";
-import { MapPinIcon, PhoneIcon } from "lucide-react";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import RelativeLessonSection from "./_components/RelativeLessonSection";
-import Image from "next/image";
 
 const KakaoMap = dynamic(() => import("@/components/maps/KakaoMap"), {
   ssr: false,
@@ -76,15 +77,15 @@ const PoolPage = async ({ params }: Props) => {
 
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-1">
-                <div className="flex items-center gap-0.5">
-                  <MapPinIcon className="w-4 h-4 text-gray-600" />
+                <div className="flex-none flex items-center gap-0.5">
+                  <SolidLocationIcon className="w-4 h-4 text-gray-600" />
                   <h3 className="text-body_sb text-gray-600">위치</h3>
                 </div>
                 <p className="text-body_sr text-gray-600">{pool.poolAddress}</p>
               </div>
               <div className="flex items-center gap-1">
                 <div className="flex items-center gap-0.5">
-                  <PhoneIcon className="w-4 h-4 text-gray-600" />
+                  <SolidPhoneIcon className="w-4 h-4 text-gray-600" />
                   <h3 className="text-body_sb text-gray-600">전화</h3>
                 </div>
                 <p className="text-body_sr text-gray-600">{pool.contact}</p>
