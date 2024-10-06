@@ -2,7 +2,7 @@
 
 import usePhotoSlider from "@/hooks/usePhotoSlider";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 type Props = {
   imageUrls: string[];
@@ -19,6 +19,16 @@ const DetailPagePhotoSlider = ({ imageUrls, alt }: Props) => {
   }, [imageUrls]);
 
   const { sliderRef, imageRefs, visibleImageNumber } = usePhotoSlider(urls);
+
+  useEffect(() => {
+    const getPool = async () => {
+      const res = await fetch("/api/pools");
+      const data = await res.json();
+      console.log("log: getPool -> data", data);
+    };
+
+    getPool();
+  });
 
   return (
     <div className="relative">
