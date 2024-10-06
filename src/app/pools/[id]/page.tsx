@@ -52,6 +52,7 @@ const PoolPage = async ({ params }: Props) => {
     notFound();
   }
 
+  console.log("log: PoolPage -> pool", pool);
   console.log("log: PoolPage -> pool", pool.poolImages);
   console.log("log: PoolPage -> pool", pool.lessons);
 
