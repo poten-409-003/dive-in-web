@@ -33,6 +33,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
   );
 
   const imageUrls = lesson.images.map((image) => image.imageUrl);
+  const levels = lesson.level.split(",").map((tag) => tag.trim());
 
   return (
     <div className="flex flex-col pb-10">
@@ -61,10 +62,8 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
 
       <section className="flex flex-col gap-3 px-4 mb-6">
         <div className="flex flex-wrap items-center gap-1">
-          {lesson.level &&
-            lesson.level
-              .split(",")
-              .map((tag) => <LessonChip key={tag} label={tag} />)}
+          {!!levels.length &&
+            levels.map((tag) => <LessonChip key={tag} label={tag} />)}
           {lesson.keyword.split(",").map((tag) => (
             <LessonChip key={tag} label={tag} />
           ))}

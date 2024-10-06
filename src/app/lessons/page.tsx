@@ -21,6 +21,8 @@ const convertToKRW = (price: string) => {
 export default async function LessonsPage() {
   const lessons = await getLessons();
 
+  console.log("log: LessonsPage -> lessons", lessons);
+
   return (
     <div className="flex flex-col">
       <header className="flex gap-2 pt-4 px-4">
@@ -57,7 +59,9 @@ export default async function LessonsPage() {
                     {lesson.level &&
                       lesson.level
                         .split(",")
-                        .map((tag) => <LessonChip key={tag} label={tag} />)}
+                        .map((tag) => (
+                          <LessonChip key={tag} label={tag.trim()} />
+                        ))}
                     {lesson.keyword.split(",").map((tag) => (
                       <LessonChip key={tag} label={tag} />
                     ))}
