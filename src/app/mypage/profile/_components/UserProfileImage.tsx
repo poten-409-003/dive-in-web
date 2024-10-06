@@ -1,6 +1,6 @@
 "use client";
 
-import { PencilLineIcon } from "lucide-react";
+import PenIcon from "@/components/icons/PenIcon";
 import Image from "next/image";
 import { ChangeEvent, useRef } from "react";
 
@@ -43,7 +43,7 @@ const UserProfileImage = ({
         onClick={openFileInput}
         type="button"
       >
-        <PencilLineIcon className="w-5 h-5 text-gray-100" />
+        <PenIcon className="w-5 h-5 text-gray-100" />
         <input
           type="file"
           accept="image/*"

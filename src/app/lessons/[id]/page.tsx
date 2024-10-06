@@ -44,7 +44,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
       </div>
 
       <div className="relative mb-4">
-        <div className="absolute top-3 left-3 z-10 flex gap-2 py-1 pl-1 pr-2 bg-gray-900/70 rounded-full">
+        <div className="absolute top-3 left-3 z-10 flex items-center gap-2 py-1 pl-1 pr-2 bg-gray-900/70 rounded-full">
           <Image
             src={lesson.academy.profileImageUrl}
             alt="아바타"

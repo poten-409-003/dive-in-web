@@ -66,10 +66,10 @@ const EditProfileForm = ({
         />
 
         <div className="flex-1 flex flex-col gap-2">
-          <div className="relative flex border border-gray-300 rounded-lg overflow-hidden">
+          <div className="flex-1 relative flex border border-gray-300 rounded-lg overflow-hidden">
             <input
               type="text"
-              className="flex-1 py-3 px-4 text-body_bb rounded-lg"
+              className="w-full flex-1 py-3 px-4 text-body_bb rounded-lg outline-primary"
               placeholder="닉네임을 입력하세요"
               maxLength={8}
               value={nickname}
@@ -79,7 +79,7 @@ const EditProfileForm = ({
               8자
             </span>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex flex-wrap items-center gap-1">
             <Image
               alt="카카오 로고"
               src="/icon/kakao_2.png"
@@ -87,7 +87,9 @@ const EditProfileForm = ({
               height={20}
               className="flex-none w-5 h-5"
             />
-            <span className="text-body_br text-gray-700">{user.email}</span>
+            <span className="text-body_br text-gray-700 whitespace-pre-line">
+              {user.email}
+            </span>
           </div>
         </div>
       </div>
