@@ -1,4 +1,3 @@
-import { poolDetailSchema } from "@/schemas/pools";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
@@ -18,9 +17,9 @@ export const GET = async (
 
     console.log("log: api Route getPool -> body", body);
 
-    const pool = poolDetailSchema.parse(body.data);
+    // const pool = poolDetailSchema.parse(body.data);
 
-    return NextResponse.json(pool);
+    return NextResponse.json(body.data);
   } catch (error) {
     console.error(error);
     return NextResponse.error();

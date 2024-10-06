@@ -10,8 +10,6 @@ import { PoolDetail } from "@/types/pool";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import RelativeLessonSection from "./RelativeLessonSection";
 
 const KakaoMap = dynamic(() => import("@/components/maps/KakaoMap"), {
@@ -22,34 +20,36 @@ const Marker = dynamic(() => import("@/components/maps/Marker"), {
 });
 
 type Props = {
-  poolId: number;
+  pool: PoolDetail;
 };
 
-const InnerPage = ({ poolId }: Props) => {
-  const router = useRouter();
-  const [pool, setPool] = useState<PoolDetail | null>(null);
+const InnerPage = ({ pool }: Props) => {
+  // const router = useRouter();
+  // const [pool, setPool] = useState<PoolDetail | null>(null);
 
-  useEffect(() => {
-    const fetchPool = async () => {
-      try {
-        const pool = await fetch(`/api/pools/${poolId}`).then((res) =>
-          res.json()
-        );
+  // useEffect(() => {
+  //   const fetchPool = async () => {
+  //     try {
+  //       const pool = await fetch(`/api/pools/${poolId}`).then((res) =>
+  //         res.json()
+  //       );
 
-        if (!pool) {
-          router.push("/pools");
-          return;
-        }
+  //       console.log("log: InnerPage -> pool", pool);
 
-        setPool(pool);
-      } catch (error) {
-        console.error(error);
-        router.push("/pools");
-      }
-    };
+  //       if (!pool) {
+  //         router.push("/pools");
+  //         return;
+  //       }
 
-    fetchPool();
-  }, [poolId, router]);
+  //       setPool(pool);
+  //     } catch (error) {
+  //       console.error(error);
+  //       router.push("/pools");
+  //     }
+  //   };
+
+  //   fetchPool();
+  // }, [poolId, router]);
 
   if (!pool) {
     return null;

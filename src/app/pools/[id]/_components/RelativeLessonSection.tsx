@@ -12,6 +12,7 @@ type Props = {
 };
 
 const RelativeLessonSection = ({ lessons }: Props) => {
+  console.log("log: RelativeLessonSection -> lessons", lessons);
   const [showMore, setShowMore] = useState(false);
 
   const showMoreButton = lessons.length > 6 && !showMore;
@@ -49,6 +50,18 @@ const RelativeLessonSection = ({ lessons }: Props) => {
                     avatar={poolLesson.academyImageUrl}
                     name={poolLesson.academyName}
                   />
+                  {/* <div className="flex-none flex items-center gap-2">
+                    <Image
+                      src={poolLesson.academyImageUrl || "/empty/academy_profile.png"}
+                      alt={poolLesson.academyName}
+                      width={24}
+                      height={24}
+                      className="flex-none w-6 h-6 rounded-full"
+                    />
+                    <p className="text-body_sr text-gray-600">
+                      {poolLesson.academyName}
+                    </p>
+                  </div> */}
                   <div className="flex flex-col gap-1">
                     <div className="flex flex-wrap items-center gap-1">
                       <LessonChip label={poolLesson.level} />

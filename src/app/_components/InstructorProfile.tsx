@@ -11,7 +11,7 @@ const InstructorProfile = ({ avatar, name }: Props) => {
   return (
     <div className="flex-none flex items-center gap-2">
       <Image
-        src={avatar}
+        src={avatar || "/empty/academy_profile.png"}
         alt={`${name} 프로필`}
         width={24}
         height={24}

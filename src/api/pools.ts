@@ -1,3 +1,5 @@
+"use server";
+
 import { poolDetailSchema, poolSchema } from "@/schemas/pools";
 
 const BASE_URL = "https://api.dive-in.co.kr";
@@ -21,7 +23,7 @@ export const getPools = async () => {
 
 export const getPool = async (id: number) => {
   try {
-    const apiResponse = await fetch(`${BASE_URL}/pools/${id}`);
+    const apiResponse = await fetch(`https://api.dive-in.co.kr/pools/${id}`);
 
     if (!apiResponse.ok) {
       return null;
@@ -31,7 +33,9 @@ export const getPool = async (id: number) => {
 
     console.log("log: getPool -> body", body);
 
-    return poolDetailSchema.parse(body.data);
+    return null;
+
+    // return poolDetailSchema.parse(body.data);
   } catch (error) {
     console.error(error);
     return null;
