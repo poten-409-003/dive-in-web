@@ -1,4 +1,3 @@
-import { getPool } from "@/api/pools";
 import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 import ShareButton from "@/app/_components/ShareButton";
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
@@ -6,12 +5,11 @@ import SolidLocationIcon from "@/components/icons/SolidLocationIcon";
 import SolidPhoneIcon from "@/components/icons/SolidPhoneIcon";
 import LessonChip from "@/components/ui/Chip";
 import { PoolDetail } from "@/types/pool";
-import { Metadata } from "next";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import RelativeLessonSection from "./_components/RelativeLessonSection";
-import dynamic from "next/dynamic";
 
 const KakaoMap = dynamic(() => import("@/components/maps/KakaoMap"), {
   ssr: false,

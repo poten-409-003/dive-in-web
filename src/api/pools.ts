@@ -1,6 +1,6 @@
 "use server";
 
-import { poolDetailSchema, poolSchema } from "@/schemas/pools";
+import { poolSchema } from "@/schemas/pools";
 
 const BASE_URL = "https://api.dive-in.co.kr";
 
