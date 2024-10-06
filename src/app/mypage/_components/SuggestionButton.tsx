@@ -21,7 +21,11 @@ const SuggestionButton = () => {
           <h3 className="text-left text-body_bb">다이브인에 제안하기</h3>
         </DrawerHeader>
         <DrawerFooter className="px-4 pt-0 pb-6">
-          <Link href="/" className="flex items-center gap-2 py-3 rounded-lg">
+          <Link
+            href="http://pf.kakao.com/_DSqZn"
+            className="flex items-center gap-2 py-3 rounded-lg"
+            target="_blank"
+          >
             <Image
               alt="카카오톡 로고"
               src="/icon/kakao_2.png"

@@ -33,8 +33,9 @@ const ClassManageSection = ({ isLogin }: Props) => {
               </DrawerHeader>
               <DrawerFooter className="px-4 pt-0 pb-6">
                 <Link
-                  href="/"
+                  href="http://pf.kakao.com/_DSqZn"
                   className="flex items-center gap-2 py-3 rounded-lg"
+                  target="_blank"
                 >
                   <Image
                     alt="카카오톡 로고"
