@@ -37,8 +37,9 @@ const EditProfileForm = ({
   const readyToSubmit = useMemo(() => {
     const isNicknameChanged = nickname !== user.nickname;
     const isProfileImageChanged = !!profileImage;
+    const isNicknameValid = nickname.length > 1 && nickname.length <= 8;
 
-    return isNicknameChanged || isProfileImageChanged;
+    return isNicknameValid && (isNicknameChanged || isProfileImageChanged);
   }, [nickname, user.nickname, profileImage]);
 
   return (
