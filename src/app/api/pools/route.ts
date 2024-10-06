@@ -18,6 +18,6 @@ export const GET = async () => {
     return NextResponse.json({ data: pool });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ data: null });
+    return NextResponse.error();
   }
 };
