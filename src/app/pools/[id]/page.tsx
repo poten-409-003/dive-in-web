@@ -1,14 +1,15 @@
+import { getPool } from "@/api/pools";
 import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 import ShareButton from "@/app/_components/ShareButton";
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 import SolidLocationIcon from "@/components/icons/SolidLocationIcon";
 import SolidPhoneIcon from "@/components/icons/SolidPhoneIcon";
 import LessonChip from "@/components/ui/Chip";
-import { PoolDetail } from "@/types/pool";
+import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import RelativeLessonSection from "./_components/RelativeLessonSection";
 
 const KakaoMap = dynamic(() => import("@/components/maps/KakaoMap"), {
@@ -22,36 +23,30 @@ type Props = {
   params: { id: string };
 };
 
-// export const generateMetadata = async ({
-//   params,
-// }: Props): Promise<Metadata> => {
-//   const poolId = Number(params.id);
+export const generateMetadata = async ({
+  params,
+}: Props): Promise<Metadata> => {
+  const poolId = Number(params.id);
 
-//   if (isNaN(poolId)) {
-//     redirect("/pools");
-//   }
+  if (isNaN(poolId)) {
+    redirect("/pools");
+  }
 
-//   const apiResponse = await fetch(`https://api.dive-in.co.kr/pools/${poolId}`);
-//   const body = await apiResponse.json();
-//   const pool = body.data;
+  const pool = await getPool(poolId);
 
-//   if (!pool) {
-//     notFound();
-//   }
+  if (!pool) {
+    notFound();
+  }
 
-//   return {
-//     title: `${pool.poolName} - 수영장 정보 | Dive In`,
-//     description: `${pool.region}에 위치한 ${pool.poolName}. Dive In에서 수영장 정보를 확인하고 강습을 찾아보세요!`,
-//   };
-// };
+  return {
+    title: `${pool.poolName} - 수영장 정보 | Dive In`,
+    description: `${pool.region}에 위치한 ${pool.poolName}. Dive In에서 수영장 정보를 확인하고 강습을 찾아보세요!`,
+  };
+};
 
 const PoolPage = async ({ params }: Props) => {
   const poolId = Number(params.id);
-  console.log(`https://api.dive-in.co.kr/pools/${poolId}`);
-  const response = await fetch(`https://api.dive-in.co.kr/pools/${poolId}`);
-  const body = await response.json();
-  console.log("log: PoolPage -> body", body);
-  const pool: PoolDetail = body.data;
+  const pool = await getPool(poolId);
 
   console.log("log: PoolPage -> pool", pool);
 
@@ -142,12 +137,6 @@ const PoolPage = async ({ params }: Props) => {
       </section>
     </div>
   );
-
-  // console.log("log: PoolPage -> pool", pool);
-  // console.log("log: PoolPage -> pool", pool.poolImages);
-  // console.log("log: PoolPage -> pool", pool.lessons);
-
-  // return <InnerPage pool={pool} />;
 };
 
 export default PoolPage;

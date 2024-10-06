@@ -15,7 +15,7 @@ const InstructorProfile = ({ avatar, name }: Props) => {
         alt={`${name} 프로필`}
         width={24}
         height={24}
-        className="flex-none w-6 h-6 rounded-full"
+        className="flex-none w-6 h-6 rounded-full border border-gray-200"
       />
       <p className="text-body_sr text-gray-600">{name}</p>
     </div>

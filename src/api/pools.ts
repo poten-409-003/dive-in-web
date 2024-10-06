@@ -1,6 +1,6 @@
 "use server";
 
-import { poolSchema } from "@/schemas/pools";
+import { poolDetailSchema, poolSchema } from "@/schemas/pools";
 
 const BASE_URL = "https://api.dive-in.co.kr";
 
@@ -33,9 +33,7 @@ export const getPool = async (id: number) => {
 
     console.log("log: getPool -> body", body);
 
-    return null;
-
-    // return poolDetailSchema.parse(body.data);
+    return poolDetailSchema.parse(body.data);
   } catch (error) {
     console.error(error);
     return null;
