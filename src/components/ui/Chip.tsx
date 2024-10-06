@@ -10,6 +10,7 @@ const ColorClassMap: Record<string, string> = {
   초급: "bg-chip-2 text-chip-2-foreground",
   중급: "bg-chip-3 text-chip-3-foreground",
   고급: "bg-chip-4 text-chip-4-foreground",
+  상급: "bg-chip-4 text-chip-4-foreground",
   마스터즈: "bg-gray-800 text-white",
 };
 
