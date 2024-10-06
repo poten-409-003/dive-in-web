@@ -1,12 +1,12 @@
 "use client";
 
-import { ChangeEvent, useMemo, useState } from "react";
-import UserProfileImage from "./UserProfileImage";
-import Image from "next/image";
-import { updateUser } from "@/actions/user";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import { revalidateTagAction } from "@/actions/revalidate";
+import { updateUser } from "@/actions/user";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import UserProfileImage from "./UserProfileImage";
 
 const EditProfileForm = ({
   user,
@@ -47,6 +47,10 @@ const EditProfileForm = ({
       className="flex flex-col gap-8 p-4"
       onSubmit={async (e) => {
         e.preventDefault();
+        if (!readyToSubmit) {
+          return;
+        }
+
         const formData = new FormData();
         formData.append("nickname", nickname);
         if (profileImage) {
