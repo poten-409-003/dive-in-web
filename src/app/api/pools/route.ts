@@ -6,7 +6,7 @@ export const GET = async () => {
     const apiResponse = await fetch(`https://api.dive-in.co.kr/pools/1`);
 
     if (!apiResponse.ok) {
-      return null;
+      return NextResponse.error();
     }
 
     const body = await apiResponse.json();
