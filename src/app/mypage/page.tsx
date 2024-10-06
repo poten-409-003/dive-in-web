@@ -1,11 +1,11 @@
 import { getUser } from "@/actions/user";
 import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
-import ChatIcon from "@/components/icons/ChatIcon";
+import TalkIcon from "@/components/icons/TalkIcon";
 import { SquareArrowOutUpRightIcon } from "lucide-react";
 import Link from "next/link";
-import UserProfile from "./_components/UserProfile";
 import ClassManageSection from "./_components/ClassManageSection";
 import SuggestionButton from "./_components/SuggestionButton";
+import UserProfile from "./_components/UserProfile";
 
 const MyPage = async () => {
   const user = await getUser();
@@ -24,7 +24,7 @@ const MyPage = async () => {
             className="flex items-center h-[88px] p-4 bg-primary text-primary-foreground rounded-lg"
           >
             <div className="flex items-center gap-2">
-              <ChatIcon className="w-6 h-6 text-[#FEE500]" />
+              <TalkIcon className="w-6 h-6 text-[#FEE500]" />
               <span className="text-body_lb">로그인 해주세요</span>
             </div>
 

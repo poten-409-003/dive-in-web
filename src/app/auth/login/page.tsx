@@ -57,11 +57,19 @@ const LoginPage = ({ searchParams }: Props) => {
           로그인함으로서 다이브인의 정책 및 약관에 동의합니다.
         </span>
         <div className="flex gap-2 items-center">
-          <Link href="/" className="text-body_sr text-gray-500">
+          <Link
+            href="https://pumped-nectarine-f16.notion.site/114b214c431780a99c94dfc758221271"
+            target="_blank"
+            className="text-body_sr text-gray-500"
+          >
             개인보호정책
           </Link>
           <span className="text-body_sr text-gray-500">|</span>
-          <Link href="/" className="text-body_sr text-gray-500">
+          <Link
+            href="https://pumped-nectarine-f16.notion.site/114b214c431780ff833dc6c281646b9b"
+            target="_blank"
+            className="text-body_sr text-gray-500"
+          >
             서비스 약관
           </Link>
         </div>
