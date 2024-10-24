@@ -12,7 +12,6 @@ type Props = {
 };
 
 const RelativeLessonSection = ({ lessons }: Props) => {
-  console.log("log: RelativeLessonSection -> lessons", lessons);
   const [showMore, setShowMore] = useState(false);
 
   const showMoreButton = lessons.length > 6 && !showMore;

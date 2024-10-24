@@ -48,8 +48,6 @@ const PoolPage = async ({ params }: Props) => {
   const poolId = Number(params.id);
   const pool = await getPool(poolId);
 
-  console.log("log: PoolPage -> pool", pool);
-
   if (!pool) {
     notFound();
   }

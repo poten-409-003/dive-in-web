@@ -15,8 +15,6 @@ export const GET = async (
 
     const body = await apiResponse.json();
 
-    console.log("log: api Route getPool -> body", body);
-
     // const pool = poolDetailSchema.parse(body.data);
 
     return NextResponse.json(body.data);

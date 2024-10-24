@@ -21,8 +21,6 @@ const convertToKRW = (price: string) => {
 export default async function LessonsPage() {
   const lessons = await getLessons();
 
-  console.log("log: LessonsPage -> lessons", lessons);
-
   return (
     <div className="flex flex-col">
       <header className="flex gap-2 pt-4 px-4">

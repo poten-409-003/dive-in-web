@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 const usePhotoSlider = (photos: string[]) => {
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -6,8 +6,10 @@ const usePhotoSlider = (photos: string[]) => {
   const [visibleIndex, setVisibleIndex] = useState(0);
   const visibleImageNumber = visibleIndex + 1;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const slider = sliderRef.current;
     const images = imageRefs.current;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -18,7 +20,7 @@ const usePhotoSlider = (photos: string[]) => {
         });
       },
       {
-        root: sliderRef.current,
+        root: slider,
         threshold: 0.5,
       }
     );
@@ -36,7 +38,7 @@ const usePhotoSlider = (photos: string[]) => {
         }
       });
     };
-  }, [photos]);
+  }, [photos, imageRefs.current.length]);
 
   return { sliderRef, imageRefs, visibleIndex, visibleImageNumber };
 };
