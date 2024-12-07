@@ -11,6 +11,7 @@ import FloatingButton from "./_components/FloatingButton";
 type Communities = {
   id: number;
   name: string;
+  content: string;
 };
 
 const CATEGORIES = [
@@ -58,7 +59,7 @@ export default function CommunitiesClient({
           filteredCommunities.map((community) => (
             <li key={community.id} className="border-b border-gray-300 pb-4">
               <Link
-                href={`/communities/${community.id}`}
+                href={`/community/${community.id}`}
                 className="flex flex-col gap-2"
               >
                 <div className="flex-1 flex flex-row items-start gap-1 bg-white-100 rounded-lg p-2">
@@ -73,14 +74,15 @@ export default function CommunitiesClient({
                     <div className="flex flex-col gap-0.5">
                       <h3 className="text-gray-900 text-body_bb">
                         {/* {community.communityTitle} */}
-                        게시글 제목
+                        {community.name}
                       </h3>
                     </div>
 
                     <div className="flex items-center gap-1">
                       <p className="text-body_b text-gray-600">
                         {/* {community.communityContent} */}
-                        게시글 내용입니다.
+                        {/* 게시글 내용입니다. */}
+                        {community.content}
                       </p>
                     </div>
 
