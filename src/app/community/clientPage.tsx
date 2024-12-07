@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import WriterProfile from "../_components/WriterProfile";
+import WriterProfile from "./_components/WriterProfile";
 import { LuEye } from "react-icons/lu";
 import { FiMessageSquare } from "react-icons/fi";
 import { TiHeartOutline } from "react-icons/ti";
+import FloatingButton from "./_components/FloatingButton";
 
 type Communities = {
   id: number;
@@ -128,6 +129,9 @@ export default function CommunitiesClient({
           <p className="text-gray-500">해당 커뮤니티가 존재하지 않습니다.</p>
         )}
       </ul>
+
+        <FloatingButton />
+
     </div>
   );
 }
