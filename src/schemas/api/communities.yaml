@@ -1,0 +1,15 @@
+openapi: 3.0.0
+info:
+  title: Dive In Swimming Lesson API
+  description: 수영 수업 관리 및 정보를 제공하는 API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local server
+  - url: https://api.dive.in
+    description: Production server
+
+paths:
+  /communities:
+  
+  # 이하 작성해야 함
