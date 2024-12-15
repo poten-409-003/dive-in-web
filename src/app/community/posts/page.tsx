@@ -7,15 +7,27 @@ import { MdOutlineBrokenImage } from "react-icons/md";
 import { AiOutlineLink } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";
 import { useState } from "react";
+import { createCommunity } from "@/api/server/community";
 
+const CATEGORIES = ["소통해요", "수영장", "수영물품", "수영대회"];
 export default function CreatePost() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("소통해요");
-  const CATEGORIES = ["소통해요", "수영장", "수영물품", "수영대회"];
+  const [content, setContent] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("게시글이 작성되었습니다.");
+    
+    const formData = new FormData(e.currentTarget);
+    formData.append("category", selectedCategory);
+
+    try {
+      const result = await createCommunity(formData);
+      console.log("글 작성 성공", result);
+    } catch (err) {
+      console.log("글 작성 실패", err);
+    }
+  
   };
 
   const handleCategorySelect = (category: string) => {
@@ -39,7 +51,7 @@ export default function CreatePost() {
       </div>
 
       {/* 카테고리 */}
-      <div className="relative px-4 py-2">
+      <div className="relative px-4 py-4">
         <button
           className="flex items-center justify-between w-full px-4 py-3 text-left text-sm font-bold border bg-gray-100 border-gray-300 rounded text-gray-700 focus:outline-none"
           onClick={() => setIsOpen((prev) => !prev)}
@@ -82,16 +94,18 @@ export default function CreatePost() {
         className="flex flex-col pb-10"
       >
         <input
+          id="title"
           type="text"
           maxLength={20}
           placeholder="제목을 입력해주세요(최대 20자)"
-          className="text-xl w-full px-4 mb-4 p-2 border-none border-gray-300 font-bold focus:outline-none"
+          className="text-xl w-full px-4 mb-4 border-none border-gray-300 font-bold focus:outline-none"
         />
 
         <textarea
           placeholder="내용을 입력해주세요(최대 2000자)"
           maxLength={2000}
-          className="text-base w-full px-4 resize-none overflow-hidden h-80 p-2 border-none border-gray-300 focus:outline-none"
+          className="text-base w-full px-4 resize-none overflow-hidden border-none border-gray-300 focus:outline-none"
+          onChange={(e)=> setContent(e.target.value)}
           onInput={(e) => {
             e.currentTarget.style.height = "auto";
             e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
