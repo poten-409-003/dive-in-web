@@ -2,15 +2,21 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import WriterProfile from "./_components/WriterProfile";
+import WriterProfile from "../../../_components/WriterProfile";
 import { LuEye } from "react-icons/lu";
 import { FiMessageSquare } from "react-icons/fi";
 import { TiHeartOutline } from "react-icons/ti";
-import FloatingButton from "./_components/FloatingButton";
+import FloatingButton from "../../../_components/FloatingButton";
 
 type Communities = {
   id: number;
   name: string;
+  title: string;
+  content: string;
+  views: number;
+  likes: number;
+  comments: number;
+  date: string;
 };
 
 const CATEGORIES = [
@@ -58,29 +64,31 @@ export default function CommunitiesClient({
           filteredCommunities.map((community) => (
             <li key={community.id} className="border-b border-gray-300 pb-4">
               <Link
-                href={`/communities/${community.id}`}
+                href={`/community/posts/${community.id}`}
                 className="flex flex-col gap-2"
               >
                 <div className="flex-1 flex flex-row items-start gap-1 bg-white-100 rounded-lg p-2">
                  {/* 왼쪽 */}
                   <div className="flex-1 flex flex-col items-start gap-2">
+                    {/* 여기가 태그 */}
                     <div
-                      className={`text-label_sb px-1.5 py-1 rounded bg-chip-1 text-chip-1-foreground`}
+                      className={`text-label_sb px-1.5 py-1 rounded bg-chip-1 text-chip-1-foreground inline-block w-fit`}
                     >
-                      <p>{community.name}</p>
+                      <p>{community.name}</p> 
                     </div>
 
                     <div className="flex flex-col gap-0.5">
                       <h3 className="text-gray-900 text-body_bb">
                         {/* {community.communityTitle} */}
-                        게시글 제목
+                        {community.title}
                       </h3>
                     </div>
 
                     <div className="flex items-center gap-1">
                       <p className="text-body_b text-gray-600">
                         {/* {community.communityContent} */}
-                        게시글 내용입니다.
+                        {/* 게시글 내용입니다. */}
+                        {community.content}
                       </p>
                     </div>
 
@@ -96,15 +104,15 @@ export default function CommunitiesClient({
                     <div className="flex flex-row items-center gap-4">
                       <div className="flex items-center gap-1">
                         <LuEye className="w-5 h-5 text-gray-400" />
-                        <p className="text-gray-500">0</p>
+                        <p className="text-gray-500"> {community.views}</p>
                       </div>
                       <div className="flex items-center gap-1">
                         <FiMessageSquare className="w-5 h-5 text-gray-400" />
-                        <p className="text-gray-500">0</p>
+                        <p className="text-gray-500">{community.comments}</p>
                       </div>
                       <div className="flex items-center gap-1">
                         <TiHeartOutline className="w-5 h-5 text-gray-400" />
-                        <p className="text-gray-500">0</p>
+                        <p className="text-gray-500"> {community.likes}</p>
                       </div>
                     </div>
                   </div>
@@ -118,7 +126,7 @@ export default function CommunitiesClient({
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <span className="mt-4 text-b text-gray-500 ml-auto">24.10.27</span>
+                    <span className="mt-4 text-b text-gray-500 ml-auto">{community.date.slice(2)}</span>
                   </div>
 
                 </div>

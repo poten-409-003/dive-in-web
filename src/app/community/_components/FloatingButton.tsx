@@ -4,7 +4,7 @@ export default function FloatingButton(){
   return (
     <div>
       <Link
-        href="/community/create-post"
+        href="/community/posts"
         className="fixed bottom-20 right-4 w-20 h-20 bg-blue-900 text-white rounded-full 
         flex items-center justify-center shadow-lg hover:bg-blue-800"
       >

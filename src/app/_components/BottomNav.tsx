@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 const routes = {
   home: "/lessons",
   pools: "/pools",
-  community: "/community",
+  community: "/community/posts/list/none",
   mypage: "/mypage",
   login: "/auth/login",
 };
