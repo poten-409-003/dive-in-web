@@ -10,11 +10,12 @@ import { VscKebabVertical } from "react-icons/vsc";
 import { GoPencil } from "react-icons/go";
 import { GoTrash } from "react-icons/go";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type CommunityProps = {
   community: {
     id: number;
-    name: string;
+    category: string;
     title: string;
     content: string;
     date: string;
@@ -29,6 +30,7 @@ const ClientCommunityPage = ({ community }: CommunityProps) => {
   const [comment, setComment] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const router = useRouter();
 
   const handleTextareaHeight = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const textarea = textareaRef.current;
@@ -62,7 +64,7 @@ const ClientCommunityPage = ({ community }: CommunityProps) => {
       <div
         className={`mx-4 text-label_sb px-1.5 py-1 rounded bg-chip-1 text-chip-1-foreground inline-block w-fit`}
       >
-        <p>{community.name}</p>
+        <p>{community.category}</p>
       </div>
 
       {/* 작성자 */}
@@ -176,7 +178,8 @@ const ClientCommunityPage = ({ community }: CommunityProps) => {
             className="py-2 text-sm font-bold hover:bg-gray-100 cursor-pointer"
             onClick={() => {}}
           >
-            <div className="flex justify-start items-center gap-1 flex-1">
+            <div className="flex justify-start items-center gap-1 flex-1"
+            onClick={() => router.push(`/community/posts/${community.id}/edit`)}>
               <GoPencil className="w-5 h-5 text-gray-900" />
               <p className="text-gray-900">수정하기</p>
             </div>
