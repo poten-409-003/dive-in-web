@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { LuSend } from "react-icons/lu";
 import { TiHeartOutline } from "react-icons/ti";
 import { RiShare2Line } from "react-icons/ri";
@@ -25,6 +25,18 @@ type CommunityProps = {
 const ClientCommunityPage = ({ community }: CommunityProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [comment, setComment] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleTextareaHeight = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const textarea = textareaRef.current;
+
+    setComment(e.target.value);
+
+    if(textarea){
+      textarea.style.height = "1.25rem"; //초기높이
+      textarea.style.height = `${textarea.scrollHeight}px`; //내용에 맞게 높이설정
+    }
+  };
 
   return (
     <div className="flex flex-col pb-10 relative h-full">
@@ -101,16 +113,29 @@ const ClientCommunityPage = ({ community }: CommunityProps) => {
             로그인 후 댓글 달기가 가능합니다
             <button 
               className="text-left text-sm font-semibold text-blue-900"
-              onClick={() => setIsLoggedIn(true)}
+              onClick={() => {
+                console.log("로그인되었습니다");
+                setIsLoggedIn(true);
+              }}
             >
               로그인
             </button>
           </p>
         ) : (
-          <div>
-            <input type="text" value={comment} onChange={(e) => setComment(e.target.value)}
-            placeholder="댓글을 입력해주세요."
-            className="w-full text-sm text-gray-700 bg-transparent focus:outline-none" />
+          <div className="flex flex-row px-4 py-5 items-center bg-gray-100 rounded">
+            <textarea 
+            ref={textareaRef} 
+            value={comment} 
+            onChange={handleTextareaHeight}
+            placeholder="댓글을 입력해주세요."//500자 제한
+            maxLength={500}
+            style={{
+              height: "1.25rem", //초기높이 20
+              lineHeight: "1.25rem", //높이 20
+              padding: "0px", 
+              boxSizing: "border-box", // 높이에 패딩과 테두리 포함
+            }}
+            className="w-full resize-none overflow-hidden border-none text-left text-sm text-gray-700 bg-gray-100 focus:outline-none" />
             <button className="text-left text-sm font-semibold text-gray-500">
               <LuSend size={18} />
             </button>

@@ -2,6 +2,7 @@
 import { getComments } from "@/api/server/community";
 import WriterProfile from "../_components/WriterProfile";
 import { VscKebabVertical } from "react-icons/vsc";
+import { useEffect, useState } from "react";
 
 interface CommentProps {
   id: number;
@@ -45,8 +46,16 @@ const Comment = ({ id, content, date, writer }: CommentProps) => {
   );
 };
 
-export default async function CommentList() {
-  const comments = await getComments();
+export default function CommentList() {
+  const [comments, setCooments] = useState<CommentProps[]>([]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      const comments = await getComments();
+      setCooments(comments);
+    };
+    fetchComments();
+  },[]);
 
   return (
     <div className="bg-white-100 px-4 py-4">
