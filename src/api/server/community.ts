@@ -93,12 +93,16 @@ export const getComments = async () => {
         content: "저도 제피부가 문제일줄만 알았는데 수모를 바꾸니 덜 눌리더라구요 수모마다 차이도 있는듯 해요~",
         date: "2024.03.21",
         writer: "lfenl",
+        writerId: 1,
+        loggedUserId: 1,
       },
       {
         id: 2,
         content: "저도 제피부가 문제일줄만 알았는데 수모를 바꾸니 덜 눌리더라구요",
         date: "2024.03.21",
         writer: "ㅇㄻㄴㅇㅁㄴㅇㅎ",
+        writerId: 2,
+        loggedUserId: 1,
       },
     ];
 
