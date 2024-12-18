@@ -16,8 +16,8 @@ export const getCommunities = async () => {
 
 export const getCommunity = async (id: number) => {
   try {
-    const response = await fetch(`https://api.dive-in.co.kr/community/posts/${id}`);
-    const body = await response.json();
+    // const response = await fetch(`https://api.dive-in.co.kr/community/posts/${id}`);
+    // const body = await response.json();
 
     const dummyCommunities = [
       { id: 1, name: "전체", title: "제목1", content: "이것은 전체 카테고리의 게시글입니다.", views: 0, likes: 0, comments: 0, date: "2024.10.27"},
@@ -52,5 +52,104 @@ export const createCommunity = async(formData: FormData) => {
     console.log("글 작성 성공:", result);
   } catch (error) {
     console.log("글 작성 실패:", error);
+  }
+};
+
+// 댓글
+// export const getComments = async () => {
+//   try {
+//     const response = await fetch("https://api.dive-in.co.kr/community/comments");
+//     const body = await response.json();
+//   } catch (error) {
+//     console.log(error);
+//     return [];
+//   }
+// };
+
+export const getOG = async (link: string) => {
+  try {
+    const response = await fetch("/api/shorten-link", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({url: link}),
+    });
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+
+export const getComments = async () => {
+  try {
+    // const response = await fetch("https://api.dive-in.co.kr/community/comments");
+    // const body = await response.json();
+    const dummyCommunities = [
+      {
+        id: 1,
+        content: "저도 제피부가 문제일줄만 알았는데 수모를 바꾸니 덜 눌리더라구요 수모마다 차이도 있는듯 해요~",
+        date: "2024.03.21",
+        writer: "lfenl",
+      },
+      {
+        id: 2,
+        content: "저도 제피부가 문제일줄만 알았는데 수모를 바꾸니 덜 눌리더라구요",
+        date: "2024.03.21",
+        writer: "ㅇㄻㄴㅇㅁㄴㅇㅎ",
+      },
+    ];
+
+    return dummyCommunities;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+export const createComment = async (formData: FormData) => {
+  try {
+    const response = await fetch("https://api.dive-in.co.kr/community/comments", {
+      method: "POST",
+      body: formData,
+    });
+
+    if(!response){
+      throw new Error("게시글 작성 실패!");
+    }
+
+    const result = await response.json();
+    console.log("댓글 작성 성공:", result);
+  } catch (error) {
+    console.log("댓글 작성 실패:", error);
+    return [];
+  }
+};
+
+
+
+
+
+
+
+export const updateComments = async () => {
+  try {
+    const response = await fetch("https://api.dive-in.co.kr/community/comments");
+    const body = await response.json();
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+export const deleteComments = async () => {
+  try {
+    const response = await fetch("https://api.dive-in.co.kr/community/comments");
+    const body = await response.json();
+  } catch (error) {
+    console.log(error);
+    return [];
   }
 };
