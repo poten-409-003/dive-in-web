@@ -7,6 +7,8 @@ import WriterProfile from "../../_components/WriterProfile";
 import CommentList from "../../comments/page";
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 import { VscKebabVertical } from "react-icons/vsc";
+import { GoPencil } from "react-icons/go";
+import { GoTrash } from "react-icons/go";
 import Link from "next/link";
 
 type CommunityProps = {
@@ -25,6 +27,7 @@ type CommunityProps = {
 const ClientCommunityPage = ({ community }: CommunityProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [comment, setComment] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleTextareaHeight = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -38,6 +41,10 @@ const ClientCommunityPage = ({ community }: CommunityProps) => {
     }
   };
 
+  const handleMenuOpen = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
   return (
     <div className="flex flex-col pb-10 relative h-full">
       {/* 상단Nav */}
@@ -46,7 +53,7 @@ const ClientCommunityPage = ({ community }: CommunityProps) => {
           <ArrowLeftIcon className="w-6 h-6 text-gray-900" />
         </Link>
 
-        <button type="button" className="flex p-3">
+        <button type="button" className="flex p-3" onClick={handleMenuOpen}>
           <VscKebabVertical className="w-6  h-6 text-gray-900" />
         </button>
       </div>
@@ -141,6 +148,49 @@ const ClientCommunityPage = ({ community }: CommunityProps) => {
             </button>
           </div>
         )}
+      </div>
+
+           {/* 글 메뉴 슬라이드 */}
+           <div
+        className={`fixed bottom-0 left-1/2 w-full transform -translate-x-1/2 bg-white p-4 pt-6 pb-6 border-t rounded-t-2xl transition-transform duration-300 ${
+          isMenuOpen ? "translate-y-0" : "translate-y-full"
+        }`}
+        style={{
+          width: "100%",
+          maxWidth: "48rem",
+          boxShadow: "0 -1px 3px rgba(0, 0, 0, 0.05)",
+        }}
+      >
+        <ul>
+          <li
+            className="py-2 text-sm font-bold hover:bg-gray-100 cursor-pointer"
+            onClick={() => {}}
+          >
+            <div className="flex justify-start items-center gap-1 flex-1">
+              <RiShare2Line className="w-5 h-5 text-gray-900" />
+              <p className="text-gray-900">공유하기</p>
+            </div>
+          </li>
+
+          <li
+            className="py-2 text-sm font-bold hover:bg-gray-100 cursor-pointer"
+            onClick={() => {}}
+          >
+            <div className="flex justify-start items-center gap-1 flex-1">
+              <GoPencil className="w-5 h-5 text-gray-900" />
+              <p className="text-gray-900">수정하기</p>
+            </div>
+          </li>
+          <li
+            className="py-2 text-sm font-bold hover:bg-gray-100 cursor-pointer"
+            onClick={() => {}}
+          >
+            <div className="flex justify-start items-center gap-1 flex-1">
+              <GoTrash className="w-5 h-5 text-red-500" />
+              <p className="text-red-500">삭제하기</p>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   );
