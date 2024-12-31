@@ -3,17 +3,19 @@
 import Image from "next/image";
 
 type Props = {
-  avatar: string;
+  avatar: string | null;
   name: string;
   width?: number;
   height?: number;
 };
 
 const WriterProfile = ({ avatar, name, width = 24, height = 24 }: Props) => {
-  return (
+  const profileImage = avatar || "/empty/academy_profile.png";
+
+  return (  
     <div className="flex-none flex items-center gap-2">
       <Image
-        src={avatar || "/empty/academy_profile.png"}
+        src={profileImage}
         alt={`${name} 프로필`}
         width={width}
         height={height}
