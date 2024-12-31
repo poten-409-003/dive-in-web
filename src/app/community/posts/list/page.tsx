@@ -3,14 +3,13 @@ import Link from "next/link";
 import Image from "next/image";
 import CommunitiesClient from "./clientPage";
 
-export default async function CommunityPage() {
-  const nonePosts = await getCommunities("none", 0);
-  // const popularPosts = await getCommunities("popular", 0);
-  // const competitionPosts = await getCommunities("competition", 0);
-  // const poolPosts = await getCommunities("pool", 0);
-  // const goodsPosts = await getCommunities("goods", 0);
-  // const communicationPosts = await getCommunities("communication", 0);
+export default async function CommunityPage({searchParams}: {searchParams: {category?: string; page?: string};}) {
+  const category = searchParams.category || "none";
+  const page = searchParams.page || "0";
+  console.log("category:", category, "page:", page); 
 
+  const communities = await getCommunities(category, page);
+  
   return (
     <div className="flex flex-col">
       <header className="flex gap-2 pt-4 px-4">
@@ -28,11 +27,11 @@ export default async function CommunityPage() {
       <section className="flex flex-col">
         <div className="flex items-center gap-2 pt-6 px-4 pb-5">
           <h2 className="text-heading_2">소통해요</h2>
-          <p className="text-body_lb text-gray-500">{nonePosts.length}</p>
+          <p className="text-body_lb text-gray-500">{communities.length}</p>
         </div>
 
         <div>
-          <CommunitiesClient nonePosts={nonePosts} />
+          <CommunitiesClient communityList={communities} category={category} page={page}/>
         </div>
       </section>
     </div>

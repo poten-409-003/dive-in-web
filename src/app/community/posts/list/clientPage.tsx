@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import FloatingButton from "../../../_components/FloatingButton";
+import FloatingButton from "../../_components/FloatingButton";
 import CategoryFilter from "@/app/community/_components/CategoryFilter";
 import { getCommunities } from "@/api/server/community";
+import { useRouter } from "next/navigation";
 
 type Communities = {
   postId: number;
@@ -17,6 +18,7 @@ type Communities = {
   writer: string;
   writerProfile: string | null;
   createdAt: string;
+  category?: string;
 };
 
 const CATEGORIES = [
@@ -28,22 +30,26 @@ const CATEGORIES = [
   {name: "수영대회", key: "competition"},
 ];
 
-export default function CommunitiesClient({ nonePosts }:{ nonePosts: Communities[];}) {
-  const [selectedCategory, setSelectedCategory] = useState<string>("none"); //기본 카테고리
-  const [communities, setCommunities] = useState<Communities[]>(nonePosts); //초기 데이터
-  // const [loading, setLoading] = useState<boolean>(false);
+export default function CommunitiesClient({ communityList, category, page }:{
+    communityList: Communities[];
+    category: string;
+    page: string;
+  }) {
+  const [selectedCategory, setSelectedCategory] = useState<string>(category); //기본 카테고리
+  const [communities, setCommunities] = useState<Communities[]>(communityList); //초기 데이터
+  const router = useRouter();
 
+  //카테고리 변경시 URL 업데이트
   useEffect(() => {
+    //카테고리 변경시 데이터 가져옴
     const fetchData = async() => {
-      // setLoading(true);
-      const data = await getCommunities(selectedCategory, 0);
-      // console.log("data: ", data);
+      const data = await getCommunities(selectedCategory, page);
       setCommunities(data);
-      // setLoading(false);
     };
 
     fetchData();
-  },[selectedCategory]);
+    router.push(`/community/posts/list?category=${selectedCategory}&page=${page}`);
+  },[selectedCategory, page]);
 
   return (
     <div>
