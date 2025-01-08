@@ -7,42 +7,53 @@ import { getUser } from "@/actions/user";
 import { RiShare2Line } from "react-icons/ri";
 import { GoPencil } from "react-icons/go";
 import { GoTrash } from "react-icons/go";
+import { CommentProps } from "@/types/community";
 
-interface CommentProps {
-  id: number;
-  content: string;
-  date: string;
-  writer: string;
-  writerId: number;
-  loggedUserId: number | null;
-}
+// interface CommentProps {
+//   // writerId: number;
+//   // loggedUserId: number | null;
+//   cmmtId: number;
+//   content: string;
+//   groupName: number;
+//   orderNumber: number;
+//   cmntClass: number;
+//   writer: string;
+//   writerProfile: string;
+//   likeCnt: number;
+//   createdAt: string;
+// }
+
+// interface CommentsProps {
+//   commentList: CommentProps[];
+// }
 
 const Comment = ({
-  id,
+  cmmtId,
   content,
-  date,
+  groupName,
+  orderNumber,
+  cmntClass,
   writer,
-  writerId,
-  loggedUserId,
+  writerProfile,
+  likeCnt,
+  createdAt
 }: CommentProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isWriter = writerId === loggedUserId;
+  // const isWriter = writerId === loggedUserId;
 
   const handleMenuOpen = () => {
     setIsMenuOpen((prev) => !prev);
   };
 
   return (
-    <div key={id} className="py-3">
+    <div key={cmmtId} className="py-3">
       {/* 작성자 */}
       <div className="flex flex-row items-start px-4">
         <WriterProfile
-          // avatar={community.userImageUrl}
-          // name={community.userName}
           width={24}
           height={24}
-          avatar=""
-          name=""
+          avatar={writerProfile}
+          name={writer}
         />
         <div className="flex flex-col">
           <p className="text-sm font-semibold text-gray-700">
@@ -50,19 +61,28 @@ const Comment = ({
             {writer}
           </p>
         </div>
-        {isWriter && (
+
           <button type="button" className="flex ml-auto">
             <VscKebabVertical
               className="w-6 h-6 text-gray-900"
               onClick={handleMenuOpen}
             />
           </button>
-        )}
+        {/* {isWriter && (
+          <button type="button" className="flex ml-auto">
+            <VscKebabVertical
+              className="w-6 h-6 text-gray-900"
+              onClick={handleMenuOpen}
+            />
+          </button>
+        )} */}
       </div>
+
+
       <p className="text-gray-700 px-4 mt-2">{content}</p>
 
       <div className="flex flex-row items-center gap-2 mt-2">
-        <span className="text-sm text-gray-500 pl-4">{date}</span>
+        <span className="text-sm text-gray-500 pl-4">{createdAt}</span>
         <button type="button" className="text-xs text-gray-600">
           <span>답글 쓰기</span>
         </button>
@@ -105,37 +125,44 @@ const Comment = ({
   );
 };
 
-export default function CommentList() {
-  const [comments, setComments] = useState<CommentProps[]>([]);
-  const [loggedUserId, setLoggedUserId] = useState<number | null>(1);
+export default function CommentList({commentList}: {commentList: CommentProps[]}) {
+  // const [comments, setComments] = useState<CommentProps[]>([]);
+  // const [loggedUserId, setLoggedUserId] = useState<number | null>(1);
 
-  useEffect(() => {
-    const fetchComments = async () => {
-      const data = await getComments();
-      setComments(data);
-    };
-    fetchComments();
+  // useEffect(() => {
+  //   const fetchComments = async () => {
+  //     const data = await getComments();
+  //     setComments(data);
+  //   };
+  //   fetchComments();
 
-    const fetchUserId = async () => {
-      // const userId = await getUser();
-      const userId = 1;
-      setLoggedUserId(userId);
-    };
-    fetchUserId();
-  }, []);
+  //   const fetchUserId = async () => {
+  //     // const userId = await getUser();
+  //     const userId = 1;
+  //     setLoggedUserId(userId);
+  //   };
+  //   fetchUserId();
+  // }, []);
+
+  console.warn("commentList::::::::::::::::&&&&&&&&&:", commentList);
 
   return (
     <div className="bg-white-100 px-4 py-4">
-      <h3 className="text-xs text-gray-600 mb-2">댓글 {comments.length}</h3>
-      {comments.map((comment) => (
+      <h3 className="text-xs text-gray-600 mb-2">댓글 {commentList.length}</h3>
+      {commentList.map((comment) => (
         <Comment
-          key={comment.id}
-          id={comment.id}
+          key={comment.cmmtId}
+          cmmtId={comment.cmmtId}
           content={comment.content}
-          date={comment.date}
+          groupName={comment.groupName}
+          orderNumber={comment.orderNumber}
+          cmntClass={comment.cmntClass}
           writer={comment.writer}
-          writerId={comment.writerId}
-          loggedUserId={comment.loggedUserId}
+          writerProfile={comment.writerProfile}
+          likeCnt={comment.likeCnt}
+          createdAt={comment.createdAt}
+          // writerId={comment.writerId}
+          // loggedUserId={comment.loggedUserId}
         />
       ))}
     </div>

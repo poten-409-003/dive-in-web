@@ -8,8 +8,15 @@ import { AiOutlineLink } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import { createCommunity } from "@/api/server/community";
+import { useRouter } from "next/navigation";
 
-const CATEGORIES = ["소통해요", "수영장", "수영물품", "수영대회"];
+// const CATEGORIES = ["소통해요", "수영장", "수영물품", "수영대회"];
+const CATEGORIES = [
+  { name: "소통해요", key: "COMMUNICATION" },
+  { name: "수영장", key: "POOL" },
+  { name: "수영물품", key: "GOODS" },
+  { name: "수영대회", key: "COMPETITION" },
+];
 
 export default function CreatePost() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +32,7 @@ export default function CreatePost() {
   const [preview, setPreview] = useState<any>(null);//OG데이터
   const [ogContent, setOgContent] = useState("");
   const containerRef = useRef<HTMLDivElement | null>(null); 
+  const router = useRouter();
 
   useEffect(() => {
     if(isLinkOpen) {
@@ -36,23 +44,49 @@ export default function CreatePost() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData();
+    const selectedCategoryKey = CATEGORIES.find((category) => category.name === selectedCategory)?.key;
+    if(!selectedCategoryKey){
+      alert("카테고리를 선택해주세요!");
+      return;
+    }
+    formData.append("categoryType", selectedCategoryKey);
 
-    const formData = new FormData(e.currentTarget);
-    formData.append("category", selectedCategory);
+    const title = e.currentTarget.querySelector<HTMLInputElement>("#title");
+    if(title){
+      formData.append("title", title.value);
+    }else{
+      console.error("제목이 입력되지 않았습니다");
+      return;
+    }
+
+    formData.append("content", content);
+    
+    const userId = "1";
+    formData.append("memberId", userId); //마이페이지 보고 가져오기
+
+    images.forEach((image) => {
+      formData.append("images", image);
+    })
 
     try {
-      const result = await createCommunity(formData);
-      console.log("글 작성 성공", result);
+      const postId = await createCommunity(formData);
+      console.log("글 작성 성공! postId::", postId);
+      if(postId) {
+        router.push(`/community/posts/${postId}`);
+      }
     } catch (err) {
       console.log("글 작성 실패", err);
     }
   };
 
+  //카테고리
   const handleCategorySelect = (category: string) => {
-    setSelectedCategory(category); // 선택된 카테고리 업데이트
+    setSelectedCategory(category); 
     setIsOpen(false);
   };
 
+  //이미지
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
@@ -61,10 +95,10 @@ export default function CreatePost() {
       alert("이미지는 최대 5장까지 업로드 가능합니다.");
       return;
     }
-
     setImages((prev) => [...prev, ...selectedFiles]); //이미지추가
   };
 
+  //이미지 삭제
   const handleImageDelete = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index)); //해당index 이미지삭제
   };
@@ -77,6 +111,7 @@ export default function CreatePost() {
     setIsLinkOpen((prev) => !prev);
   };
 
+  //링크
   const handleSubmitLink = async () => {
     console.log("링크 삽입 완료", link);
     setIsLinkOpen(false);
@@ -97,7 +132,7 @@ export default function CreatePost() {
     // <div className="flex flex-col pb-10 relative h-full">
     <div className="flex flex-col min-h-screen pb-[4.5rem]">
       <div className="flex items-center justify-between py-1 px-1">
-        <Link href="/community/posts/list/none" className="flex p-3">
+        <Link href="/community/posts/list/none/0" className="flex p-3">
           <ArrowLeftIcon className="w-6 h-6 text-gray-900" />
         </Link>
 
@@ -130,11 +165,11 @@ export default function CreatePost() {
               <ul>
                 {CATEGORIES.map((category) => (
                   <li
-                    key={category}
+                    key={category.key}
                     className="py-2 text-sm font-bold hover:bg-gray-100 cursor-pointer"
-                    onClick={() => handleCategorySelect(category)}
+                    onClick={() => handleCategorySelect(category.name)}
                   >
-                    {category}
+                    {category.name}
                   </li>
                 ))}
               </ul>

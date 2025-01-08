@@ -8,8 +8,15 @@ import { AiOutlineLink } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import { createCommunity, getCommunity, updateCommunity } from "@/api/server/community";
+import { useRouter } from "next/navigation";
 
-const CATEGORIES = ["소통해요", "수영장", "수영물품", "수영대회"];
+// const CATEGORIES = ["소통해요", "수영장", "수영물품", "수영대회"];
+const CATEGORIES = [
+  { name: "소통해요", key: "COMMUNICATION" },
+  { name: "수영장", key: "POOL" },
+  { name: "수영물품", key: "GOODS" },
+  { name: "수영대회", key: "COMPETITION" },
+];
 
 type EditPostProps = {
   params: {id: string};
@@ -17,21 +24,23 @@ type EditPostProps = {
 
 export default function EditPost({params}: EditPostProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("소통해요");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [textareaHeight, setTextareaHeight] = useState("500px");
+  // const [textareaHeight, setTextareaHeight] = useState("500px");
 
-  const [images, setImages] = useState<File[]>([]);
+  //이미지처리
+  const [existImages, setExistImages] = useState<{repImage:boolean ; imageUrl: string}[]>([]);
+  const [newImages, setNewImages] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null); //input참조
+  const postId = params.id;
   
   const [isLinkOpen, setIsLinkOpen] = useState(false);
   const [link, setLink] = useState("");
   const [preview, setPreview] = useState<any>(null);//OG데이터
-  const [ogContent, setOgContent] = useState("");
+  // const [ogContent, setOgContent] = useState("");
   const containerRef = useRef<HTMLDivElement | null>(null); 
-
-  const postId = params.id;
+  const router = useRouter();
 
   useEffect(() => {
     if(isLinkOpen) {
@@ -51,7 +60,8 @@ export default function EditPost({params}: EditPostProps) {
 
         setTitle(post.title);
         setContent(post.content);
-        setSelectedCategory(post.category);
+        setSelectedCategory(post.categoryName || "소통해요");
+        setExistImages(post.images);
       } catch (error) {
         console.error(error);        
       }
@@ -61,23 +71,53 @@ export default function EditPost({params}: EditPostProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.warn("카테고리는?::::", selectedCategory);
 
-    const formData = new FormData(e.currentTarget);
-    formData.append("category", selectedCategory);
+    // const formData = new FormData(e.currentTarget);
+    const formData = new FormData();
+    const category = CATEGORIES.find((category) => category.name === selectedCategory);
+    if(!category){
+      alert("카테고리를 선택해주세요!");
+      return;
+    }
+
+    formData.append("memberId", "1");
+    formData.append("categoryType", category.key);
     formData.append("title", title);
     formData.append("content", content);
 
+    newImages.forEach((image) => {
+      formData.append("newImages", image);
+    });
+
+    formData.append(
+      "existingImages", JSON.stringify(existImages.map((img) => ({repImage: img.repImage, imageUrl: img.imageUrl})))
+    );
+    
     try {
       const result = await updateCommunity(postId, formData);
       console.log("글 수정 성공", result);
+
+      //최신 데이터 가져오기
+      const updatePost = await getCommunity(postId);
+      console.log("변경된 내용:", updatePost);
+      if(updatePost){
+        setTitle(updatePost.title);
+        setContent(updatePost?.content);
+      }
+
+      if(postId) {
+        router.replace(`/community/posts/${postId}`);
+      }
+
     } catch (err) {
       console.error(err);
       alert("글 수정 실패");
     }
   };
 
-  const handleCategorySelect = (category: string) => {
-    setSelectedCategory(category); // 선택된 카테고리 업데이트
+  const handleCategorySelect = (categoryName: string) => {
+    setSelectedCategory(categoryName); // 선택된 카테고리 업데이트
     setIsOpen(false);
   };
 
@@ -85,16 +125,20 @@ export default function EditPost({params}: EditPostProps) {
     if (!e.target.files) return;
 
     const selectedFiles = Array.from(e.target.files); //선택파일 배열변환
-    if (images.length + selectedFiles.length > 5) {
+    if (existImages.length + newImages.length >= 5) {
       alert("이미지는 최대 5장까지 업로드 가능합니다.");
       return;
     }
 
-    setImages((prev) => [...prev, ...selectedFiles]); //이미지추가
+    setNewImages((prev) => [...prev, ...selectedFiles]); //이미지추가
   };
 
-  const handleImageDelete = (index: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== index)); //해당index 이미지삭제
+  const handleNewImageDelete = (index: number) => {
+    setNewImages((prev) => prev.filter((_, i) => i !== index)); //해당index 이미지삭제
+  };
+
+  const handleExistImageDelete = (imageUrl: string) => {
+    setExistImages((prev) => prev.filter((image) => image.imageUrl !== imageUrl)); //해당index 이미지삭제
   };
 
   const handleImageButtonClick = () => {
@@ -125,7 +169,7 @@ export default function EditPost({params}: EditPostProps) {
     // <div className="flex flex-col pb-10 relative h-full">
     <div className="flex flex-col min-h-screen pb-[4.5rem]">
       <div className="flex items-center justify-between py-1 px-1">
-        <Link href="/community/posts/list/none" className="flex p-3">
+        <Link href="/community/posts/list/none/0" className="flex p-3">
           <ArrowLeftIcon className="w-6 h-6 text-gray-900" />
         </Link>
 
@@ -158,11 +202,11 @@ export default function EditPost({params}: EditPostProps) {
               <ul>
                 {CATEGORIES.map((category) => (
                   <li
-                    key={category}
+                    key={category.key}
                     className="py-2 text-sm font-bold hover:bg-gray-100 cursor-pointer"
-                    onClick={() => handleCategorySelect(category)}
+                    onClick={() => handleCategorySelect(category.name)}
                   >
-                    {category}
+                    {category.name}
                   </li>
                 ))}
               </ul>
@@ -200,25 +244,49 @@ export default function EditPost({params}: EditPostProps) {
         />
 
         {/* 이미지 미리보기 */}
-        <div className="flex gap-2 flex-wrap px-4 pb-3">
-          {images.map((image, index) => (
-            <div key={index} className="relative">
+        <div className="flex flex-wrap gap-2 px-4 pb-3">
+          {/* 기존 이미지 */}
+          {existImages.map((image, index) => (
+            <div key={`exist-${index}`} className="relative w-20 h-20">
               <img
-                src={URL.createObjectURL(image)} //이미지 미리보기 URL
-                alt={`이미지 ${index + 1}`}
-                className="w-20 h-20 object-cover rounded"
+                src={image.imageUrl} //이미지 미리보기 URL
+                alt={`기존 이미지 ${index + 1}`}
+                className="w-full h-full object-cover rounded"
               />
+              <span 
+                className="absolute top-1 left-1 bg-gray-700 text-white text-xs px-1 py-0.5 rounded"
+              >
+                {image.repImage? "대표" : ""}
+              </span>
               <button
                 type="button"
-                onClick={() =>
-                  setImages((prev) => prev.filter((_, i) => i !== index))
-                }
+                onClick={() => handleExistImageDelete(image.imageUrl)}
                 className="absolute w-5 h-5 top-1 right-1 bg-gray-600 text-white font-semibold text-xs flex justify-center rounded-full"
               >
                 x
               </button>
             </div>
           ))}
+
+          {/* 새로운 이미지 추가 */}
+          {newImages.map((image, index) => (
+            <div key={`new-${index}`} className="relative w-20 h-20">
+              <img 
+                src={URL.createObjectURL(image)}
+                alt={`새 이미지 ${index + 1}`}
+                className="w-full h-full object-cover rounded"
+              />  
+
+              <button
+                type="button"
+                onClick={() => handleNewImageDelete(index)}
+                className="absolute w-5 h-5 top-1 right-1 bg-gray-600 text-white font-semibold text-xs flex justify-center rounded-full"
+              >
+                x
+              </button>
+            </div>
+          ))}
+
         </div>
 
         {/* 내용 */}
@@ -250,6 +318,7 @@ export default function EditPost({params}: EditPostProps) {
 
       <div className="fixed w-full bottom-14 p-4 max-w-[48rem] bg-white border-t border-gray-300">
         <div className="flex justify-start items-center jusfity-center gap-8 px-3 text-gray-500">
+          {/* 이미지 업로드 버튼 */}
           <button
             type="button"
             onClick={handleImageButtonClick}
