@@ -1,7 +1,7 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LuSend } from "react-icons/lu";
-import { TiHeartOutline } from "react-icons/ti";
+import { TiHeartOutline, TiHeartFullOutline } from "react-icons/ti";
 import { RiShare2Line } from "react-icons/ri";
 import WriterProfile from "../../_components/WriterProfile";
 import CommentList from "../../comments/page";
@@ -11,33 +11,38 @@ import { GoPencil } from "react-icons/go";
 import { GoTrash } from "react-icons/go";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { CommunityProps } from "@/types/community";
+import CustomModal from "@/app/_components/CustomModal";
+import {
+  addLikePost,
+  deleteCommunity,
+  deleteLikePost,
+  getCommunity,
+} from "@/api/server/community";
+import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 
-type CommunityProps = {
-  community: {
-    id: number;
-    category: string;
-    title: string;
-    content: string;
-    date: string;
-    views: number;
-    likes: number;
-    comments: number;
-  };
-};
-
-const ClientCommunityPage = ({ community }: CommunityProps) => {
+export default function ClientCommunity({
+  community,
+}: {
+  community: CommunityProps;
+}) {
+  console.warn("::::::::::postId가 넘어오니?::", community.postId);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [comment, setComment] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [changeLiked, setChangeLiked] = useState(community.isLiked);
+  const [changeLikesCnt, setChangeLikesCnt] = useState(community.likesCnt);
   const router = useRouter();
+  // console.warn("코멘트 안오냐?:::::::::::", community.commentList);
 
   const handleTextareaHeight = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const textarea = textareaRef.current;
 
     setComment(e.target.value);
 
-    if(textarea){
+    if (textarea) {
       textarea.style.height = "1.25rem"; //초기높이
       textarea.style.height = `${textarea.scrollHeight}px`; //내용에 맞게 높이설정
     }
@@ -47,11 +52,79 @@ const ClientCommunityPage = ({ community }: CommunityProps) => {
     setIsMenuOpen((prev) => !prev);
   };
 
+  const handleDeleteModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteModalCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleDelete = async () => {
+    const isDeleted = await deleteCommunity(community.postId + "", "1");
+    console.warn("삭제된 게시글:", community.postId);
+
+    if (isDeleted) {
+      await router.replace("/community/posts/list?category=none&page=0");
+      alert("게시글이 삭제되었습니다.");
+    } else {
+      alert("게시글 삭제에 실패했습니다.");
+    }
+  };
+
+  const handleLike = async () => {
+    console.warn("현재 좋아요의 상태는?:::::::::::::::::::", community.isLiked);
+
+    try {
+      setChangeLiked((prev) => !prev);
+      setChangeLikesCnt((prev) => (changeLiked ? prev - 1 : prev + 1));
+
+      const response = changeLiked
+        ? await deleteLikePost(community.postId + "", "1") //좋아요가 되어있으면
+        : await addLikePost(community.postId + "", "1"); //좋아요가 안되어있으면
+
+      if (!response || !response.success || response.data === null) {
+        throw new Error(response?.message || "서버 응답 오류");
+      }
+
+      console.log("현재setIsLiked::", response.data.isLiked);
+      setChangeLiked(response.data.isLiked);
+
+      console.log("현재setLikesCnt::", response.data.likeCnt);
+      setChangeLikesCnt(response.data.likeCnt);
+    } catch (error) {
+      console.error("좋아요 처리 오류! 기존으로 돌아갑니다:::", error);
+
+      // 상태 롤백
+      setChangeLiked((prev) => !prev);
+      setChangeLikesCnt((prev) => (changeLiked ? prev + 1 : prev - 1));
+    }
+  };
+
+  //최신데이터 가져오기
+  useEffect(() => {
+    const fetchPost = async() => {
+      try {
+        const reloadPost = await getCommunity(community.postId + "");
+
+        if(reloadPost){
+          setChangeLiked(reloadPost?.isLiked);
+          setChangeLikesCnt(reloadPost?.likesCnt);
+        }
+
+      } catch (error) {
+        console.error("초기 데이터 동기화 오류:", error);
+      }
+    };
+
+    fetchPost();
+  },[community.postId]); 
+
   return (
     <div className="flex flex-col pb-10 relative h-full">
       {/* 상단Nav */}
       <div className="flex items-center justify-between py-1 px-1">
-        <Link href="/community/posts/list/none" className="flex p-3">
+        <Link href="/community/posts/list/none/0" className="flex p-3">
           <ArrowLeftIcon className="w-6 h-6 text-gray-900" />
         </Link>
 
@@ -64,31 +137,29 @@ const ClientCommunityPage = ({ community }: CommunityProps) => {
       <div
         className={`mx-4 text-label_sb px-1.5 py-1 rounded bg-chip-1 text-chip-1-foreground inline-block w-fit`}
       >
-        <p>{community.category}</p>
+        {/* <p>{community.category}</p> */}
+        <p>{community.categoryName}</p>
       </div>
 
       {/* 작성자 */}
       <div className="flex flex-row items-start px-4 mt-3">
         <WriterProfile
-          // avatar={community.userImageUrl}
-          // name={community.userName}
           width={36}
           height={36}
-          avatar=""
+          avatar={community.writerProfile}
           name=""
         />
         <div className="flex flex-col">
           <p className="text-sm font-semibold text-gray-700">
-            {/* {community.userName || "작성자"} */}
-            작성자이름수정하기
+            {community.writer || "작성자"}
           </p>
 
           <div className="flex gap-2 text-sm text-gray-500">
             <span className="text-sm text-gray-500 ml-auto">
-              {community.date}
+              {community.createdAt}
             </span>
             <span className="text-sm text-gray-500 ml-auto">
-              조회{community.views}
+              조회{community.viewsCnt}
             </span>
           </div>
         </div>
@@ -99,28 +170,52 @@ const ClientCommunityPage = ({ community }: CommunityProps) => {
         <p className="text-gray-700 mt-4 whitespace-pre-line">
           {community.content}
         </p>
+
+        <div className="mt-4 grid grid-cols-2 gap-4">
+          {community.images.length > 0 ? (
+              // <div key={index} className="overflow-hidden rounded-lg">
+              <div className="mt-4">
+                <DetailPagePhotoSlider
+                  imageUrls={community.images.map((image) => image.imageUrl)}
+                  alt="게시글 이미지"
+                  // alt={`이미지 ${index + 1}`}
+                  // className="w-full h-auto object-cover"
+                />
+              </div>
+          ) : (
+            // 이미지가 없을시
+            <p className="text-gray-500"></p>
+          )}
+        </div>
       </div>
 
       <div className="flex justify-center items-center gap-4">
-        <div className="flex flex-row justify-center items-center gap-1 flex-1">
-          <TiHeartOutline className="w-5 h-5 text-gray-700" />
-          <p className="text-gray-700">{community.likes}</p>
-        </div>
-        <div className="flex justify-center items-center gap-1 flex-1">
+        <button
+          className="flex flex-row justify-center items-center gap-1 flex-1"
+          onClick={handleLike}
+        >
+          {changeLiked ? (
+            <TiHeartFullOutline className="w-5 h-5 text-red-500" />
+          ) : (
+            <TiHeartOutline className="w-5 h-5 text-gray-700" />
+          )}
+          <span className="text-gray-700">{changeLikesCnt}</span>
+        </button>
+        <button className="flex justify-center items-center gap-1 flex-1">
           <RiShare2Line className="w-5 h-5 text-gray-700" />
           <p className="text-gray-500"></p>
-        </div>
+        </button>
       </div>
 
       <div className="bg-gray-100 py-2 mt-4"></div>
-      <CommentList />
+      <CommentList commentList={community.commentList} />
 
       {/* 댓글 상자 */}
       <div className="relative px-4 pb-4">
         {!isLoggedIn ? (
           <p className="flex items-center justify-between w-full px-4 py-5 text-left text-sm bg-gray-100 rounded text-gray-500 focus:outline-none">
             로그인 후 댓글 달기가 가능합니다
-            <button 
+            <button
               className="text-left text-sm font-semibold text-blue-900"
               onClick={() => {
                 console.log("로그인되었습니다");
@@ -132,19 +227,20 @@ const ClientCommunityPage = ({ community }: CommunityProps) => {
           </p>
         ) : (
           <div className="flex flex-row px-4 py-5 items-center bg-gray-100 rounded">
-            <textarea 
-            ref={textareaRef} 
-            value={comment} 
-            onChange={handleTextareaHeight}
-            placeholder="댓글을 입력해주세요."//500자 제한
-            maxLength={500}
-            style={{
-              height: "1.25rem", //초기높이 20
-              lineHeight: "1.25rem", //높이 20
-              padding: "0px", 
-              boxSizing: "border-box", // 높이에 패딩과 테두리 포함
-            }}
-            className="w-full resize-none overflow-hidden border-none text-left text-sm text-gray-700 bg-gray-100 focus:outline-none" />
+            <textarea
+              ref={textareaRef}
+              value={comment}
+              onChange={handleTextareaHeight}
+              placeholder="댓글을 입력해주세요." //500자 제한
+              maxLength={500}
+              style={{
+                height: "1.25rem", //초기높이 20
+                lineHeight: "1.25rem", //높이 20
+                padding: "0px",
+                boxSizing: "border-box", // 높이에 패딩과 테두리 포함
+              }}
+              className="w-full resize-none overflow-hidden border-none text-left text-sm text-gray-700 bg-gray-100 focus:outline-none"
+            />
             <button className="text-left text-sm font-semibold text-gray-500">
               <LuSend size={18} />
             </button>
@@ -152,8 +248,8 @@ const ClientCommunityPage = ({ community }: CommunityProps) => {
         )}
       </div>
 
-           {/* 글 메뉴 슬라이드 */}
-           <div
+      {/* 글 메뉴 슬라이드 */}
+      <div
         className={`fixed bottom-0 left-1/2 w-full transform -translate-x-1/2 bg-white p-4 pt-6 pb-6 border-t rounded-t-2xl transition-transform duration-300 ${
           isMenuOpen ? "translate-y-0" : "translate-y-full"
         }`}
@@ -178,25 +274,35 @@ const ClientCommunityPage = ({ community }: CommunityProps) => {
             className="py-2 text-sm font-bold hover:bg-gray-100 cursor-pointer"
             onClick={() => {}}
           >
-            <div className="flex justify-start items-center gap-1 flex-1"
-            onClick={() => router.push(`/community/posts/${community.id}/edit`)}>
+            <div
+              className="flex justify-start items-center gap-1 flex-1"
+              onClick={() =>
+                router.push(`/community/posts/${community.postId}/edit`)
+              }
+            >
               <GoPencil className="w-5 h-5 text-gray-900" />
               <p className="text-gray-900">수정하기</p>
             </div>
           </li>
           <li
             className="py-2 text-sm font-bold hover:bg-gray-100 cursor-pointer"
-            onClick={() => {}}
+            onClick={handleDeleteModalOpen}
           >
             <div className="flex justify-start items-center gap-1 flex-1">
               <GoTrash className="w-5 h-5 text-red-500" />
               <p className="text-red-500">삭제하기</p>
             </div>
+
+            <CustomModal
+              isOpen={isModalOpen}
+              title="삭제 확인"
+              message="정말로 게시글을 삭제하시겠습니까?"
+              onConfirm={handleDelete}
+              onCancel={handleDeleteModalCancel}
+            />
           </li>
         </ul>
       </div>
     </div>
   );
-};
-
-export default ClientCommunityPage;
+}
