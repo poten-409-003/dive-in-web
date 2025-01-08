@@ -39,7 +39,7 @@ const DetailPagePhotoSlider = ({ imageUrls, alt }: Props) => {
         }}
       >
         <div
-          className="relative w-full flex snap-x snap-mandatory overflow-x-auto no-scrollbar"
+          className="relative w-full flex snap-x snap-mandatory overflow-x-auto scroll-smooth no-scrollbar"
           ref={sliderRef}
         >
           {/* snap-mandatory를 활성화하여, 약간의 스크롤로 snap을 강제하여 쉽게 넘어갈 수 있도록 함 */}
@@ -51,7 +51,8 @@ const DetailPagePhotoSlider = ({ imageUrls, alt }: Props) => {
                   imageRefs.current[index] = el;
                 }
               }}
-              className="snap-center snap-always relative shrink-0 w-full h-40 overflow-hidden"
+              // className="snap-center snap-always relative shrink-0 w-full h-40 overflow-hidden"
+              className="snap-center shrink-0 w-full h-40 overflow-hidden"
             >
               <Image
                 src={url}
@@ -59,7 +60,9 @@ const DetailPagePhotoSlider = ({ imageUrls, alt }: Props) => {
                 width={400}
                 height={300}
                 priority={index === 0}
-                className="w-full h-full object-cover shadow-xl bg-white"
+                draggable={true}
+                className="w-full h-full object-cover"
+                // className="w-full h-full object-cover shadow-xl bg-white"
               />
             </div>
           ))}
