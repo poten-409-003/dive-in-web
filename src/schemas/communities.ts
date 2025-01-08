@@ -7,6 +7,7 @@ export const imageSchema = z.object({
 
 export const communitySchema = z.object({
   postId: z.number(),
+  categoryName: z.string().optional(),
   title: z.string(),
   content: z.string(),
   image: imageSchema.nullable(),
@@ -16,6 +17,8 @@ export const communitySchema = z.object({
   writer: z.string(),
   writerProfile: z.string().nullable(),
   createdAt: z.string(),
+  // isPopular: z.string(),
+  // isPopular: z.boolean(),
 });
 
 // export const postsSchema = z.object({
@@ -31,7 +34,8 @@ export const communityDetailCommentSchema = z.object({
   orderNumber: z.number(),
   cmntClass: z.number(),
   writer: z.string(),
-  writerProfile: z.string().url(),
+  writerProfile: z.string().optional(),
+  // writerProfile: z.string().url().optional(),
   likesCnt: z.number(),
   createdAt: z.string(),
 });
@@ -46,16 +50,20 @@ export const communityDetailReCommentSchema = z.object({
 
 export const communityDetailSchema = z.object({
   postId: z.number(),
+  categoryName: z.string().optional(),
   title: z.string(),
   content: z.string(),
-  image: z.array(imageSchema).max(5), //이미지가 최대 5장 들어감
+  images: z.array(imageSchema).max(5), //이미지가 최대 5장 들어감
   likesCnt: z.number(),
+  viewsCnt: z.number(),
   cmmtCnt: z.number(),
-  viewCnt: z.number(),
   writer: z.string(),
-  writerProfile: z.string().url(),
+  writerProfile: z.string().url().nullable(),
   createdAt: z.string(),
-  commentList: z.array(communityDetailCommentSchema).default([]),
+  commentList: z.any(),
+  // commentList: z.array(communityDetailCommentSchema),
+  // commentList: z.array(communityDetailCommentSchema).default([]),
   isLiked: z.boolean(),
-  // categoryType: z.string(),
+  // isPopular: z.booblean(),
+  isPopular: z.string().nullable(),
 });

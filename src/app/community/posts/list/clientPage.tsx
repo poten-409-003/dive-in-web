@@ -6,37 +6,25 @@ import FloatingButton from "../../_components/FloatingButton";
 import CategoryFilter from "@/app/community/_components/CategoryFilter";
 import { getCommunities } from "@/api/server/community";
 import { useRouter } from "next/navigation";
+import { CommunitiesProps } from "@/types/community";
+import { CATEGORIES } from "@/constants/categories";
 
-type Communities = {
-  postId: number;
-  title: string;
-  content: string;
-  image: { repImage: boolean; imageUrl: string } | null;
-  likesCnt: number;
-  cmmtCnt: number;
-  viewCnt: number;
-  writer: string;
-  writerProfile: string | null;
-  createdAt: string;
-  category?: string;
-};
-
-const CATEGORIES = [
-  {name: "전체", key: "none"},
-  {name: "인기글", key: "popular"},
-  {name: "소통해요", key: "communication"},
-  {name: "수영장", key: "pool"},
-  {name: "수영물품", key: "goods"},
-  {name: "수영대회", key: "competition"},
-];
+// export const CATEGORIES = [
+//   {name: "전체", key: "none"},
+//   {name: "인기글", key: "popular"},
+//   {name: "소통해요", key: "communication"},
+//   {name: "수영장", key: "pool"},
+//   {name: "수영물품", key: "goods"},
+//   {name: "수영대회", key: "competition"},
+// ];
 
 export default function CommunitiesClient({ communityList, category, page }:{
-    communityList: Communities[];
+    communityList: CommunitiesProps[];
     category: string;
     page: string;
   }) {
   const [selectedCategory, setSelectedCategory] = useState<string>(category); //기본 카테고리
-  const [communities, setCommunities] = useState<Communities[]>(communityList); //초기 데이터
+  const [communities, setCommunities] = useState<CommunitiesProps[]>(communityList); //초기 데이터
   const router = useRouter();
 
   //카테고리 변경시 URL 업데이트

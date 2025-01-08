@@ -4,35 +4,26 @@ import { FiMessageSquare } from "react-icons/fi";
 import { TiHeartOutline } from "react-icons/ti";
 import WriterProfile from "./WriterProfile";
 import { useState } from "react";
+import { CommunitiesProps } from "@/types/community";
+import { CATEGORIES } from "@/constants/categories";
 
-const CATEGORIES = [
-  { name: "전체", key: "none" },
-  { name: "인기글", key: "popular" },
-  { name: "소통해요", key: "communication" },
-  { name: "수영장", key: "pool" },
-  { name: "수영물품", key: "goods" },
-  { name: "수영대회", key: "competition" },
-];
-
-type Communities = {
-  postId: number;
-  title: string;
-  content: string;
-  image: { repImage: boolean; imageUrl: string } | null;
-  likesCnt: number;
-  cmmtCnt: number;
-  viewCnt: number;
-  writer: string;
-  writerProfile: string | null;
-  createdAt: string;
-};
+// const CATEGORIES = [
+//   { name: "전체", key: "none" },
+//   { name: "인기글", key: "popular" },
+//   { name: "소통해요", key: "communication" },
+//   { name: "수영장", key: "pool" },
+//   { name: "수영물품", key: "goods" },
+//   { name: "수영대회", key: "competition" },
+// ];
 
 export default function CategoryFilter({community, selectedCategory}: {
-  community: Communities; 
+  community: CommunitiesProps; 
   selectedCategory: string;
 }) {
   const categoryName = CATEGORIES.find((category) => 
     category.key === selectedCategory)?.name || "알 수 없음";
+
+  // console.warn(":::::::::::::::::::::::카테고리필터의 postID:", community.postId);
 
   return (
     <li className="border-b border-gray-300 pb-4">
@@ -46,7 +37,7 @@ export default function CategoryFilter({community, selectedCategory}: {
             {/* 여기가 태그/인기 */}
             {(selectedCategory === "none" || selectedCategory === "popular") &&
               <div className={`text-label_sb px-1.5 py-1 rounded bg-chip-1 text-chip-1-foreground inline-block w-fit`}>
-                <p>{categoryName}</p>
+                <p>{community.categoryName || "\u00A0"}</p>
               </div>
             }
 
