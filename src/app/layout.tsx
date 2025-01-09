@@ -6,6 +6,8 @@ import BottomNav from "./_components/BottomNav";
 import KakaoSdkScript from "./_scripts/KakaoSdkScript";
 import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
+import { usePathname } from "next/navigation";
+import BottomNavWrapper from "./BottomNavWrapper";
 
 const KAKAO_APP_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY!;
 
@@ -38,7 +40,7 @@ export default async function RootLayout({
           <main className="flex-1 overflow-y-auto no-scrollbar">
             {children}
           </main>
-          <BottomNav />
+            <BottomNavWrapper />
         </div>
 
         <Script

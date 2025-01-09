@@ -4,22 +4,23 @@ import PersonIcon from "@/components/icons/PersonIcon";
 import PoolIcon from "@/components/icons/PoolIcon";
 import SwimHatIcon from "@/components/icons/SwimHatIcon";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const routes = {
   home: "/lessons",
   pools: "/pools",
-  community: "/community",
+  community: "/community/posts/list",
   mypage: "/mypage",
   login: "/auth/login",
 };
 
 const BottomNav = () => {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const isLessons = pathname.startsWith(routes.home);
   const isPools = pathname.startsWith(routes.pools);
-  const isCommunity = pathname.startsWith(routes.community);
+  const isCommunity = pathname.startsWith(routes.community) && searchParams.get("category") === "none";
   const isMypage = pathname.startsWith(routes.mypage);
   const isLogin = pathname.startsWith(routes.login);
 
@@ -48,7 +49,7 @@ const BottomNav = () => {
         <span className="text-label_sb">수영장</span>
       </Link>
       <Link
-        href={routes.community}
+        href={`${routes.community}?category=none&page=0`}
         className={`flex-1 h-full flex flex-col gap-0.5 items-center justify-center ${
           isCommunity ? "text-gray-900" : "text-gray-500 stroke-current"
         }`}
