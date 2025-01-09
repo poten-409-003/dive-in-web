@@ -9,7 +9,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 const routes = {
   home: "/lessons",
   pools: "/pools",
-  community: "/community/posts/list",
+  // community: "/community/posts/list",
+  community: "/community/posts/list?category=none&page=0",
   mypage: "/mypage",
   login: "/auth/login",
 };
@@ -49,7 +50,8 @@ const BottomNav = () => {
         <span className="text-label_sb">수영장</span>
       </Link>
       <Link
-        href={`${routes.community}?category=none&page=0`}
+        // href={`${routes.community}?category=none&page=0`}
+        href={routes.community}
         className={`flex-1 h-full flex flex-col gap-0.5 items-center justify-center ${
           isCommunity ? "text-gray-900" : "text-gray-500 stroke-current"
         }`}
