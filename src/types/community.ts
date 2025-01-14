@@ -25,20 +25,20 @@ export type CommunityProps = {
   writer: string;
   writerProfile: string | null;
   createdAt: string;
-  // commentList: CommentProps[];
-  commentList: [];
+  commentList: CommentProps[];
+  // commentList: [];
   isLiked: boolean;
   // isPopular: boolean;
 };
 
-// export type CommentProps = {
-//   cmmtId: number;
-//   content: string;
-//   groupName: number;
-//   orderNumber: number;
-//   cmntClass: number;
-//   writer: string;
-//   writerProfile: string;
-//   likeCnt: number;
-//   createdAt: string;
-// };
+export type CommentProps = {
+  cmmtId: number;
+  content: string;
+  groupName: number;
+  orderNumber: number;
+  cmntClass: number;
+  writer: string;
+  writerProfile: string;
+  likeCnt: number;
+  createdAt: string;
+};
