@@ -1,3 +1,4 @@
+"use client";
 // import { CommentProps } from "@/types/community";
 import React from "react";
 
