@@ -1,6 +1,5 @@
 "use client";
 // import { CommentProps } from "@/types/community";
-import React from "react";
 
 interface CommentProps {
   cmmtId: number;
@@ -34,6 +33,11 @@ export default function CommentList({commentList}: {commentList: CommentProps[]}
   // }, []);
 
   console.warn("commentList page:::::::::::::::", commentList);
+  
+  if(!commentList || commentList.length === 0){
+    return <div className="text-gray-500">댓글이 없습니다!!!!!!!!!!!</div>
+  }
+
   return (
     <div className="bg-white-100 px-4 py-4">
       <h3 className="text-xs text-gray-600 mb-2">댓글 {commentList.length}</h3>
