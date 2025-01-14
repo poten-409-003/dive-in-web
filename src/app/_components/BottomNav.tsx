@@ -4,7 +4,7 @@ import PersonIcon from "@/components/icons/PersonIcon";
 import PoolIcon from "@/components/icons/PoolIcon";
 import SwimHatIcon from "@/components/icons/SwimHatIcon";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const routes = {
   home: "/lessons",
@@ -17,11 +17,12 @@ const routes = {
 
 const BottomNav = () => {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
 
   const isLessons = pathname.startsWith(routes.home);
   const isPools = pathname.startsWith(routes.pools);
-  const isCommunity = pathname.startsWith(routes.community) && searchParams.get("category") === "none";
+  const isCommunity = pathname.startsWith(routes.community);
+  // const isCommunity = pathname.startsWith(routes.community) && searchParams.get("category") === "none";
   const isMypage = pathname.startsWith(routes.mypage);
   const isLogin = pathname.startsWith(routes.login);
 
