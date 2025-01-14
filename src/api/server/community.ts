@@ -141,7 +141,6 @@ export const deleteCommunity = async(id: string, memberId: string) => {
   }
 };
 
-
 export const getOG = async(link: string) => {
   try {
     const response = await fetch("/api/shorten-link", {
