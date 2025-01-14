@@ -1,4 +1,5 @@
 "use client";
+
 // import { getComments } from "@/api/server/community";
 import WriterProfile from "../_components/WriterProfile";
 import { VscKebabVertical } from "react-icons/vsc";
@@ -144,7 +145,7 @@ export default function CommentList({commentList}: {commentList: CommentProps[]}
   //   fetchUserId();
   // }, []);
 
-  console.warn("commentList::::::::::::::::&&&&&&&&&:", commentList);
+  console.warn("commentList page:::::::::::::::", commentList);
 
   return (
     <div className="bg-white-100 px-4 py-4">
