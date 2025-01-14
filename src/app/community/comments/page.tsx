@@ -28,6 +28,7 @@ interface CommentProps {
 //   commentList: CommentProps[];
 // }
 
+
 const Comment = ({
   cmmtId,
   content,
