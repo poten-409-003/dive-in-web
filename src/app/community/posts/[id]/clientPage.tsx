@@ -4,7 +4,6 @@ import { LuSend } from "react-icons/lu";
 import { TiHeartOutline, TiHeartFullOutline } from "react-icons/ti";
 import { RiShare2Line } from "react-icons/ri";
 import WriterProfile from "../../_components/WriterProfile";
-import CommentList from "../../comments/page";
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 import { VscKebabVertical } from "react-icons/vsc";
 import { GoPencil } from "react-icons/go";
@@ -20,6 +19,7 @@ import {
   getCommunity,
 } from "@/api/server/community";
 import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
+import CommentList from "../../_components/CommentList";
 
 export default function ClientCommunity({
   community,
