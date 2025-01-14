@@ -1,3 +1,4 @@
+
 // "use client";
 // import { getComments } from "@/api/server/community";
 // import WriterProfile from "../_components/WriterProfile";
@@ -8,6 +9,7 @@
 // import { GoPencil } from "react-icons/go";
 // import { GoTrash } from "react-icons/go";
 // import { CommentProps } from "@/types/community";
+
 
 // // interface CommentProps {
 // //   // writerId: number;
