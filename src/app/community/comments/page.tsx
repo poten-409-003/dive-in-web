@@ -24,9 +24,9 @@ interface CommentProps {
   createdAt: string;
 }
 
-interface CommentsProps {
-  commentList: CommentProps[];
-}
+// interface CommentsProps {
+//   commentList: CommentProps[];
+// }
 
 const Comment = ({
   cmmtId,
