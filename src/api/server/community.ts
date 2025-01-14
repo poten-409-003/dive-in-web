@@ -148,7 +148,7 @@ export const getOG = async(link: string) => {
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({url: link}),
     });
-
+    
     const result = await response.json();
     return result;
   } catch (error) {
@@ -156,9 +156,6 @@ export const getOG = async(link: string) => {
     return [];
   }
 };
-
-
-
 
 // 댓글
 // export const getComments = async () => {
@@ -175,6 +172,7 @@ export const getOG = async(link: string) => {
 //   try {
 //     const response = await fetch(`https://api.dive-in.co.kr/community/comments/${postId}`);
 //     const body = await response.json();
+//     return body;
 //   } catch (error) {
 //     console.log(error);
 //     return [];
