@@ -40,24 +40,27 @@ export const getCommunity = async(postId: string) => {
     if(!response.ok){
       throw new Error(`HTTP에러 상태 코드: ${response.status}`);
     }
+    
     const body = await response.json();
     console.log("API 응답 데이터:", body);
-
+    console.log("commentList 데이터:::", body.data?.commentList);
 
     const validateData = communityDetailSchema.safeParse(body.data);
+
     if (!validateData.success) {
-      // console.error("zod 검증 실패::::", validateData.error);
+      console.error("zod 검증 실패::::", validateData.error);
     } else {
-      // console.log("zod 검증 성공 데이터::::", validateData.data);
+      console.log("zod 검증 성공::::", validateData.data);
     }
 
 
-    console.log(validateData);
+    console.log("zod 검증된 데이터:::", validateData);
     // return validateData;
 
-    // 이미지 처리
+    // 이미지&댓글 처리
     const transformedData: CommunityProps = {
       ...body.data,
+      commentList: body.data.commentList || [],
       images: body.data.images || [],
     };
 
@@ -168,16 +171,16 @@ export const getOG = async(link: string) => {
 //   }
 // };
 
-// export const getComments = async(postId: string) => {
-//   try {
-//     const response = await fetch(`https://api.dive-in.co.kr/community/comments/${postId}`);
-//     const body = await response.json();
-//     return body;
-//   } catch (error) {
-//     console.log(error);
-//     return [];
-//   }
-// };
+export const getComments = async(postId: string) => {
+  try {
+    const response = await fetch(`https://api.dive-in.co.kr/community/comments/${postId}`);
+    const body = await response.json();
+    return body;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
 
 // export const createComment = async(formData: FormData) => {
 //   try {
