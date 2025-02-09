@@ -29,7 +29,7 @@ export default async function CommunityPage({searchParams}: {searchParams: {cate
       <section className="flex flex-col">
         <div className="flex items-center gap-2 pt-6 px-4 pb-5">
           <h2 className="text-heading_2">{selectedCategoryName}</h2>
-          <p className="text-body_lb text-gray-500">{communities.length}</p>
+          {/* <p className="text-body_lb text-gray-500">{communities.posts.length}</p> */}
         </div>
 
         <div>

@@ -12,13 +12,14 @@ export const communitySchema = z.object({
   content: z.string(),
   image: imageSchema.nullable(),
   likesCnt: z.number(),
-  cmmtCnt: z.number(),
+  cmmtCnt: z.number().default(0),
+  // cmmtCnt: z.string(),
   viewCnt: z.number(),
   writer: z.string(),
-  writerProfile: z.string().nullable(),
+  writerProfile: z.string().url().nullable(),
   createdAt: z.string(),
-  // isPopular: z.string(),
-  // isPopular: z.boolean(),
+  updatedAt: z.string().nullable(),
+  isPopular: z.boolean(),
 });
 
 // export const postsSchema = z.object({
@@ -53,17 +54,30 @@ export const communityDetailSchema = z.object({
   categoryName: z.string().optional(),
   title: z.string(),
   content: z.string(),
-  images: z.array(imageSchema).max(5), //이미지가 최대 5장 들어감
+  images: z.array(imageSchema).max(5).default([]), //이미지가 최대 5장 들어감
   likesCnt: z.number(),
   viewsCnt: z.number(),
   cmmtCnt: z.number(),
   writer: z.string(),
   writerProfile: z.string().url().nullable(),
   createdAt: z.string(),
+  updatedAt: z.string().nullable(),
   // commentList: z.any(),
   // commentList: z.array(communityDetailCommentSchema),
   commentList: z.array(communityDetailCommentSchema).default([]),
   isLiked: z.boolean(),
-  // isPopular: z.booblean(),
-  isPopular: z.string().nullable(),
+  isPopular: z.boolean(),
+  // isPopular: z.string().nullable(),
+});
+
+//페이징을 위한 추가
+export const communityResponseSchema = z.object({
+  success: z.boolean(),
+  message: z.string().nullable(),
+  data: z.object({
+      posts: z.array(communitySchema),
+      totalPosts:z.number(),
+      hasMore: z.boolean(),
+    }),
+    // data: z.array(communitySchema),
 });

@@ -10,7 +10,8 @@ export type CommunitiesProps = {
   writer: string;
   writerProfile: string | null;
   createdAt: string;
-  // isPopular: boolean;
+  updatedAt: string | null;
+  isPopular: boolean;
 };
 
 export type CommunityProps = {
@@ -22,13 +23,15 @@ export type CommunityProps = {
   likesCnt: number;
   viewsCnt: number;
   cmmtCnt: number;
+  // cmmtCnt: string;
   writer: string;
   writerProfile: string | null;
   createdAt: string;
+  updatedAt: string | null;
   commentList: CommentProps[];
   // commentList: [];
   isLiked: boolean;
-  // isPopular: boolean;
+  isPopular: boolean;
 };
 
 export type CommentProps = {
@@ -41,4 +44,18 @@ export type CommentProps = {
   writerProfile: string;
   likeCnt: number;
   createdAt: string;
+};
+
+//추가
+export type communityResponseProps = {
+  success: boolean;
+  message: string | null;
+  data: communityResponseDetailProps[];
+};
+
+//추가
+export type communityResponseDetailProps = {
+  posts: CommunitiesProps[];
+  totalPosts: number;
+  hasMore: boolean;
 };
