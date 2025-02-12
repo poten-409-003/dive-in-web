@@ -10,7 +10,7 @@ export default function ClientSearch({}: {}) {
       {/* <p className="p-4">클라이언트 페이지</p> */}
       <ul className="list-none px-4">
       {searchResults.map((result) => (
-          <li className="border-b border-gray-300 pb-4">
+          <li key={result.id} className="border-b border-gray-300 pb-4">
             <div className="flex flex-col items-start bg-white-100 rounded-lg mt-4">
               <div className="flex flex-row">
                 {getCategoryIcon(result.categoryName)}
