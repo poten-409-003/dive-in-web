@@ -12,7 +12,8 @@ import { LuEye } from "react-icons/lu";
 import { FiMessageSquare } from "react-icons/fi";
 import { TiHeartOutline } from "react-icons/ti";
 
-export default function Home({content}: {content: string}) {
+// export default function Home({content}: {content: string}) {
+export default function Home() {
   // const router = useRouter();
   // useEffect(() => {
   //   router.replace("/lessons");
@@ -22,16 +23,16 @@ export default function Home({content}: {content: string}) {
     useEffect(()=> {
       const handleResize = () => {
         if(window.innerWidth < 640) {
-          setMaxLength(15);
+          setMaxLength(16);
         }else if(window.innerWidth < 1024) {
-          setMaxLength(20);
+          setMaxLength(30);
         }else{
-          setMaxLength(25);
+          setMaxLength(40);
         }
       };
 
-      handleResize();
       window.addEventListener("resize", handleResize);
+      handleResize();
 
       return () => window.removeEventListener("resize", handleResize);
     }, []);
