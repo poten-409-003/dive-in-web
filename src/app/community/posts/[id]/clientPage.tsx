@@ -124,12 +124,12 @@ export default function ClientCommunity({
     <div className="flex flex-col pb-10 relative h-full">
       {/* 상단Nav */}
       <div className="flex items-center justify-between py-1 px-1">
-        <Link href="/community/posts/list/none/0" className="flex p-3">
+        <Link href="/community/posts/list?category=none&page=0" className="flex p-3">
           <ArrowLeftIcon className="w-6 h-6 text-gray-900" />
         </Link>
 
         <button type="button" className="flex p-3" onClick={handleMenuOpen}>
-          <VscKebabVertical className="w-6  h-6 text-gray-900" />
+          <VscKebabVertical className="mt-1 w-6 h-6 text-gray-900" />
         </button>
       </div>
 

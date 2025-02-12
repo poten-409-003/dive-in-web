@@ -1,6 +1,6 @@
 "use server";
 
-import { communityDetailSchema, communitySchema } from "@/schemas/communities";
+import { communityDetailSchema, communityResponseSchema, communitySchema } from "@/schemas/communities";
 import { CommunityProps } from "@/types/community";
 
 export const getCommunities = async (category: string = "none", page: string = "0") => {
@@ -11,15 +11,21 @@ export const getCommunities = async (category: string = "none", page: string = "
     if(!response.ok){
       throw new Error(`HTTP에러 상태 코드: ${response.status}`);
     }
-    const body = await response.json();
 
-    const validateData = communitySchema.array().parse(body.data);
-    console.log(validateData);
-    return validateData;
+    const body = await response.json();
+    console.log("::::::::::Fetched Data:", body);
+
+    const validateData = communityResponseSchema.parse(body);
+    console.log("::::::::::zod후 Data:", JSON.stringify(validateData, null, 2));
+    // const validateData = communitySchema.array().parse(body.data);
+    
+    console.log("::::::::::validateData.data는?:", validateData.data);
+    return validateData.data;
 
   } catch (error) {
     console.error(error);
-    return [];
+    // return [];
+    return { posts: [], totalPosts: 0, hasMore: false }; //아 여기 반환값 달라서 에러났던 거였음? 하...참나
   }
 };
 
@@ -175,6 +181,8 @@ export const getComments = async(postId: string) => {
   try {
     const response = await fetch(`https://api.dive-in.co.kr/community/comments/${postId}`);
     const body = await response.json();
+
+    
     return body;
   } catch (error) {
     console.log(error);
