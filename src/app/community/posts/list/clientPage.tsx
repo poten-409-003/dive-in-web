@@ -6,7 +6,7 @@ import FloatingButton from "../../_components/FloatingButton";
 import CategoryFilter from "@/app/community/_components/CategoryFilter";
 import { getCommunities } from "@/api/server/community";
 import { useRouter } from "next/navigation";
-import { CommunitiesProps } from "@/types/community";
+import { CommunitiesProps, communityResponseDetailProps, communityResponseProps } from "@/types/community";
 import { CATEGORIES } from "@/constants/categories";
 
 // export const CATEGORIES = [
@@ -19,20 +19,23 @@ import { CATEGORIES } from "@/constants/categories";
 // ];
 
 export default function CommunitiesClient({ communityList, category, page }:{
-    communityList: CommunitiesProps[];
-    category: string;
+  // communityList: CommunitiesProps[];
+    communityList: communityResponseDetailProps;
+    category: string; 
     page: string;
+    // hasMore: boolean;
+    // totalposts: number;
   }) {
   const [selectedCategory, setSelectedCategory] = useState<string>(category); //기본 카테고리
-  const [communities, setCommunities] = useState<CommunitiesProps[]>(communityList); //초기 데이터
+  const [communities, setCommunities] = useState<CommunitiesProps[]>(communityList.posts); //초기 데이터
   const router = useRouter();
 
   //카테고리 변경시 URL 업데이트
   useEffect(() => {
     //카테고리 변경시 데이터 가져옴
     const fetchData = async() => {
-      const data = await getCommunities(selectedCategory, page);
-      setCommunities(data);
+      const data: communityResponseDetailProps = await getCommunities(selectedCategory, page);
+      setCommunities(data.posts);
     };
 
     fetchData();
@@ -62,8 +65,8 @@ export default function CommunitiesClient({ communityList, category, page }:{
         {/* {loading? (
           <p>로딩 중...</p>
         ) : ( */}
-          <ul className="flex flex-col gap-6 px-4 pb-10">
-          {communities.length > 0 ? (
+          <ul className="flex flex-col gap-1 px-4 pb-10">
+          {communities && communities.length > 0 ? (
             communities.map((community) => (
               <CategoryFilter key={community.postId} community={community} selectedCategory={selectedCategory} />
             ))
