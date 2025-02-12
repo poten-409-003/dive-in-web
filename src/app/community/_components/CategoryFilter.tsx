@@ -16,12 +16,16 @@ import { CATEGORIES } from "@/constants/categories";
 //   { name: "수영대회", key: "competition" },
 // ];
 
-export default function CategoryFilter({community, selectedCategory}: {
-  community: CommunitiesProps; 
+export default function CategoryFilter({
+  community,
+  selectedCategory,
+}: {
+  community: CommunitiesProps;
   selectedCategory: string;
 }) {
-  const categoryName = CATEGORIES.find((category) => 
-    category.key === selectedCategory)?.name || "알 수 없음";
+  const categoryName =
+    CATEGORIES.find((category) => category.key === selectedCategory)?.name ||
+    "알 수 없음";
 
   // console.warn(":::::::::::::::::::::::카테고리필터의 postID:", community.postId);
 
@@ -35,11 +39,12 @@ export default function CategoryFilter({community, selectedCategory}: {
           {/* 왼쪽 */}
           <div className="flex-1 flex flex-col items-start gap-1.5">
             {/* 여기가 태그/인기 */}
-                <div className={`text-label_sb px-1.5 py-1 mt-4 rounded bg-chip-1 text-chip-1-foreground inline-block w-fit`}>
-                  <p>{community.categoryName || "\u00A0"}</p>
-                </div>
-              
-            
+            <div
+              className={`text-label_sb px-1.5 py-1 mt-4 rounded bg-chip-1 text-chip-1-foreground inline-block w-fit`}
+            >
+              <p>{community.categoryName || "\u00A0"}</p>
+            </div>
+
             {/* {selectedCategory === "none" || selectedCategory === "popular" ? 
               (
                 <div className={`text-label_sb px-1.5 py-1 mt-3 rounded bg-chip-1 text-chip-1-foreground inline-block w-fit`}>
@@ -92,8 +97,17 @@ export default function CategoryFilter({community, selectedCategory}: {
 
           {/* 오른쪽 */}
           <div className="flex flex-col items-center w-24">
-            
-          {selectedCategory === "none" || selectedCategory === "popular" ? 
+            <div className="mt-6 w-24 h-24 overflow-hidden rounded-lg">
+              <img
+                src={
+                  community.image?.imageUrl || "/empty/community_thumbnail.png"
+                }
+                alt="썸네일"
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* {selectedCategory === "none" || selectedCategory === "popular" ? 
               (
                 <div className="mt-6 w-24 h-24 overflow-hidden rounded-lg">
                   <img
@@ -111,11 +125,11 @@ export default function CategoryFilter({community, selectedCategory}: {
               />
                 </div>
               )
-            }
+            } */}
 
             <span className="mt-3 text-b text-gray-500 ml-auto">
               {/* {community.createdAt.split(" ")[0].slice(2)} */}
-              {community.createdAt.slice(2,12)}
+              {community.createdAt.slice(2, 12)}
             </span>
           </div>
         </div>
