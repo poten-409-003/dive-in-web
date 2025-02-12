@@ -4,17 +4,38 @@ import Image from "next/image";
 import { CiSearch } from "react-icons/ci";
 import ArrowRightIcon from "@/components/icons/ArrowRightIcon";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import InstructorProfile from "./_components/InstructorProfile";
 import LessonChip from "@/components/ui/Chip";
+import { LuEye } from "react-icons/lu";
+import { FiMessageSquare } from "react-icons/fi";
+import { TiHeartOutline } from "react-icons/ti";
 
-export default function Home() {
+export default function Home({content}: {content: string}) {
   // const router = useRouter();
   // useEffect(() => {
   //   router.replace("/lessons");
   // }, [router]);
+    const [maxLength, setMaxLength] = useState(10);
 
+    useEffect(()=> {
+      const handleResize = () => {
+        if(window.innerWidth < 640) {
+          setMaxLength(15);
+        }else if(window.innerWidth < 1024) {
+          setMaxLength(20);
+        }else{
+          setMaxLength(25);
+        }
+      };
+
+      handleResize();
+      window.addEventListener("resize", handleResize);
+
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+  
   return (
     // <div className="flex flex-col items-center justify-center h-screen bg-white">
     //   <Image
@@ -103,37 +124,28 @@ export default function Home() {
         </div>
         {/* 카드리스트 */}
         <div className="grid grid-cols-2 gap-6 px-8 py-1">
-          {/* 카드 1*/}
-          <div className="p-6 rounded-lg shadow-sm bg-gray-100 flex flex-col h-full">
-            <div className="flex gap-2 items-center pb-2">
-              <LessonChip label="중급" />
-              <LessonChip label="접영" />
+          {NewLessons.map((lesson) => (
+            <div
+              key={lesson.id}
+              className="p-6 rounded-lg shadow-sm bg-gray-100 flex flex-col h-full"
+            >
+              {/* 카드 1*/}
+              <div className="flex gap-2 items-center pb-2">
+                {lesson.chips.map((chip, index) => (
+                  <LessonChip key={index} label={chip} />
+                ))}
+              </div>
+              <h4 className="pb-10 text-xl font-bold text-gray-900 mb-1">
+                {lesson.title}
+              </h4>
+              <div className="mt-auto">
+                <InstructorProfile
+                  avatar={lesson.avatar}
+                  name={lesson.instructor}
+                />
+              </div>
             </div>
-            <h4 className="pb-10 text-xl font-bold text-gray-900 mb-1">
-              마스터즈 평일
-            </h4>
-            {/* <p className="text-md text-gray-700">수달상회</p> */}
-            <div className="mt-auto">
-              <InstructorProfile avatar="" name="물곰TV" />
-            </div>
-          </div>
-
-          {/* 카드 2*/}
-          <div className="p-6 rounded-lg shadow-sm bg-gray-100 flex flex-col h-full">
-            <div className="flex gap-2 items-center pb-2">
-              <LessonChip label="초급" />
-              <LessonChip label="접영" />
-              <LessonChip label="다이빙" />
-              {/* <span className="bg-pink-100 text-pink-500 text-xs font-bold px-2 py-1 rounded">접영</span> */}
-            </div>
-            <h3 className="pb-10 text-xl font-bold text-gray-900 mb-1">
-              청소년 선수반
-            </h3>
-            <div className="mt-auto">
-              <InstructorProfile avatar="" name="4레인" />
-            </div>
-            {/* <p className="text-md text-gray-700">수달상회</p> */}
-          </div>
+          ))}
         </div>
       </section>
 
@@ -147,41 +159,87 @@ export default function Home() {
           </Link>
         </div>
         {/* 카드리스트 */}
-        <div className="grid grid-rows-2 gap-6 px-8 py-1">
-          {/* 카드 1*/}
-          <div className="p-6 rounded-lg shadow-sm bg-gray-100 flex flex-col h-full">
-            <div className="flex gap-2 items-center pb-2">
-              <div
-                className={`text-label_sb px-1.5 py-1 mt-4 rounded bg-chip-1 text-chip-1-foreground inline-block w-fit`}
-              >
-                <p>커뮤니티</p>
+        <div className="flex flex-wrap gap-6 px-8 py-1">
+          {popularCommunities.map((community) => (
+            <div
+              key={community.id}
+              className="px-4 py-2 rounded-lg shadow-sm bg-gray-100 w-full"
+            >
+              {/* 카드 1*/}
+              <div className="items-center gap-2 pb-2">
+                <Link
+                  href={`/community/posts/${community.id}`}
+                  className=""
+                >
+                  
+                  {/* 박스 내용물 하나 */}
+                  <div className="flex flex-row justify-between items-start w-full rounded-lg px-2">
+                    
+                    {/* 왼쪽 */}
+                    <div className="flex-1 min-w-0 max-w-[80%] flex flex-col items-start gap-1.5 overflow-hidden">
+                      {/* 여기가 태그/인기 */}
+                      <div
+                        className={`text-label_sb px-1.5 py-1 mt-4 rounded bg-chip-1 text-chip-1-foreground inline-block w-fit`}
+                      >
+                        <p>{community.categoryName || "\u00A0"}</p>
+                      </div>
+                      <div className="flex flex-col gap-0.5">
+                        <h3 className="text-gray-900 text-body_bb">
+                          {/* {community.communityTitle} */}
+                          {community.title}
+                        </h3>
+                      </div>
+                        {/* <p className="text-body_b text-gray-600 block truncate xs:max-w-[100px] sm:max-w-[200px] md:max-w-[300px] lg:max-w-[400px] "> */}
+                      <div className="flex items-center gap-1 overflow-hidden min-w-0">
+                        <p className="text-body_b text-gray-600 block truncate w-full">
+                          {community.content.length > maxLength ? `${community.content.substring(0, maxLength)}...`
+                          : community.content}
+                        </p>
+                      </div>
+
+                      {/* <div className="flex items-center gap-1">
+              <WriterProfile
+                avatar={community.writerProfile}
+                name={community.writer}
+              />
+            </div> */}
+
+                      <div className="flex flex-row items-center gap-4">
+                        <div className="flex items-center gap-1">
+                          <LuEye className="w-5 h-5 text-gray-400" />
+                          <p className="text-gray-500"> {community.viewCnt}</p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <FiMessageSquare className="w-5 h-5 text-gray-400" />
+                          <p className="text-gray-500">{community.cmmtCnt}</p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <TiHeartOutline className="w-5 h-5 text-gray-400" />
+                          <p className="text-gray-500"> {community.likesCnt}</p>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    {/* 오른쪽 */}
+                    {/* <div className="flex flex-col items-center w-24 flex-shrink-0"> */}
+                    <div className="mt-6 items-center w-24 flex-shrink-0">
+                      {/* <div className="mt-6 w-24 h-24 overflow-hidden rounded-lg"> */}
+                        <img
+                          src={
+                            community.images?.imageUrl ||
+                            "/empty/community_thumbnail.png"
+                          }
+                          alt="썸네일"
+                          className="w-24 h-24 object-cover rounded-lg"
+                        />
+                      {/* </div> */}
+                    </div>
+                  </div>
+                </Link>
               </div>
             </div>
-            <div className="pb-4 text-gray-900 mb-1">
-              <h4 className="text-xl font-bold">수영대회 찾는 중</h4>
-              <p className="text-md text-gray-500">안녕하세요</p>
-            </div>
-            <div className="mt-auto">
-              <InstructorProfile avatar="" name="수달상회" />
-            </div>
-          </div>
-
-          {/* 카드 2*/}
-          <div className="p-6 rounded-lg shadow-sm bg-gray-100 flex flex-col h-full">
-            <div className="flex gap-2 items-center pb-2">
-              <LessonChip label="초급" />
-              <LessonChip label="접영" />
-              <LessonChip label="다이빙" />
-              {/* <span className="bg-pink-100 text-pink-500 text-xs font-bold px-2 py-1 rounded">접영</span> */}
-            </div>
-            <h3 className="pb-10 text-xl font-bold text-gray-900 mb-1">
-              유소년 선수반
-            </h3>
-            <div className="mt-auto">
-              <InstructorProfile avatar="" name="이지스윔" />
-            </div>
-            {/* <p className="text-md text-gray-700">수달상회</p> */}
-          </div>
+          ))}
         </div>
       </section>
 
