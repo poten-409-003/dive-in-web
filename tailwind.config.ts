@@ -100,6 +100,7 @@ const config: Config = {
       addUtilities(newUtilities);
     }),
     require("tailwindcss-animate"),
+    require('@tailwindcss/line-clamp'),
   ],
 };
 export default config;
