@@ -177,7 +177,7 @@ export const getOG = async(link: string) => {
 //   }
 // };
 
-export const getComments = async(postId: string) => {
+export const getComments = async(postId: number) => {
   try {
     const response = await fetch(`https://api.dive-in.co.kr/community/comments/${postId}`);
     const body = await response.json();
