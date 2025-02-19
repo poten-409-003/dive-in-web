@@ -48,8 +48,12 @@ export default function ClientCommunity({
     }
   };
 
-  const handleMenuOpen = () => {
+  const handleMenuToggle = () => {
     setIsMenuOpen((prev) => !prev);
+  };
+
+  const handleMenuClose = () => {
+    setIsMenuOpen(false);
   };
 
   const handleDeleteModalOpen = () => {
@@ -128,7 +132,7 @@ export default function ClientCommunity({
           <ArrowLeftIcon className="w-6 h-6 text-gray-900" />
         </Link>
 
-        <button type="button" className="flex p-3" onClick={handleMenuOpen}>
+        <button type="button" className="flex p-3" onClick={handleMenuToggle}>
           <VscKebabVertical className="mt-1 w-6 h-6 text-gray-900" />
         </button>
       </div>
@@ -159,7 +163,7 @@ export default function ClientCommunity({
               {community.createdAt}
             </span>
             <span className="text-sm text-gray-500 ml-auto">
-              조회{community.viewsCnt}
+              조회{community.viewCnt}
             </span>
           </div>
         </div>
@@ -208,7 +212,7 @@ export default function ClientCommunity({
       </div>
 
       <div className="bg-gray-100 py-2 mt-4"></div>
-      <CommentList commentList={community.commentList} />
+      <CommentList commentList={community.commentList} postId={community.postId} />
 
       {/* 댓글 상자 */}
       <div className="relative px-4 pb-4">
@@ -248,6 +252,14 @@ export default function ClientCommunity({
         )}
       </div>
 
+      
+      {/* 배경 */}
+        {isMenuOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300" 
+          style={{zIndex: 40}} 
+          onClick={handleMenuClose} />
+        )}
+
       {/* 글 메뉴 슬라이드 */}
       <div
         className={`fixed bottom-0 left-1/2 w-full transform -translate-x-1/2 bg-white p-4 pt-6 pb-6 border-t rounded-t-2xl transition-transform duration-300 ${
@@ -257,6 +269,7 @@ export default function ClientCommunity({
           width: "100%",
           maxWidth: "48rem",
           boxShadow: "0 -1px 3px rgba(0, 0, 0, 0.05)",
+          zIndex: 80,
         }}
       >
         <ul>
