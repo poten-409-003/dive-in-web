@@ -19,7 +19,13 @@ interface CommentProps {
   createdAt: string;
 }
 
-export default function CommentList({commentList, postId}: {commentList: CommentProps[], postId: number}) {
+export default function CommentList({
+  commentList,
+  postId,
+}: {
+  commentList: CommentProps[];
+  postId: number;
+}) {
   const [comments, setComments] = useState<CommentProps[]>([]);
   const [loggedUserId, setLoggedUserId] = useState<number | null>(1);
 
@@ -39,9 +45,25 @@ export default function CommentList({commentList, postId}: {commentList: Comment
   }, []);
 
   console.warn("commentList page:::::::::::::::", commentList);
-  
-  if(!commentList || commentList.length === 0){
-    return <div className="text-gray-500">댓글이 없습니다.</div>
+
+  if (!commentList || commentList.length === 0) {
+    return (
+      <>
+      <div className="text-gray-500">
+        <div className="flex flex-row items-start">
+          <div className="bg-white-100 px-4 py-4">
+            <h3 className="text-xs text-gray-600 mb-2">
+              댓글 {commentList.length}
+            </h3>
+          </div>
+        </div>
+      </div>
+
+      <div className="pb-12"> 
+          <div className="flex items-center justify-center h-full w-full text-sm text-gray-500">댓글이 없습니다.</div>
+      </div>
+      </>
+    );
   }
 
   return (
@@ -54,7 +76,7 @@ export default function CommentList({commentList, postId}: {commentList: Comment
     //   ))}
     // </div>
 
-//--------------------
+    //--------------------
     <div className="bg-white-100 px-4 py-4">
       <h3 className="text-xs text-gray-600 mb-2">댓글 {commentList.length}</h3>
       {commentList.map((comment) => (
@@ -74,9 +96,5 @@ export default function CommentList({commentList, postId}: {commentList: Comment
         />
       ))}
     </div>
-
-
-
-
   );
 }

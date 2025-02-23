@@ -14,6 +14,7 @@ import { CommunityProps } from "@/types/community";
 import CustomModal from "@/app/_components/CustomModal";
 import {
   addLikePost,
+  createComment,
   deleteCommunity,
   deleteLikePost,
   getCommunity,
@@ -104,6 +105,33 @@ export default function ClientCommunity({
       setChangeLikesCnt((prev) => (changeLiked ? prev + 1 : prev - 1));
     }
   };
+
+  const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("postId", String(community.postId));
+    formData.append("content", comment);
+    formData.append("memberId", "1");
+
+    console.warn("입력된 댓글내용?::::", comment);
+    
+    try {
+      const result = await createComment(formData);
+      console.log("댓글 등록 결과는::::", result);
+
+      // {
+      //   "content": "9482308953개요",
+      //   "postId": 13,
+      //   "memberId": 1
+      // }
+
+      setComment(""); //댓글필드 초기화
+
+    } catch (error) {
+      console.error("댓글 등록 실패!", error);
+    }
+  };
+
 
   //최신데이터 가져오기
   useEffect(() => {
@@ -230,7 +258,7 @@ export default function ClientCommunity({
             </button>
           </p>
         ) : (
-          <div className="flex flex-row px-4 py-5 items-center bg-gray-100 rounded">
+          <form className="flex flex-row px-4 py-5 items-center bg-gray-100 rounded" onSubmit={handleCommentSubmit}>
             <textarea
               ref={textareaRef}
               value={comment}
@@ -245,10 +273,10 @@ export default function ClientCommunity({
               }}
               className="w-full resize-none overflow-hidden border-none text-left text-sm text-gray-700 bg-gray-100 focus:outline-none"
             />
-            <button className="text-left text-sm font-semibold text-gray-500">
+            <button className="text-left text-sm font-semibold text-gray-500" type="submit">
               <LuSend size={18} />
             </button>
-          </div>
+          </form>
         )}
       </div>
 
