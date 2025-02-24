@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Comment } from "../comments/page";
+import { Comment } from "../comments/Comment";
 import { getComments } from "@/api/server/community";
 
 // import { CommentProps } from "@/types/community";
