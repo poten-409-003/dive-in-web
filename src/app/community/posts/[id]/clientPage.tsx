@@ -203,21 +203,21 @@ export default function ClientCommunity({
           {community.content}
         </p>
 
-        <div className="mt-4 grid grid-cols-2 gap-4">
+        <div className="mt-4 flex justify-center max-w-fit mx-auto gap-4">
+        {/* <div className="mt-4 flex justify-center"> */}
           {community.images.length > 0 ? (
               // <div key={index} className="overflow-hidden rounded-lg">
-              <div className="mt-4">
+              // <div className="mt-4 flex justify-center">
                 <DetailPagePhotoSlider
                   imageUrls={community.images.map((image) => image.imageUrl)}
                   alt="게시글 이미지"
-                  // alt={`이미지 ${index + 1}`}
-                  // className="w-full h-auto object-cover"
                 />
-              </div>
+              // </div>
           ) : (
             // 이미지가 없을시
             <p className="text-gray-500"></p>
           )}
+          
         </div>
       </div>
 
