@@ -38,18 +38,22 @@ const DetailPagePhotoSlider = ({ imageUrls, alt }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHover, setIsHover] = useState(false);
 
-  const handlePrev = () => {
+  const handlePrev = (e: React.MouseEvent) => {
     if (currentIndex > 0) {
+      e.stopPropagation();
       setCurrentIndex(currentIndex - 1);
     } else {
+      e.stopPropagation();
       setCurrentIndex(imageUrls.length - 1); //0미만일 경우, 첫 번째 이미지에서 마지막으로 이동
     }
   };
-
-  const handleNext = () => {
+  
+  const handleNext = (e: React.MouseEvent) => {
     if (currentIndex < imageUrls.length - 1) {
+      e.stopPropagation();
       setCurrentIndex(currentIndex + 1);
     } else {
+      e.stopPropagation();
       setCurrentIndex(0); //마지막 이미지에서 첫번째 이미지로 이동
     }
   };
@@ -101,6 +105,7 @@ const DetailPagePhotoSlider = ({ imageUrls, alt }: Props) => {
               className={`snap-start shrink-0 w-96 h-64 overflow-hidden ${
                 index === currentIndex ? "" : "hidden"
               }`}
+              onClick={() => setShowImageViewerModal(true)}
             >
               <Image
                 src={url}
@@ -143,11 +148,11 @@ const DetailPagePhotoSlider = ({ imageUrls, alt }: Props) => {
         )}
       </div>
 
-      {/* <PhotoViewerModal
+      <PhotoViewerModal
         isOpen={showImageViewerModal}
         onClose={() => setShowImageViewerModal(false)}
-        urls={urls}
-      /> */}
+        urls={imageUrls}
+      />
     </>
   );
 };
