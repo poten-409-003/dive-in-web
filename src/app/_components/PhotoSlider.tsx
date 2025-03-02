@@ -72,7 +72,25 @@ const DetailPagePhotoSlider = ({ imageUrls, alt }: Props) => {
         <div
           className="relative w-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar"
           ref={sliderRef}
+          //   style={{scrollSnapType: "x mandatody"}}
         >
+          {imageUrls.map((url, index) => (
+            <div
+              key={url}
+              className={`snap-start shrink-0 w-96 h-64 overflow-hidden ${
+                index === currentIndex ? "" : "hidden"
+              }`}
+              onClick={() => setShowImageViewerModal(true)}
+            >
+              <Image
+                src={url}
+                alt={alt}
+                width={400}
+                height={300}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))} */}
           {imageUrls.map((url, index) => (
             <div
               key={url}
