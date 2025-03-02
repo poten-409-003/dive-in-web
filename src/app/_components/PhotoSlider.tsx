@@ -3,16 +3,21 @@
 import usePhotoSlider from "@/hooks/usePhotoSlider";
 import { logger } from "@/utils";
 import Image from "next/image";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import PhotoViewerModal from "./PhotoViewerModal";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 type Props = {
   imageUrls: string[];
   alt: string;
+  className?: string;
 };
 
 const DetailPagePhotoSlider = ({ imageUrls, alt }: Props) => {
+  useEffect(()=> {
+    setIsHover(true);
+  },[]);
+
   const urls = useMemo(() => {
     if (imageUrls.length === 0) {
       return ["/empty/image.png"];
@@ -93,7 +98,7 @@ const DetailPagePhotoSlider = ({ imageUrls, alt }: Props) => {
           {imageUrls.map((url, index) => (
             <div
               key={url}
-              className={`snap-start shrink-0 w-full h-40 overflow-hidden ${
+              className={`snap-start shrink-0 w-96 h-64 overflow-hidden ${
                 index === currentIndex ? "" : "hidden"
               }`}
             >
