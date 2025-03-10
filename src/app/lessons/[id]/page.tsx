@@ -57,7 +57,10 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
             {lesson.academy.academyName}
           </span>
         </div>
-        <DetailPagePhotoSlider imageUrls={imageUrls} alt="수업 사진" />
+        <DetailPagePhotoSlider 
+        imageUrls={imageUrls} 
+        alt="수업 사진"
+        sliderType="other" />
       </div>
 
       <section className="flex flex-col gap-3 px-4 mb-6">
