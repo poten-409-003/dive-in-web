@@ -6,27 +6,30 @@ import SwimHatIcon from "@/components/icons/SwimHatIcon";
 import { GoHome } from "react-icons/go";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const routes = {
   home: "/",
   lessons: "/lessons",
   pools: "/pools",
-  // community: "/community/posts/list",
-  community: "/community/posts/list?category=none&page=0",
+  community: "/community/posts/list",
   mypage: "/mypage",
   login: "/auth/login",
 };
 
 const BottomNav = () => {
   const pathname = usePathname();
-  // const searchParams = useSearchParams();
+  //추가
+  const searchParams = useSearchParams(); 
+  const category = searchParams.get("category");
+  const page = searchParams.get("page");
 
-  const isHome = pathname.startsWith(routes.home);
+  const isHome = pathname === "/"; //홈일때만 활성화
   const isLessons = pathname.startsWith(routes.lessons);
   const isPools = pathname.startsWith(routes.pools);
-  const isCommunity = pathname.startsWith(routes.community);
-  // const isCommunity = pathname.startsWith(routes.community) && searchParams.get("category") === "none";
+  const isCommunity = pathname.startsWith(routes.community) 
+                      && category === "none" 
+                      && page === "0";
   const isMypage = pathname.startsWith(routes.mypage);
   const isLogin = pathname.startsWith(routes.login);
 
@@ -67,7 +70,7 @@ const BottomNav = () => {
         // href={`${routes.community}?category=none&page=0`}
         href={routes.community}
         className={`flex-1 h-full flex flex-col gap-0.5 items-center justify-center ${
-          isCommunity ? "text-gray-900" : "text-gray-500 stroke-current"
+          isCommunity ? "text-gray-900" : "text-gray-500"
         }`}
       >
         <ChatIcon className={`h-6 w-6`} />
