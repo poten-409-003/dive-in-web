@@ -7,6 +7,7 @@ import { GoHome } from "react-icons/go";
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 
 const routes = {
   home: "/",
@@ -19,17 +20,25 @@ const routes = {
 
 const BottomNav = () => {
   const pathname = usePathname();
-  //추가
-  const searchParams = useSearchParams(); 
-  const category = searchParams.get("category");
-  const page = searchParams.get("page");
+  const [category, setCategory] = useState<string | null>("none");
+  const [page, setPage] = useState<string | null>("0");
+  // const category = searchParams.get("category");
+  // const page = searchParams.get("page");
+  
+  useEffect(() => {
+    //추가
+    const searchParams = useSearchParams();
+    setCategory(searchParams.get("category"));
+    setPage(searchParams.get("page"));
+  }, []);
 
   const isHome = pathname === "/"; //홈일때만 활성화
   const isLessons = pathname.startsWith(routes.lessons);
   const isPools = pathname.startsWith(routes.pools);
-  const isCommunity = pathname.startsWith(routes.community) 
-                      && category === "none" 
-                      && page === "0";
+  const isCommunity =
+    pathname.startsWith(routes.community) &&
+    category === "none" &&
+    page === "0";
   const isMypage = pathname.startsWith(routes.mypage);
   const isLogin = pathname.startsWith(routes.login);
 
