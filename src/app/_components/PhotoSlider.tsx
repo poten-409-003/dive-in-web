@@ -11,13 +11,16 @@ type Props = {
   imageUrls: string[];
   alt: string;
   className?: string;
+
   sliderType?: "community" | "other"; //추가
 };
 
 const DetailPagePhotoSlider = ({ imageUrls, alt, sliderType = "community" }: Props) => {
+
   useEffect(()=> {
     setIsHover(true);
   },[]);
+
 
   // const urls = useMemo(() => {
   //   if (imageUrls.length === 0) {
@@ -28,6 +31,7 @@ const DetailPagePhotoSlider = ({ imageUrls, alt, sliderType = "community" }: Pro
   // }, [imageUrls]);
 
   const encodeUrls = useMemo(() => {
+
     if (imageUrls.length === 0) {
       return ["/empty/image.png"];
     }else{
@@ -35,9 +39,11 @@ const DetailPagePhotoSlider = ({ imageUrls, alt, sliderType = "community" }: Pro
     }
     
   }, [imageUrls]);
+
   
   // const { sliderRef, imageRefs, visibleImageNumber } = usePhotoSlider(urls);
   const { imageRefs, visibleImageNumber } = usePhotoSlider(encodeUrls);
+
   // 이미지 뷰어 모달을 통해 이미지를 크게 볼 수 있도록 하기
   // 1. slider 컨테이너를 클릭하여, 이미지 뷰어 모달을 열 수 있도록 함
   // 2. 이미지 뷰어 모달에서는 현재 보고 있는 이미지를 크게 보여주고, 다음 이미지로 넘어갈 수 있도록 함
@@ -96,10 +102,12 @@ const DetailPagePhotoSlider = ({ imageUrls, alt, sliderType = "community" }: Pro
             <div
               key={url}
               className={`snap-start shrink-0 ${sliderTypeStyles[sliderType]} verflow-hidden ${
+
                 index === currentIndex ? "" : "hidden"
               }`}
               onClick={() => setShowImageViewerModal(true)}
             >
+
               {sliderType === "community" ? (
                 <Image
                   src={url}
