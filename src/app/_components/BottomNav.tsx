@@ -20,14 +20,14 @@ const routes = {
 
 const BottomNav = () => {
   const pathname = usePathname();
+  //추가
+  const searchParams = useSearchParams();
   const [category, setCategory] = useState<string | null>("none");
   const [page, setPage] = useState<string | null>("0");
   // const category = searchParams.get("category");
   // const page = searchParams.get("page");
   
   useEffect(() => {
-    //추가
-    const searchParams = useSearchParams();
     setCategory(searchParams.get("category"));
     setPage(searchParams.get("page"));
   }, []);
