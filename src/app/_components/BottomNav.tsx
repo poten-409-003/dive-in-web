@@ -22,15 +22,15 @@ const BottomNav = () => {
   const pathname = usePathname();
   //추가
   const searchParams = useSearchParams();
-  const [category, setCategory] = useState<string | null>("none");
-  const [page, setPage] = useState<string | null>("0");
-  // const category = searchParams.get("category");
-  // const page = searchParams.get("page");
+  const category = searchParams.get("category") || "none";
+  const page = searchParams.get("page") || "0";
+  // const [category, setCategory] = useState<string | null>("none");
+  // const [page, setPage] = useState<string | null>("0");
   
-  useEffect(() => {
-    setCategory(searchParams.get("category"));
-    setPage(searchParams.get("page"));
-  }, []);
+  // useEffect(() => {
+  //   setCategory(searchParams.get("category"));
+  //   setPage(searchParams.get("page"));
+  // }, []);
 
   const isHome = pathname === "/"; //홈일때만 활성화
   const isLessons = pathname.startsWith(routes.lessons);
