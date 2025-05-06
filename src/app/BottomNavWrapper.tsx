@@ -15,7 +15,7 @@ export default function BottomNavWrapper() {
   // return <BottomNav />;
   return (
     <Suspense>
-      <BottomNav />;
+      <BottomNav />
     </Suspense>
   )
 }
