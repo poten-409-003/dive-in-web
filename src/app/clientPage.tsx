@@ -95,7 +95,8 @@ export default function HomeClient({ home }:{
         {/* 카드리스트 */}
         <div className="grid grid-cols-2 gap-6 px-8 py-1">
           {popularLessons.map((lesson) => (
-            <div
+            <Link
+              href={"/lessons/" + lesson.id}
               key={lesson.id}
               className="p-6 rounded-lg shadow-sm bg-gray-100 flex flex-col h-full"
             >
@@ -114,7 +115,7 @@ export default function HomeClient({ home }:{
                   name={lesson.instructorName}
                 />
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -129,7 +130,8 @@ export default function HomeClient({ home }:{
         {/* 카드리스트 */}
         <div className="grid grid-cols-2 gap-6 px-8 py-1">
           {NewLessons.map((lesson) => (
-            <div
+            <Link
+              href={"/lessons/" + lesson.id}
               key={lesson.id}
               className="p-6 rounded-lg shadow-sm bg-gray-100 flex flex-col h-full"
             >
@@ -148,7 +150,7 @@ export default function HomeClient({ home }:{
                   name={lesson.instructorName}
                 />
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -165,7 +167,8 @@ export default function HomeClient({ home }:{
         {/* 카드리스트 */}
         <div className="flex flex-wrap gap-6 px-8 py-1">
           {topViewPostList.map((community) => (
-            <div
+            <Link 
+              href={"/community/posts/" + community.postId}
               key={community.postId}
               className="px-4 py-2 rounded-lg shadow-sm bg-gray-100 w-full"
             >
@@ -239,7 +242,7 @@ export default function HomeClient({ home }:{
                   </div>
                 {/* </Link> */}
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -256,7 +259,8 @@ export default function HomeClient({ home }:{
         {/* 카드리스트 */}
         <div className="flex flex-wrap gap-6 px-8 py-1">
           {NewCommunities.map((community) => (
-            <div
+            <Link
+              href={"/community/posts/" + community.postId}
               key={community.postId}
               className="px-4 py-2 rounded-lg shadow-sm bg-gray-100 w-full"
             >
@@ -330,7 +334,7 @@ export default function HomeClient({ home }:{
                   </div>
                 {/* </Link> */}
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
