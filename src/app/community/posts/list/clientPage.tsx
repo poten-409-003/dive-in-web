@@ -103,7 +103,8 @@ export default function CommunitiesClient({ communityList, category, page }:{
               <CategoryFilter key={community.postId} community={community} selectedCategory={selectedCategory} />
             ))
           ) : (
-            <p className="text-gray-500">해당 커뮤니티가 존재하지 않습니다.</p>
+            // <p className="text-gray-500">해당 커뮤니티가 존재하지 않습니다.</p>
+            <p className="text-gray-500"></p>
           )}
         </ul>
         {/* )} */}
