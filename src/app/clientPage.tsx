@@ -15,39 +15,35 @@ import { getHome } from "@/api/server/home";
 import { HomeProps } from "@/types/home";
 
 // export default function Home({content}: {content: string}) {
-export default function HomeClient({ home }:{
-  home: HomeProps
-}) {
+export default function HomeClient({ home }: { home: HomeProps }) {
   // const router = useRouter();
   // useEffect(() => {
   //   router.replace("/lessons");
   // }, [router]);
-    const [maxLength, setMaxLength] = useState(10);
+  const [maxLength, setMaxLength] = useState(10);
 
-    const popularLessons = home.topViewLessonList;
-    const NewLessons = home.newLessonList;
-    const topViewPostList = home.topViewPostList;
-    const NewCommunities = home.newPostList;
-    const swimContests = home.competitionPostList;
-    
-    useEffect(()=> {
-      const handleResize = () => {
-        if(window.innerWidth < 640) {
-          setMaxLength(16);
-        }else if(window.innerWidth < 1024) {
-          setMaxLength(30);
-        }else{
-          setMaxLength(40);
-        }
-      };
+  const popularLessons = home.topViewLessonList;
+  const NewLessons = home.newLessonList;
+  const topViewPostList = home.topViewPostList;
+  const NewCommunities = home.newPostList;
+  const swimContests = home.competitionPostList;
 
-      window.addEventListener("resize", handleResize);
-      handleResize();
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setMaxLength(16);
+      } else if (window.innerWidth < 1024) {
+        setMaxLength(30);
+      } else {
+        setMaxLength(40);
+      }
+    };
 
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
-  
- 
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     // <div className="flex flex-col items-center justify-center h-screen bg-white">
@@ -67,19 +63,18 @@ export default function HomeClient({ home }:{
           {/* <h2 className="text-heading_2 text-gray-900">수영장</h2> */}
           {/* <p className="text-body_lb text-gray-500">{pools.length}</p> */}
           <Link href="/search" className="relative w-full">
-          <div className="relative w-full">
-            <CiSearch
+            <div className="relative w-full">
+              <CiSearch
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
                 size={20}
               />
-            <input
-              type="text"
-              placeholder="클래스명, 수영장, 커뮤니티 글을 검색해보세요"
-              className="w-full pl-10 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
+              <input
+                type="text"
+                placeholder="클래스명, 수영장, 커뮤니티 글을 검색해보세요"
+                className="w-full pl-10 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
               ></input>
-          </div>
-              </Link>
-
+            </div>
+          </Link>
         </div>
       </section>
 
@@ -102,9 +97,14 @@ export default function HomeClient({ home }:{
             >
               {/* 카드 1*/}
               <div className="flex flex-wrap gap-2 items-center pb-2">
-                {[...lesson.level.split(","), ...lesson.keyword.split(",")].map((tag, index) => ( //태그분리
-                  <LessonChip key={index} label={tag.trim()} /> //공백제거
-                ))}
+                {[...lesson.level.split(","), ...lesson.keyword.split(",")].map(
+                  (
+                    tag,
+                    index //태그분리
+                  ) => (
+                    <LessonChip key={index} label={tag.trim()} /> //공백제거
+                  )
+                )}
               </div>
               <h4 className="pb-10 text-xl font-bold text-gray-900 mb-1">
                 {lesson.lessonName}
@@ -137,9 +137,14 @@ export default function HomeClient({ home }:{
             >
               {/* 카드 1*/}
               <div className="flex flex-wrap gap-2 items-center pb-2">
-                {[...lesson.level.split(","), ...lesson.keyword.split(",")].map((tag, index) => ( //태그분리
-                  <LessonChip key={index} label={tag.trim()} /> //공백제거
-                ))}
+                {[...lesson.level.split(","), ...lesson.keyword.split(",")].map(
+                  (
+                    tag,
+                    index //태그분리
+                  ) => (
+                    <LessonChip key={index} label={tag.trim()} /> //공백제거
+                  )
+                )}
               </div>
               <h4 className="pb-10 text-xl font-bold text-gray-900 mb-1">
                 {lesson.lessonName}
@@ -160,14 +165,17 @@ export default function HomeClient({ home }:{
           <h2 className="text-heading_2 text-gray-900">
             🔥인기있는 커뮤니티 글
           </h2>
-          <Link href="/community/posts/list?category=popular&page=0" className="flex">
+          <Link
+            href="/community/posts/list?category=popular&page=0"
+            className="flex"
+          >
             <ArrowRightIcon className="w-6 h-6 text-gray-900" />
           </Link>
         </div>
         {/* 카드리스트 */}
         <div className="flex flex-wrap gap-6 px-8 py-1">
           {topViewPostList.map((community) => (
-            <Link 
+            <Link
               href={"/community/posts/" + community.postId}
               key={community.postId}
               className="px-4 py-2 rounded-lg shadow-sm bg-gray-100 w-full"
@@ -178,68 +186,69 @@ export default function HomeClient({ home }:{
                   href={`/community/posts/${community.id}`}
                   className=""
                 > */}
-                  {/* 박스 내용물 하나 */}
-                  <div className="flex flex-row justify-between items-start w-full rounded-lg px-2">
-                    {/* 왼쪽 */}
-                    <div className="flex-1 min-w-0 max-w-[80%] flex flex-col items-start gap-1.5 overflow-hidden">
-                      {/* 여기가 태그/인기 */}
-                      <div
-                        className={`text-label_sb px-1.5 py-1 mt-4 rounded bg-chip-1 text-chip-1-foreground inline-block w-fit`}
-                      >
-                        <p>{community.categoryName || "\u00A0"}</p>
-                      </div>
-                      <div className="flex flex-col gap-0.5">
-                        <h3 className="text-gray-900 text-body_bb">
-                          {/* {community.communityTitle} */}
-                          {community.title}
-                        </h3>
-                      </div>
-                        {/* <p className="text-body_b text-gray-600 block truncate xs:max-w-[100px] sm:max-w-[200px] md:max-w-[300px] lg:max-w-[400px] "> */}
-                      <div className="flex items-center gap-1 overflow-hidden min-w-0">
-                        <p className="text-body_b text-gray-600 block truncate w-full">
-                          {community.content.length > maxLength ? `${community.content.substring(0, maxLength)}...`
+                {/* 박스 내용물 하나 */}
+                <div className="flex flex-row justify-between items-start w-full rounded-lg px-2">
+                  {/* 왼쪽 */}
+                  <div className="flex-1 min-w-0 max-w-[80%] flex flex-col items-start gap-1.5 overflow-hidden">
+                    {/* 여기가 태그/인기 */}
+                    <div
+                      className={`text-label_sb px-1.5 py-1 mt-4 rounded bg-chip-1 text-chip-1-foreground inline-block w-fit`}
+                    >
+                      <p>{community.categoryName || "\u00A0"}</p>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <h3 className="text-gray-900 text-body_bb">
+                        {/* {community.communityTitle} */}
+                        {community.title}
+                      </h3>
+                    </div>
+                    {/* <p className="text-body_b text-gray-600 block truncate xs:max-w-[100px] sm:max-w-[200px] md:max-w-[300px] lg:max-w-[400px] "> */}
+                    <div className="flex items-center gap-1 overflow-hidden min-w-0">
+                      <p className="text-body_b text-gray-600 block truncate w-full">
+                        {community.content.length > maxLength
+                          ? `${community.content.substring(0, maxLength)}...`
                           : community.content}
-                        </p>
-                      </div>
+                      </p>
+                    </div>
 
-                      {/* <div className="flex items-center gap-1">
+                    {/* <div className="flex items-center gap-1">
               <WriterProfile
                 avatar={community.writerProfile}
                 name={community.writer}
               />
             </div> */}
 
-                      <div className="flex flex-row items-center gap-4">
-                        <div className="flex items-center gap-1">
-                          <LuEye className="w-5 h-5 text-gray-400" />
-                          <p className="text-gray-500"> {community.viewCnt}</p>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <FiMessageSquare className="w-5 h-5 text-gray-400" />
-                          <p className="text-gray-500">{community.cmmtCnt}</p>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <TiHeartOutline className="w-5 h-5 text-gray-400" />
-                          <p className="text-gray-500"> {community.likesCnt}</p>
-                        </div>
+                    <div className="flex flex-row items-center gap-4">
+                      <div className="flex items-center gap-1">
+                        <LuEye className="w-5 h-5 text-gray-400" />
+                        <p className="text-gray-500"> {community.viewCnt}</p>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <FiMessageSquare className="w-5 h-5 text-gray-400" />
+                        <p className="text-gray-500">{community.cmmtCnt}</p>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <TiHeartOutline className="w-5 h-5 text-gray-400" />
+                        <p className="text-gray-500"> {community.likesCnt}</p>
                       </div>
                     </div>
-
-                    {/* 오른쪽 */}
-                    {/* <div className="flex flex-col items-center w-24 flex-shrink-0"> */}
-                    <div className="mt-6 items-center w-24 flex-shrink-0">
-                      {/* <div className="mt-6 w-24 h-24 overflow-hidden rounded-lg"> */}
-                        <img
-                          src={
-                            community.image?.imageUrl ||
-                            "/empty/community_thumbnail.png"
-                          }
-                          alt="썸네일"
-                          className="w-24 h-24 object-cover rounded-lg"
-                        />
-                      {/* </div> */}
-                    </div>
                   </div>
+
+                  {/* 오른쪽 */}
+                  {/* <div className="flex flex-col items-center w-24 flex-shrink-0"> */}
+                  <div className="mt-6 items-center w-24 flex-shrink-0">
+                    {/* <div className="mt-6 w-24 h-24 overflow-hidden rounded-lg"> */}
+                    <img
+                      src={
+                        community.image?.imageUrl ||
+                        "/empty/community_thumbnail.png"
+                      }
+                      alt="썸네일"
+                      className="w-24 h-24 object-cover rounded-lg"
+                    />
+                    {/* </div> */}
+                  </div>
+                </div>
                 {/* </Link> */}
               </div>
             </Link>
@@ -249,10 +258,11 @@ export default function HomeClient({ home }:{
 
       <section className="flex flex-col w-full pb-8">
         <div className="flex flex-row px-4 py-2 justify-between">
-          <h2 className="pl-2 text-heading_2 text-gray-900">
-            New 커뮤니티 글
-          </h2>
-          <Link href="/community/posts/list?category=none&page=0" className="flex">
+          <h2 className="pl-2 text-heading_2 text-gray-900">New 커뮤니티 글</h2>
+          <Link
+            href="/community/posts/list?category=none&page=0"
+            className="flex"
+          >
             <ArrowRightIcon className="w-6 h-6 text-gray-900" />
           </Link>
         </div>
@@ -270,68 +280,69 @@ export default function HomeClient({ home }:{
                   href={`/community/posts/${community.id}`}
                   className=""
                 > */}
-                  {/* 박스 내용물 하나 */}
-                  <div className="flex flex-row justify-between items-start w-full rounded-lg px-2">
-                    {/* 왼쪽 */}
-                    <div className="flex-1 min-w-0 max-w-[80%] flex flex-col items-start gap-1.5 overflow-hidden">
-                      {/* 여기가 태그/인기 */}
-                      <div
-                        className={`text-label_sb px-1.5 py-1 mt-4 rounded bg-chip-1 text-chip-1-foreground inline-block w-fit`}
-                      >
-                        <p>{community.categoryName || "\u00A0"}</p>
-                      </div>
-                      <div className="flex flex-col gap-0.5">
-                        <h3 className="text-gray-900 text-body_bb">
-                          {/* {community.communityTitle} */}
-                          {community.title}
-                        </h3>
-                      </div>
-                        {/* <p className="text-body_b text-gray-600 block truncate xs:max-w-[100px] sm:max-w-[200px] md:max-w-[300px] lg:max-w-[400px] "> */}
-                      <div className="flex items-center gap-1 overflow-hidden min-w-0">
-                        <p className="text-body_b text-gray-600 block truncate w-full">
-                          {community.content.length > maxLength ? `${community.content.substring(0, maxLength)}...`
+                {/* 박스 내용물 하나 */}
+                <div className="flex flex-row justify-between items-start w-full rounded-lg px-2">
+                  {/* 왼쪽 */}
+                  <div className="flex-1 min-w-0 max-w-[80%] flex flex-col items-start gap-1.5 overflow-hidden">
+                    {/* 여기가 태그/인기 */}
+                    <div
+                      className={`text-label_sb px-1.5 py-1 mt-4 rounded bg-chip-1 text-chip-1-foreground inline-block w-fit`}
+                    >
+                      <p>{community.categoryName || "\u00A0"}</p>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <h3 className="text-gray-900 text-body_bb">
+                        {/* {community.communityTitle} */}
+                        {community.title}
+                      </h3>
+                    </div>
+                    {/* <p className="text-body_b text-gray-600 block truncate xs:max-w-[100px] sm:max-w-[200px] md:max-w-[300px] lg:max-w-[400px] "> */}
+                    <div className="flex items-center gap-1 overflow-hidden min-w-0">
+                      <p className="text-body_b text-gray-600 block truncate w-full">
+                        {community.content.length > maxLength
+                          ? `${community.content.substring(0, maxLength)}...`
                           : community.content}
-                        </p>
-                      </div>
+                      </p>
+                    </div>
 
-                      {/* <div className="flex items-center gap-1">
+                    {/* <div className="flex items-center gap-1">
               <WriterProfile
                 avatar={community.writerProfile}
                 name={community.writer}
               />
             </div> */}
 
-                      <div className="flex flex-row items-center gap-4">
-                        <div className="flex items-center gap-1">
-                          <LuEye className="w-5 h-5 text-gray-400" />
-                          <p className="text-gray-500"> {community.viewCnt}</p>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <FiMessageSquare className="w-5 h-5 text-gray-400" />
-                          <p className="text-gray-500">{community.cmmtCnt}</p>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <TiHeartOutline className="w-5 h-5 text-gray-400" />
-                          <p className="text-gray-500"> {community.likesCnt}</p>
-                        </div>
+                    <div className="flex flex-row items-center gap-4">
+                      <div className="flex items-center gap-1">
+                        <LuEye className="w-5 h-5 text-gray-400" />
+                        <p className="text-gray-500"> {community.viewCnt}</p>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <FiMessageSquare className="w-5 h-5 text-gray-400" />
+                        <p className="text-gray-500">{community.cmmtCnt}</p>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <TiHeartOutline className="w-5 h-5 text-gray-400" />
+                        <p className="text-gray-500"> {community.likesCnt}</p>
                       </div>
                     </div>
-
-                    {/* 오른쪽 */}
-                    {/* <div className="flex flex-col items-center w-24 flex-shrink-0"> */}
-                    <div className="mt-6 items-center w-24 flex-shrink-0">
-                      {/* <div className="mt-6 w-24 h-24 overflow-hidden rounded-lg"> */}
-                        <img
-                          src={
-                            community.image?.imageUrl ||
-                            "/empty/community_thumbnail.png"
-                          }
-                          alt="썸네일"
-                          className="w-24 h-24 object-cover rounded-lg"
-                        />
-                      {/* </div> */}
-                    </div>
                   </div>
+
+                  {/* 오른쪽 */}
+                  {/* <div className="flex flex-col items-center w-24 flex-shrink-0"> */}
+                  <div className="mt-6 items-center w-24 flex-shrink-0">
+                    {/* <div className="mt-6 w-24 h-24 overflow-hidden rounded-lg"> */}
+                    <img
+                      src={
+                        community.image?.imageUrl ||
+                        "/empty/community_thumbnail.png"
+                      }
+                      alt="썸네일"
+                      className="w-24 h-24 object-cover rounded-lg"
+                    />
+                    {/* </div> */}
+                  </div>
+                </div>
                 {/* </Link> */}
               </div>
             </Link>
@@ -344,20 +355,32 @@ export default function HomeClient({ home }:{
           <h2 className="pl-2 text-heading_2 text-gray-900">
             모집중인 수영대회
           </h2>
-          <Link href="/lessons" className="flex">
+          <Link
+            href="/community/posts/list?category=competition&page=0"
+            className="flex"
+          >
             <ArrowRightIcon className="w-6 h-6 text-gray-900" />
           </Link>
         </div>
         {/* 카드리스트 */}
-        <div className="flex flex-wrap gap-6 px-8 py-1">
-          {swimContests.map((contest) => (
-            <div
-              key={contest.postId}
-              className="px-4 py-2 rounded-lg shadow-sm bg-gray-100 w-full"
-            >
-              {/* 카드 1*/}
-              <div className="items-center gap-2 pb-2">
-                {/* <Link
+        {swimContests.length === 0 ? (
+          <div className="flex flex-wrap gap-6 px-8 py-1">
+              <div className="px-4 py-2 rounded-lg shadow-sm bg-gray-100 w-full">
+            <div className="items-center gap-2 pb-2 p-2">
+              <p className="text-gray-500">현재 모집중인 수영대회가 없습니다.</p>
+            </div>
+          </div>
+          </div>
+        ) : (
+          <div className="flex flex-wrap gap-6 px-8 py-1">
+            {swimContests.map((contest) => (
+              <div
+                key={contest.postId}
+                className="px-4 py-2 rounded-lg shadow-sm bg-gray-100 w-full"
+              >
+                {/* 카드 1*/}
+                <div className="items-center gap-2 pb-2">
+                  {/* <Link
                   href={`/community/posts/${community.id}`}
                   className=""
                 > */}
@@ -377,7 +400,7 @@ export default function HomeClient({ home }:{
                           {contest.title}
                         </h3>
                       </div>
-                        {/* <p className="text-body_b text-gray-600 block truncate xs:max-w-[100px] sm:max-w-[200px] md:max-w-[300px] lg:max-w-[400px] "> */}
+                      {/* <p className="text-body_b text-gray-600 block truncate xs:max-w-[100px] sm:max-w-[200px] md:max-w-[300px] lg:max-w-[400px] "> */}
                       <div className="flex items-center gap-1 overflow-hidden min-w-0">
                         <p className="text-body_b text-gray-600 block truncate w-full">
                           {/* {contest.period.length > maxLength ? `${contest.period.substring(0, maxLength)}...`
@@ -413,7 +436,7 @@ export default function HomeClient({ home }:{
                     <div className="mt-6 items-center flex-shrink-0">
                       {/* <div className="mt-6 w-24 h-24 overflow-hidden rounded-lg"> */}
                       <p className="mr-2 font-bold">{contest.dDay}</p>
-                        {/* <img
+                      {/* <img
                           src={
                             community.images?.imageUrl ||
                             "/empty/community_thumbnail.png"
@@ -424,13 +447,13 @@ export default function HomeClient({ home }:{
                       {/* </div> */}
                     </div>
                   </div>
-                {/* </Link> */}
+                  {/* </Link> */}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
-
 
       {/* <ul className="grid grid-cols-2 gap-4 px-4 pb-10"></ul> */}
     </div>
