@@ -20,37 +20,34 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
   const LessonId = Number(params.id);
   const lesson = await getLesson(LessonId);
 
-  
   if (!lesson) {
-    // console.log("lessonDetail::::::::::::::::::값이 없어"); 
+    // console.log("lessonDetail::::::::::::::::::값이 없어");
     notFound();
   }
-  
-  console.log("lessonDetail::::::::::::::::::", lesson.lessonDetail); 
 
+  console.log("lessonDetail::::::::::::::::::", lesson.lessonDetail);
 
-  const applyChannels = lesson.applyChannels.filter(
-    ({ applyUrl }) => !!applyUrl
-  );
+  // const applyChannels = lesson.applyChannels.filter(
+  //   ({ applyUrl }) => !!applyUrl
+  // );
 
-  console.log("lesson.lessonDetail::::::::::::::::왜에러남??", lesson.lessonDetail); 
-  console.log("lessonDetail::::::::::::::::::타입?", typeof lesson.lessonDetail); 
-  
+  // console.log("lesson.lessonDetail::::::::::::::::왜에러남??", lesson.lessonDetail);
+  // console.log("lessonDetail::::::::::::::::::타입?", typeof lesson.lessonDetail);
+
   const lessonDetail = lessonDetailContentSchema.parse(
-    JSON.parse(lesson.lessonDetail)
-    // lesson.lessonDetail
+    // JSON.parse(lesson.lessonDetail)
+    lesson.lessonDetail
   );
-  
-  console.log("lessonDetail classTopic::::::::::::::::::", lessonDetail.classTopic); 
-  console.log("lessonDetail eligibilityRequirements::::::::::::::::::", lessonDetail.eligibilityRequirements); 
-  console.log("lessonDetail classIntroduction::::::::::::::::::", lessonDetail.classIntroduction); 
-  console.log("lessonDetail applicationMethod::::::::::::::::::", lessonDetail.applicationMethod); 
-  
+
+  // console.log("lessonDetail classTopic::::::::::::::::::", lessonDetail.classTopic);
+  // console.log("lessonDetail eligibilityRequirements::::::::::::::::::", lessonDetail.eligibilityRequirements);
+  // console.log("lessonDetail classIntroduction::::::::::::::::::", lessonDetail.classIntroduction);
+  // console.log("lessonDetail applicationMethod::::::::::::::::::", lessonDetail.applicationMethod);
 
   const imageUrls = lesson.images.map((image) => image.imageUrl);
   const levels = lesson.level.split(",").map((tag) => tag.trim());
 
-  // console.log("lessonDetail::::::::::::::::::", lesson.images); 
+  // console.log("lessonDetail::::::::::::::::::", lesson.images);
 
   // "classTopic": "스타트 특강",
   // "eligibilityRequirements": ["조건1", "조건2"],
@@ -80,10 +77,11 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
             {lesson.academy.academyName}
           </span>
         </div>
-        <DetailPagePhotoSlider 
-        imageUrls={imageUrls} 
-        alt="수업 사진"
-        sliderType="other" />
+        <DetailPagePhotoSlider
+          imageUrls={imageUrls}
+          alt="수업 사진"
+          sliderType="other"
+        />
       </div>
 
       <section className="flex flex-col gap-3 px-4 mb-6">
@@ -106,7 +104,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
         )}
       </section>
 
-      <section className="flex flex-col gap-2 px-4 pb-6 border-b border-gray-200">
+      {/* <section className="flex flex-col gap-2 px-4 pb-6 border-b border-gray-200">
         <h2 className="text-body_bb text-gray-700">신청하기</h2>
 
         <div className="flex gap-2 overflow-x-auto no-scrollbar">
@@ -197,7 +195,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
             return null;
           })}
         </div>
-      </section>
+      </section> */}
 
       <section className="flex flex-col gap-4 pt-6 px-4">
         <div className="flex flex-col gap-2 bg-gray-100 rounded-lg">
@@ -210,7 +208,7 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
                 주제
               </p>
               <span className="text-body_sr text-gray-700">
-                {lessonDetail.classTopic}
+                {lessonDetail.topic}
               </span>
             </div>
 
@@ -219,14 +217,15 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
                 신청자격
               </p>
               <div className="flex flex-col gap-1 text-body_sr text-gray-700">
-                {lessonDetail.eligibilityRequirements.map(
+                {/* {lessonDetail.eligibilityRequirements.map(
                   (requirement, index) => (
                     <span key={requirement}>
                       {`(${index + 1}) `}
                       {requirement}
                     </span>
                   )
-                )}
+                )} */}
+                {lessonDetail.eligibilityRequirements}
               </div>
             </div>
 
@@ -235,17 +234,32 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
                 소개
               </p>
               <span className="text-body_sr text-gray-700 whitespace-pre-line">
-                {lessonDetail.classIntroduction}
+                {lessonDetail.introduction}
               </span>
             </div>
 
-            <div className="flex gap-3 px-4 py-2">
+            <div className="flex gap-1.5 px-4 py-2">
               <p className="flex-none text-body_sb w-[52px] text-gray-700">
                 신청방법
               </p>
               <span className="text-body_sr text-gray-700">
-                {lessonDetail.applicationMethod.join(", ")}
+                {/* {lessonDetail.applicationMethod.join(", ")} */}
               </span>
+
+              <div className="flex flex-col gap-1 text-body_sr text-gray-700">
+                {lessonDetail.applicationMethod.map((item, index) => (
+                  <span key={index}>
+                    {`(${index + 1}) `}
+                    <a
+                      href={item.applyUrl}
+                      target="_blank"
+                      className="underline text-blue-600 hover:text-blue-800"
+                    >
+                      {item.applyUrlType}
+                    </a>
+                  </span>
+                ))}
+              </div>
             </div>
 
             <div className="flex gap-3 px-4 py-2">
@@ -253,18 +267,20 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
                 환불안내
               </p>
               <div className="flex flex-col gap-1 text-body_sr text-gray-700">
-                {lessonDetail.refundPolicy.map((item, index) => (
-                  <span key={item}>
-                    {`(${index + 1}) `}
-                    {item}
-                  </span>
-                ))}
+                {lessonDetail.refundPolicy &&
+                lessonDetail.refundPolicy.length > 0 ? (
+                  lessonDetail.refundPolicy.map((item, index) => (
+                    <span key={item}>{`(${index + 1}) ${item}`}</span>
+                  ))
+                ) : (
+                  <span>없음</span>
+                )}
               </div>
             </div>
           </div>
         </div>
 
-        {lesson.pool && (
+        {lesson.pool ? (
           <div className="flex flex-col bg-gray-100 rounded-lg">
             <div className="flex items-center justify-between pl-4">
               <h2 className="text-body_bb text-gray-700">클래스 위치</h2>
@@ -290,6 +306,18 @@ const LessonPage = async ({ params }: { params: { id: string } }) => {
             <div className="flex flex-col gap-1 pt-2 px-4 pb-4">
               <p className="text-body_sr text-gray-700">
                 {lesson.pool.poolAddress}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col bg-gray-100 rounded-lg">
+            <div className="flex items-center justify-between pt-4 pl-4">
+              <h2 className="text-body_bb text-gray-700">클래스 위치</h2>
+            </div>
+
+            <div className="flex flex-col gap-1 pt-4 px-4 pb-4">
+              <p className="text-body_sr text-gray-700">
+                현재 등록된 장소 정보가 없습니다.
               </p>
             </div>
           </div>
