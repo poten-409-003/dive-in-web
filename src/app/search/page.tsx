@@ -20,8 +20,9 @@ const SearchPage = async () => {
             name="course-search"
             id="course-search"
             // className="flex-1 p-2 rounded-md"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none"
             placeholder="클래스명, 수영장, 커뮤니티 글을 검색해보세요"
+            autoFocus
           />
           <button
             type="submit"
