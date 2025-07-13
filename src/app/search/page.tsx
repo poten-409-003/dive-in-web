@@ -1,42 +1,119 @@
-import { SearchIcon } from "lucide-react";
-import Link from "next/link";
-import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
-import ClientSearch from "./clientPage";
+"use client";
 
-const SearchPage = async () => {
+import Link from "next/link";
+import ChatIcon from "@/components/icons/ChatIcon";
+import PoolIcon from "@/components/icons/PoolIcon";
+import SwimHatIcon from "@/components/icons/SwimHatIcon";
+import { SearchIcon } from "lucide-react";
+import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
+import { Search } from "@/types/search";
+import { useEffect, useState } from "react";
+import { getSearch } from "@/api/server/search";
+
+export default function ClientSearch() {
+  // const keyword = 사용자의 키보드 입력으로 받은 값
+  const [keyword, setKeyword] = useState(""); //키워드
+  const [result, setResults] = useState<Search[]>([]); //검색어에 따른 결과
+
+  useEffect(() => {
+    const fetchSearch = async () => {
+      if (!keyword.trim()) return; //빈검색어 무시
+
+      try {
+        const data = await getSearch(keyword);
+
+        if (data) {
+          setResults(data);
+        } else {
+          console.log("검색 결과가 존재하지 않습니다.");
+        }
+      } catch (error) {
+        console.error("검색 결과 에러:::", error);
+      }
+    };
+
+    fetchSearch();
+  }, [keyword]);
+
   return (
     <div className="flex flex-col">
-        <div className="relative flex items-center justify-between py-1 px-1">
-          <Link href="/" className="flex p-3">
-            <ArrowLeftIcon className="w-6 h-6 text-gray-900" />
-          </Link>
-          <h1 className="absolute left-1/2 transform -translate-x-1/2 text-xl font-bold">통합검색</h1>
-         </div>
+      <div className="relative flex items-center justify-between py-1 px-1">
+        <Link href="/" className="flex p-3">
+          <ArrowLeftIcon className="w-6 h-6 text-gray-900" />
+        </Link>
+        <h1 className="absolute left-1/2 transform -translate-x-1/2 text-xl font-bold">
+          통합검색
+        </h1>
+      </div>
 
       <div className="px-4">
         <form className="relative flex border rounded-md overflow-hidden">
           <input
+            value={keyword}
             type="text"
             name="course-search"
             id="course-search"
-            // className="flex-1 p-2 rounded-md"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none"
             placeholder="클래스명, 수영장, 커뮤니티 글을 검색해보세요"
             autoFocus
+            onChange={(e) => setKeyword(e.target.value)}
           />
-          <button
+          {/* <button
             type="submit"
             className="flex-none flex items-center justify-center bg-gray-100 w-10 h-10"
           >
             <SearchIcon className="w-5 h-5" />
-          </button>
+          </button> */}
         </form>
       </div>
+
       <div>
-       <ClientSearch></ClientSearch>
+        <div>
+          {/* <p className="p-4">클라이언트 페이지</p> */}
+          <ul className="list-none px-4">
+            {result.map((result) => (
+              // <li key={result.id} className="border-b border-gray-300 pb-4">
+              <li className="border-b border-gray-300 pb-4">
+                <Link href={result.dataUrl} className="flex p-3">
+                  <div className="flex flex-col items-start bg-white-100 rounded-lg mt-4">
+                    <div className="flex flex-row">
+                      {getCategoryIcon(result.categoryName)}
+                      <div
+                        className={`text-label_sb py-1 rounded text-chip-1-foreground inline-block w-fit`}
+                      >
+                        <p className="pl-2">{result.categoryName}</p>
+                      </div>
+                    </div>
+                    <p className="text-md pl-8">{result.title}</p>
+                    <p className="text-sm text-gray-600 pl-8">
+                      {result.content}
+                    </p>
+                    <p className="text-sm text-gray-600 pl-8">
+                      {result.contentSummary}
+                    </p>
+                    <p className="text-sm text-gray-600 pl-8">
+                      {result.createdAt}
+                    </p>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
-};
+}
 
-export default SearchPage;
+const getCategoryIcon = (categoryName: string) => {
+  switch (categoryName) {
+    case "수영장":
+      return <PoolIcon className="h-6 w-6 text-gray-400" />;
+    case "수영수업":
+      return <SwimHatIcon className="h-6 w-6 text-gray-400" />;
+    case "커뮤니티":
+      return <ChatIcon className="h-6 w-6 text-gray-400" />;
+    default:
+      return <div></div>;
+  }
+};
