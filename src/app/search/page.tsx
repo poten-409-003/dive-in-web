@@ -14,11 +14,14 @@ export default function ClientSearch() {
   // const keyword = 사용자의 키보드 입력으로 받은 값
   const [keyword, setKeyword] = useState(""); //실시간 사용자 입력값
   const [result, setResults] = useState<Search[]>([]); //검색어에 따른 결과
-  const debounceKeyword = useDebounce(keyword, 500); //디바운싱 적용된 입력값
+  const debounceKeyword = useDebounce(keyword, 300); //디바운싱 적용된 입력값
 
   useEffect(() => {
     const fetchSearch = async () => {
-      if (!debounceKeyword.trim()) return; //빈검색어 무시
+      if (!debounceKeyword.trim()) {
+        setResults([]); //검색창이 비면 결과 비우기
+        return; //함수 종료(빈문자열로 api요청 안보내도록 무시/fetch요청 막기)
+      }
 
       try {
         const data = await getSearch(debounceKeyword);
