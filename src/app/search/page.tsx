@@ -4,23 +4,24 @@ import Link from "next/link";
 import ChatIcon from "@/components/icons/ChatIcon";
 import PoolIcon from "@/components/icons/PoolIcon";
 import SwimHatIcon from "@/components/icons/SwimHatIcon";
-import { SearchIcon } from "lucide-react";
-import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 import { Search } from "@/types/search";
 import { useEffect, useState } from "react";
 import { getSearch } from "@/api/server/search";
+import BackButton from "../_components/backButton";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export default function ClientSearch() {
   // const keyword = 사용자의 키보드 입력으로 받은 값
-  const [keyword, setKeyword] = useState(""); //키워드
+  const [keyword, setKeyword] = useState(""); //실시간 사용자 입력값
   const [result, setResults] = useState<Search[]>([]); //검색어에 따른 결과
+  const debounceKeyword = useDebounce(keyword, 500); //디바운싱 적용된 입력값
 
   useEffect(() => {
     const fetchSearch = async () => {
-      if (!keyword.trim()) return; //빈검색어 무시
+      if (!debounceKeyword.trim()) return; //빈검색어 무시
 
       try {
-        const data = await getSearch(keyword);
+        const data = await getSearch(debounceKeyword);
 
         if (data) {
           setResults(data);
@@ -33,14 +34,12 @@ export default function ClientSearch() {
     };
 
     fetchSearch();
-  }, [keyword]);
+  }, [debounceKeyword]);
 
   return (
     <div className="flex flex-col">
       <div className="relative flex items-center justify-between py-1 px-1">
-        <Link href="/" className="flex p-3">
-          <ArrowLeftIcon className="w-6 h-6 text-gray-900" />
-        </Link>
+       <BackButton />
         <h1 className="absolute left-1/2 transform -translate-x-1/2 text-xl font-bold">
           통합검색
         </h1>
