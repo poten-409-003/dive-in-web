@@ -1,5 +1,5 @@
 "use client";
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 import Link from "next/link";
 import { IoCheckmark } from "react-icons/io5";
