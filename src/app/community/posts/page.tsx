@@ -37,13 +37,15 @@ export default function CreatePost() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    if (isLinkOpen) {
-      document.addEventListener("mousedown", handleOutsideClick);
-    } else {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    }
-  }, [isLinkOpen]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // useEffect(() => {
+  //   if (isLinkOpen) {
+  //     document.addEventListener("mousedown", handleOutsideClick);
+  //   } else {
+  //     document.removeEventListener("mousedown", handleOutsideClick);
+  //   }
+  // }, [isLinkOpen]);
 
   //textarea하단 공백 조절
   useEffect(() => {
@@ -135,7 +137,7 @@ export default function CreatePost() {
       if (!og) {
         alert("유효한 링크가 아닙니다.");
         return;
-      } else if (!og.title) {
+      } else if (!og.title && !og.description && !og.image) {
         setPreview({
           title: link,
           description: "링크를 확인해보세요.",
@@ -161,14 +163,16 @@ export default function CreatePost() {
     }
   };
 
-  const handleOutsideClick = (e: MouseEvent) => {
-    if (
-      containerRef.current &&
-      !containerRef.current.contains(e.target as Node)
-    ) {
-      setIsLinkOpen(false);
-    }
-  };
+  // const handleOutsideClick = (e: MouseEvent) => {
+  //   if (
+  //     containerRef.current &&
+  //     !containerRef.current.contains(e.target as Node)
+  //   ) {
+  //     setIsLinkOpen(false);
+  //   }
+  // };
+
+ 
 
   return (
     // <div className="flex flex-col pb-10 relative h-full">
@@ -323,14 +327,15 @@ export default function CreatePost() {
       </div>
 
       {/* 링크 슬라이드 */}
-      {isLinkOpen && (
+      
         <OpenGraphPreview
           url={link}
           setUrl={setLink}
           onConfirm={handleSubmitLink}
           onClose={() => setIsLinkOpen(false)}
+          isOpen={isLinkOpen}
         />
-      )}
+     
     </div>
   );
 }
