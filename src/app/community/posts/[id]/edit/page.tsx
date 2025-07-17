@@ -49,31 +49,52 @@ export default function EditPost({ params }: EditPostProps) {
   // const [ogContent, setOgContent] = useState("");
   const containerRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
-
-  //og관련
   const urlRegex = /(https?:\/\/[^\s]+)/g; //OG추출을 위한 정규표현식
+  const [ogFromUserInsert, setOgFromUserInsert] = useState(false);
+  const [lastOgUrl, setLastOgUrl] = useState("");
+
+  //og관련-감지용
   useEffect(() => {
-    if (!content) return;
+  const matchUrls = content.match(urlRegex);
+  const lastUrl = matchUrls?.[matchUrls.length - 1];
 
-    const matchUrls = content.match(urlRegex);
-    const lastUrl = matchUrls?.[matchUrls?.length - 1]; //마지막링크
-    if (!lastUrl) return;
+  if (lastUrl && lastUrl !== lastOgUrl) {
+    setLastOgUrl(lastUrl);
+  }
+}, [content]);
 
-    const controller = new AbortController(); //링크 다수를 빠른 삽입시 오류 방지 
-    const fetchOG = async () => {
-      try {
-        const og = await openGraph(lastUrl);
-        if (og) {
-          setPreview(og);
-        }
-      } catch (error) {
-         if (controller.signal.aborted) return;
-        console.log("OG미리보기 불러오기 실패", error);
+// 실제 openGraph 요청/별도 useEffect
+useEffect(() => {
+  if (!lastOgUrl) return;
+
+  const controller = new AbortController();
+  const fetchOG = async () => {
+    try {
+      const og = await openGraph(lastOgUrl);
+      if (!og || (!og.title && !og.description && !og.image)) {
+        setPreview({
+          title: "링크를 확인해보세요",
+          description: lastOgUrl,
+          image: "/empty/community_thumbnail.png",
+          url: lastOgUrl,
+        });
+      } else {
+        setPreview({
+          title: og.title,
+          description: og.description,
+          image: og.image,
+          url: og.url,
+        });
       }
-    };
+    } catch (error) {
+      if (controller.signal.aborted) return;
+      console.error("OG 미리보기 실패", error);
+    }
+  };
 
-    fetchOG();
-  }, [content]);
+  fetchOG();
+}, [lastOgUrl]);
+
 
   //textarea하단 공백 조절
   useEffect(() => {
@@ -218,7 +239,7 @@ export default function EditPost({ params }: EditPostProps) {
       if (!og) {
         alert("유효한 링크가 아닙니다.");
         return;
-      } else if (!og.title) {
+      } else if (!og.title && !og.description && !og.image) {
         setPreview({
           title: link,
           description: "링크를 확인해보세요.",
@@ -346,7 +367,7 @@ export default function EditPost({ params }: EditPostProps) {
                   className="w-full h-full object-cover rounded"
                 />
                 <span className="absolute top-1 left-1 bg-gray-700 text-white text-xs px-1 py-0.5 rounded">
-                  {image.repImage ? "대표" : ""}
+                  {image.repImage ? "" : "대표"}
                 </span>
                 <button
                   type="button"
@@ -432,14 +453,14 @@ export default function EditPost({ params }: EditPostProps) {
       {/* <div className="border-b border-gray-300 my-4"></div> */}
 
       {/* 링크 슬라이드 */}
-      {isLinkOpen && (
         <OpenGraphPreview
           url={link}
           setUrl={setLink}
           onConfirm={handleSubmitLink}
           onClose={() => setIsLinkOpen(false)}
+          isOpen={isLinkOpen}
         />
-      )}
+     
     </div>
   );
 }
