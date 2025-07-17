@@ -159,6 +159,18 @@ export default function ClientCommunity({
     }
   };
 
+  //클립보드 복사
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      alert("링크가 복사되었습니다!");
+    } catch (error) {
+       alert("링크 복사에 실패하였습니다!");
+      console.error("클립보드 복사 실패!::", error);
+    }
+  };
+
+
   //최신데이터 가져오기
   useEffect(() => {
     const fetchPost = async () => {
@@ -285,7 +297,7 @@ export default function ClientCommunity({
           <span className="text-gray-700">{changeLikesCnt}</span>
         </button>
         <button className="flex justify-center items-center gap-1 flex-1">
-          <RiShare2Line className="w-5 h-5 text-gray-700" />
+          <RiShare2Line className="w-5 h-5 text-gray-700" onClick={handleCopyLink}/>
           <p className="text-gray-500"></p>
         </button>
       </div>
@@ -364,7 +376,7 @@ export default function ClientCommunity({
         <ul>
           <li
             className="py-2 text-sm font-bold hover:bg-gray-100 cursor-pointer"
-            onClick={() => {}}
+            onClick={handleCopyLink}
           >
             <div className="flex justify-start items-center gap-1 flex-1">
               <RiShare2Line className="w-5 h-5 text-gray-900" />
