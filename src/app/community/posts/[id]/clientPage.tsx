@@ -18,6 +18,7 @@ import {
   deleteCommunity,
   deleteLikePost,
   getCommunity,
+  openGraph,
 } from "@/api/server/community";
 import DetailPagePhotoSlider from "@/app/_components/PhotoSlider";
 import CommentList from "../../_components/CommentList";
@@ -37,7 +38,34 @@ export default function ClientCommunity({
   const [changeLikesCnt, setChangeLikesCnt] = useState(community.likesCnt);
   const router = useRouter();
   // console.warn("코멘트 안오냐?:::::::::::", community.commentList);
+  
+  //og관련
+  const [preview, setPreview] = useState<any>(null);
+  const urlRegex = /(https?:\/\/[^\s]+)/g; //OG추출을 위한 정규표현식
+  useEffect(() => {
+    if(!community?.content) return;
 
+    const matchUrls = community.content.match(urlRegex);
+    const lastUrl = matchUrls?.[matchUrls?.length - 1]; //마지막링크
+    if(!lastUrl) return;
+
+    const fetchOG = async () => {
+      try {
+        const og = await openGraph(lastUrl);
+        if(og) {
+          setPreview(og);
+        }
+
+      } catch (error) {
+        console.log("OG미리보기 불러오기 실패", error);
+      }
+    }
+
+    fetchOG();
+
+  },[community?.content]);
+
+  
   const handleTextareaHeight = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const textarea = textareaRef.current;
 
@@ -114,7 +142,7 @@ export default function ClientCommunity({
     formData.append("memberId", "1");
 
     console.warn("입력된 댓글내용?::::", comment);
-    
+
     try {
       const result = await createComment(formData);
       console.log("댓글 등록 결과는::::", result);
@@ -126,37 +154,37 @@ export default function ClientCommunity({
       // }
 
       setComment(""); //댓글필드 초기화
-
     } catch (error) {
       console.error("댓글 등록 실패!", error);
     }
   };
 
-
   //최신데이터 가져오기
   useEffect(() => {
-    const fetchPost = async() => {
+    const fetchPost = async () => {
       try {
         const reloadPost = await getCommunity(community.postId + "");
 
-        if(reloadPost){
+        if (reloadPost) {
           setChangeLiked(reloadPost?.isLiked);
           setChangeLikesCnt(reloadPost?.likesCnt);
         }
-
       } catch (error) {
         console.error("초기 데이터 동기화 오류:", error);
       }
     };
 
     fetchPost();
-  },[community.postId]); 
+  }, [community.postId]);
 
   return (
     <div className="flex flex-col pb-10 relative h-full">
       {/* 상단Nav */}
       <div className="flex items-center justify-between py-1 px-1">
-        <Link href="/community/posts/list?category=none&page=0" className="flex p-3">
+        <Link
+          href="/community/posts/list?category=none&page=0"
+          className="flex p-3"
+        >
           <ArrowLeftIcon className="w-6 h-6 text-gray-900" />
         </Link>
 
@@ -204,23 +232,44 @@ export default function ClientCommunity({
         </p>
 
         <div className="mt-4 flex justify-center max-w-fit mx-auto gap-4">
-        {/* <div className="mt-4 flex justify-center"> */}
+          {/* <div className="mt-4 flex justify-center"> */}
           {community.images.length > 0 ? (
-              // <div key={index} className="overflow-hidden rounded-lg">
-              // <div className="mt-4 flex justify-center">
-                <DetailPagePhotoSlider
-                  imageUrls={community.images.map((image) => image.imageUrl)}
-                  alt="게시글 이미지"
-                  sliderType="community"
-
-                />
-              // </div>
+            // <div key={index} className="overflow-hidden rounded-lg">
+            // <div className="mt-4 flex justify-center">
+            <DetailPagePhotoSlider
+              imageUrls={community.images.map((image) => image.imageUrl)}
+              alt="게시글 이미지"
+              sliderType="community"
+            />
           ) : (
+            // </div>
             // 이미지가 없을시
             <p className="text-gray-500"></p>
           )}
-          
         </div>
+
+        {/* og삽입 */}
+        {preview && (
+          <a 
+          href={preview.url}
+          target="_blank"
+          className="block mt-4 p-4 border rounded bg-gray-100 hover:bg-gray-200"
+          >
+            <div className="flex gap-4">
+              {preview.image && (
+                <img
+                src={preview.image}
+                alt="미리보기 이미지"
+                className="w-20 h-20 object-cover rounded border"
+                />
+              )}
+              <div className="overflow-hidden">
+                <p className="font-bold text-sm line-clamp-2">{preview.title}</p>
+                <p className="text-xs text-gray-600 mt-1 line-clamp-1">{preview.description}</p>
+              </div>
+            </div>
+          </a>
+        )}
       </div>
 
       <div className="flex justify-center items-center gap-4">
@@ -242,7 +291,10 @@ export default function ClientCommunity({
       </div>
 
       <div className="bg-gray-100 py-2 mt-4"></div>
-      <CommentList commentList={community.commentList} postId={community.postId} />
+      <CommentList
+        commentList={community.commentList}
+        postId={community.postId}
+      />
 
       {/* 댓글 상자 */}
       <div className="relative px-4 pb-4">
@@ -260,7 +312,10 @@ export default function ClientCommunity({
             </button>
           </p>
         ) : (
-          <form className="flex flex-row px-4 py-5 items-center bg-gray-100 rounded" onSubmit={handleCommentSubmit}>
+          <form
+            className="flex flex-row px-4 py-5 items-center bg-gray-100 rounded"
+            onSubmit={handleCommentSubmit}
+          >
             <textarea
               ref={textareaRef}
               value={comment}
@@ -275,20 +330,24 @@ export default function ClientCommunity({
               }}
               className="w-full resize-none overflow-hidden border-none text-left text-sm text-gray-700 bg-gray-100 focus:outline-none"
             />
-            <button className="text-left text-sm font-semibold text-gray-500" type="submit">
+            <button
+              className="text-left text-sm font-semibold text-gray-500"
+              type="submit"
+            >
               <LuSend size={18} />
             </button>
           </form>
         )}
       </div>
 
-      
       {/* 배경 */}
-        {isMenuOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300" 
-          style={{zIndex: 40}} 
-          onClick={handleMenuClose} />
-        )}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
+          style={{ zIndex: 40 }}
+          onClick={handleMenuClose}
+        />
+      )}
 
       {/* 글 메뉴 슬라이드 */}
       <div
