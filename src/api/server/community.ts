@@ -6,11 +6,24 @@ import {
   communitySchema,
 } from "@/schemas/communities";
 import { CommunityProps } from "@/types/community";
+import { getCommunitiesMock } from "../mock/community";
+
+
+//무한스크롤 전용 목업 데이터 테스트용
+// const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === "true";
+const USE_MOCK = "true";
 
 export const getCommunities = async (
   category: string = "none",
   page: string = "0"
 ) => {
+
+  //목업데이터 사용하여 테스트시
+  if(USE_MOCK){
+    console.log("Mock Data 호출:", { category, page });
+    return getCommunitiesMock(category, page);
+  }
+
   try {
     const url = `https://api.dive-in.co.kr/community/posts/list/${category}/${page}`;
     const response = await fetch(url);
@@ -321,3 +334,6 @@ export const openGraph = async (url: string) => {
     return [];
   }
 };
+
+
+
