@@ -24,6 +24,10 @@ export const getCommunities = async (
     return getCommunitiesMock(category, page);
   }
 
+export const getCommunities = async (
+  category: string = "none",
+  page: string = "0"
+) => {
   try {
     const url = `https://api.dive-in.co.kr/community/posts/list/${category}/${page}`;
     const response = await fetch(url);
@@ -334,6 +338,3 @@ export const openGraph = async (url: string) => {
     return [];
   }
 };
-
-
-
