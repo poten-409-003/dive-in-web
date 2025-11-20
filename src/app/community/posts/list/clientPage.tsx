@@ -50,7 +50,7 @@ export default function CommunitiesClient({ communityList, category, page }:{
     };
 
     fetchData();
-    router.push(`/community/posts/list?category=${selectedCategory}&page=${page}`);
+    router.push(`/community/posts/list?category=${selectedCategory}&page=${page}`); //여기서 page=0이 되어야 일치
   },[selectedCategory, page]);
 
 
