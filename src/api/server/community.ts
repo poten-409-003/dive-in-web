@@ -11,7 +11,8 @@ import { getCommunitiesMock } from "../mock/community";
 
 //무한스크롤 전용 목업 데이터 테스트용
 // const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === "true";
-const USE_MOCK = "true";
+const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === "true" //:::테스트 끝나고 false로 돌리기!!!!!!!!!!!!!!!
+
 
 export const getCommunities = async (
   category: string = "none",
@@ -24,10 +25,6 @@ export const getCommunities = async (
     return getCommunitiesMock(category, page);
   }
 
-export const getCommunities = async (
-  category: string = "none",
-  page: string = "0"
-) => {
   try {
     const url = `https://api.dive-in.co.kr/community/posts/list/${category}/${page}`;
     const response = await fetch(url);
@@ -51,6 +48,7 @@ export const getCommunities = async (
     return { posts: [], totalPosts: 0, hasMore: false }; //아 여기 반환값 달라서 에러났던 거였음? 하...참나
   }
 };
+
 
 // export const getCommunity = async (postId: string): Promise<CommunityProps | null> => {
 export const getCommunity = async (postId: string) => {
