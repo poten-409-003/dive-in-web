@@ -48,7 +48,8 @@ export default function CommunitiesClient({
   const { ref, inView } = useInView({
     threshold: 0.5, // 요소가 50% 보일 때 inView가 true로 바뀜
   });
-  const [status, setStatus] = useState<Status>("idle");
+  const [status, setStatus] = useState<Status>("idle"); //요청 상태
+  const [isFetchingMore, setIsFetchingMore] = useState<boolean>(false); //로딩스피너
 
   const router = useRouter();
 
@@ -82,33 +83,37 @@ export default function CommunitiesClient({
 
   //무한스크롤 + 요청 상태 추가
   useEffect(() => {
-    if (inView && hasMore) {
-      const fetchMoreData = async () => {
-        setStatus("loading");
+    if (!inView || !hasMore || isFetchingMore) return;
+    // if (inView && hasMore) {
+    const fetchMoreData = async () => {
+      setStatus("loading");
+      setIsFetchingMore(true);
 
-        try {
-          const nextPage = currentPage + 1;
-          const data: communityResponseDetailProps = await getCommunities(
-            selectedCategory,
-            String(nextPage)
-          );
-          if (data.posts.length > 0) {
-            setCommunities((prev) => [...prev, ...data.posts]);
-            setHasMore(data.hasMore);
-            setCurrentPage(nextPage);
-            setStatus("success");
-          } else {
-            setHasMore(false);
-          }
-        } catch (error) {
-          console.error(error);
-          setStatus("error");
+      try {
+        const nextPage = currentPage + 1;
+        const data: communityResponseDetailProps = await getCommunities(
+          selectedCategory,
+          String(nextPage)
+        );
+        if (data.posts.length > 0) {
+          setCommunities((prev) => [...prev, ...data.posts]);
+          setHasMore(data.hasMore);
+          setCurrentPage(nextPage);
+          setStatus("success");
+        } else {
+          setHasMore(false);
         }
-      };
+      } catch (error) {
+        console.error(error);
+        setStatus("error");
+      }finally{
+        setIsFetchingMore(false); //성공여부에 상관없이 요청 무조건 false로 돌리기(다음 요청을 위해)
+      }
+    };
 
-      fetchMoreData();
-    }
-  }, [inView, hasMore, currentPage, selectedCategory]);
+    fetchMoreData();
+    // }
+  }, [inView, hasMore, currentPage, selectedCategory, isFetchingMore]);
 
   return (
     <div>
@@ -152,11 +157,17 @@ export default function CommunitiesClient({
 
       {/* 무한스크롤 감지 */}
       {hasMore ? (
+        // 첫 로딩 때 큰 로딩스피너
         <div className="flex justify-center pb-8 gap-2">
-          <div className="w-6 h-6 border-4 border-gray-300 border-t-gray-500 rounded-full animate-spin"></div>
-          <div ref={ref} className="text-gray-400">
-            Loading more...
-          </div>
+
+          {/* 다음페이지가 있을 때 */}
+          {isFetchingMore && (
+            <>
+              <div className="w-6 h-6 border-4 border-gray-300 border-t-gray-500 rounded-full animate-spin"></div>
+              <div className="text-gray-400">Loading more...</div>
+            </>
+          )}
+        <div ref={ref} className="h-4" />
         </div>
       ) : (
         <p className="text-center text-gray-400 pb-8">
