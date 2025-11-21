@@ -49,7 +49,7 @@ export default function CommunitiesClient({
     threshold: 0.5, // 요소가 50% 보일 때 inView가 true로 바뀜
   });
   const [status, setStatus] = useState<Status>("idle"); //요청 상태
-  const [isFetchingMore, setIsFetchingMore] = useState<boolean>(false); //로딩스피너
+  const [isFetchingMore, setIsFetchingMore] = useState<boolean>(false); //무한스크롤 중복요청 방지
 
   const router = useRouter();
 
@@ -79,7 +79,7 @@ export default function CommunitiesClient({
       // `/community/posts/list?category=${selectedCategory}&page=${page}`
       `/community/posts/list?category=${selectedCategory}&page=0` //카테고리
     ); //여기서 page=0이 되어야 일치
-  }, [selectedCategory, page]);
+  }, [selectedCategory]);
 
   //무한스크롤 + 요청 상태 추가
   useEffect(() => {
