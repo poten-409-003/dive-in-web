@@ -13,17 +13,7 @@ import {
 } from "@/types/community";
 import { CATEGORIES } from "@/constants/categories";
 import { useInView } from "react-intersection-observer";
-
-// export const CATEGORIES = [
-//   {name: "전체", key: "none"},
-//   {name: "인기글", key: "popular"},
-//   {name: "소통해요", key: "communication"},
-//   {name: "수영장", key: "pool"},
-//   {name: "수영물품", key: "goods"},
-//   {name: "수영대회", key: "competition"},
-// ];
-
-type Status = "idle" | "loading" | "success" | "error";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 export default function CommunitiesClient({
   communityList,
@@ -34,102 +24,79 @@ export default function CommunitiesClient({
   communityList: communityResponseDetailProps;
   category: string;
   page: string;
-  // hasMore: boolean;
-  // totalposts: number;
 }) {
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<string>(category); //기본 카테고리
-  const [communities, setCommunities] = useState<CommunitiesProps[]>(
-    communityList.posts
-  ); //초기 데이터
-
-  //무한스크롤 추가
-  const [currentPage, setCurrentPage] = useState<number>(Number(page) || 0);
-  const [hasMore, setHasMore] = useState<boolean>(communityList.hasMore);
   const { ref, inView } = useInView({
     threshold: 0.5, // 요소가 50% 보일 때 inView가 true로 바뀜
   });
-  const [status, setStatus] = useState<Status>("idle"); //요청 상태
-  const [isFetchingMore, setIsFetchingMore] = useState<boolean>(false); //무한스크롤 중복요청 방지
 
-  const router = useRouter();
+  //서버 데이터 + 무한스크롤
+  const {
+    data,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    status,
+    isLoading,
+    isError,
+    isFetching,
+  } = useInfiniteQuery({
+    queryKey: ["communities", selectedCategory],
+    queryFn: ({ pageParam = 0 }) =>
+      getCommunities(selectedCategory, String(pageParam)),
+    initialPageParam: 0, //처음페이지 번호
+    getNextPageParam: (lastPage, allPages) => {
+      //lastPage = { posts, totalPosts, hasMore }
+      if (!lastPage.hasMore) return undefined; //더 없으면 끝
+      return allPages.length; //0,1,2...식으로 페이지 증가
+    },
+  });
 
-  //카테고리 변경시 URL 업데이트
+  //모든 페이지 하나로 펼치기
+  const communities = data?.pages.flatMap((page) => page.posts) ?? [];
+
+  //inVies되면 다음 페이지 요청
   useEffect(() => {
-    //카테고리 변경시 데이터 가져옴
-    const fetchData = async () => {
-      setStatus("loading");
+    if (!inView || !hasNextPage || isFetchingNextPage) return;
+    fetchNextPage();
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-      try {
-        const data: communityResponseDetailProps = await getCommunities(
-          selectedCategory,
-          "0" //카테고리 변경시 무조건 0페이지부터
-        );
-        setCommunities(data.posts);
-        setHasMore(data.hasMore);
-        setCurrentPage(0);
-        setStatus("success");
-      } catch (error) {
-        console.error(error);
-        setStatus("error");
-      }
-    };
-
-    fetchData();
+  //카테고리 변경시 URL만 업데이트 -> 데이터는 queryKey가 바뀌면서 자동 refetch
+  useEffect(() => {
     router.push(
-      // `/community/posts/list?category=${selectedCategory}&page=${page}`
-      `/community/posts/list?category=${selectedCategory}&page=0` //카테고리
+      `/community/posts/list?category=${selectedCategory}&page=0` 
     ); //여기서 page=0이 되어야 일치
-  }, [selectedCategory]);
+  }, [selectedCategory, router]);
 
-  //무한스크롤 + 요청 상태 추가
-  useEffect(() => {
-    if (!inView || !hasMore || isFetchingMore) return;
-    // if (inView && hasMore) {
-    const fetchMoreData = async () => {
-      setStatus("loading");
-      setIsFetchingMore(true);
+  if (isLoading && !data) {
+    return (
+      <>
+    <div className="w-6 h-6 border-4 border-gray-300 border-t-gray-500 rounded-full animate-spin"></div>
+    <div className="text-gray-400">게시글을 불러오는 중입니다...</div>
+      </>
+    );
+  }
 
-      try {
-        const nextPage = currentPage + 1;
-        const data: communityResponseDetailProps = await getCommunities(
-          selectedCategory,
-          String(nextPage)
-        );
-        if (data.posts.length > 0) {
-          setCommunities((prev) => [...prev, ...data.posts]);
-          setHasMore(data.hasMore);
-          setCurrentPage(nextPage);
-          setStatus("success");
-        } else {
-          setHasMore(false);
-        }
-      } catch (error) {
-        console.error(error);
-        setStatus("error");
-      }finally{
-        setIsFetchingMore(false); //성공여부에 상관없이 요청 무조건 false로 돌리기(다음 요청을 위해)
-      }
-    };
-
-    fetchMoreData();
-    // }
-  }, [inView, hasMore, currentPage, selectedCategory, isFetchingMore]);
+  if(isError){
+    return (<div className="text-gray-400">게시글을 불러오는 중 오류가 발생했습니다.</div>);
+  }
 
   return (
     <div>
       <div className="flex gap-2 mb-4 px-4">
-        {CATEGORIES.map((category) => (
+        {CATEGORIES.map((cate) => (
           <button
-            key={category.key}
-            onClick={() => setSelectedCategory(category.key)}
+            key={cate.key}
+            onClick={() => setSelectedCategory(cate.key)}
             className={`px-4 py-2 rounded-full ${
-              selectedCategory === category.key
+              selectedCategory === cate.key
                 ? "bg-gray-300 text-black font-bold"
                 : "bg-gray-100 text-gray-500 font-bold"
             } 
               hover:bg-gray-300`}
           >
-            {category.name}
+            {cate.name}
           </button>
         ))}
       </div>
@@ -156,18 +123,17 @@ export default function CommunitiesClient({
       <FloatingButton />
 
       {/* 무한스크롤 감지 */}
-      {hasMore ? (
+      {hasNextPage ? (
         // 첫 로딩 때 큰 로딩스피너
         <div className="flex justify-center pb-8 gap-2">
-
           {/* 다음페이지가 있을 때 */}
-          {isFetchingMore && (
+          {isFetchingNextPage && (
             <>
               <div className="w-6 h-6 border-4 border-gray-300 border-t-gray-500 rounded-full animate-spin"></div>
               <div className="text-gray-400">Loading more...</div>
             </>
           )}
-        <div ref={ref} className="h-4" />
+          <div ref={ref} className="h-4" />
         </div>
       ) : (
         <p className="text-center text-gray-400 pb-8">
